@@ -1,0 +1,27 @@
+import { StorefrontNavbar as Navbar } from "@/components/storefront/navbar";
+import { Footer } from "@/components/storefront/footer";
+import { CommandMenu } from "@/components/search/command-menu";
+import { PageTransition } from "@/components/storefront/page-transition";
+import { AnnouncementBar } from "@/components/storefront/announcement-bar";
+
+// Force Layout Refresh
+export default function StorefrontLayout({
+  children,
+}: {
+  // Layout for storefront
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col min-h-screen">
+      <AnnouncementBar />
+      <div className="sticky top-0 z-50">
+        <Navbar />
+      </div>
+      <main className="flex-1">
+        <PageTransition>{children}</PageTransition>
+      </main>
+      <Footer />
+      <CommandMenu />
+    </div>
+  );
+}
