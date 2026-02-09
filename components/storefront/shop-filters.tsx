@@ -28,21 +28,21 @@ type Category = Database["public"]["Tables"]["categories"]["Row"];
 const SIZES = ["500G", "1KG", "2KG", "B-12", "B-24"];
 const COLORS = [
   {
-    name: "Chocolate",
+    name: "Classic Chocolate",
     value: "chocolate",
-    class: "bg-amber-900 border border-white/10",
+    class: "bg-[#4B2C20] border-none",
   },
   {
-    name: "Vanilla",
+    name: "Velvet Vanilla",
     value: "vanilla",
-    class: "bg-yellow-50 border border-border",
+    class: "bg-[#FFF8E1] border border-zinc-200",
   },
-  { name: "Berry", value: "berry", class: "bg-rose-500 border-none" },
-  { name: "Citrus", value: "citrus", class: "bg-lime-500 border-none" },
+  { name: "Wild Berry", value: "berry", class: "bg-[#D32F2F] border-none" },
+  { name: "Tangy Citrus", value: "citrus", class: "bg-[#FFEB3B] border-none" },
   {
-    name: "Unflavored",
+    name: "Natural Unflavored",
     value: "natural",
-    class: "bg-slate-200 border border-border",
+    class: "bg-zinc-100 border border-zinc-200",
   },
 ];
 
@@ -53,18 +53,18 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
       <div className="md:hidden fixed bottom-24 right-5 z-40 group">
         <Sheet>
           <SheetTrigger asChild>
-            <Button className="h-14 w-14 rounded-2xl shadow-[0_20px_40px_rgba(20,184,166,0.4)] flex items-center justify-center p-0 transition-all duration-500 hover:scale-110 active:scale-90 bg-primary border-none">
-              <Filter className="h-6 w-6 text-white" />
+            <Button className="h-16 w-16 rounded-full shadow-[0_20px_50px_rgba(255,222,0,0.4)] flex items-center justify-center p-0 transition-all duration-500 hover:scale-110 active:scale-90 bg-primary border-none text-black">
+              <Filter className="h-6 w-6" />
               <motion.div
-                animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+                animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="absolute inset-0 bg-white/20 blur-lg rounded-2xl"
+                className="absolute inset-0 bg-white/40 blur-xl rounded-full"
               />
             </Button>
           </SheetTrigger>
           <SheetContent
             side="bottom"
-            className="h-[85vh] rounded-t-[3.5rem] border-white/5 bg-background/90 backdrop-blur-3xl overflow-y-auto px-8 pb-12 shadow-[0_-20px_80px_rgba(0,0,0,0.5)]"
+            className="h-[85vh] rounded-t-[3rem] border-zinc-100 bg-white overflow-y-auto px-8 pb-12 shadow-2xl"
           >
             <div className="flex flex-col h-full">
               <SheetHeader className="mb-8 pt-6">
@@ -95,13 +95,13 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
       </div>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-72 shrink-0 animate-in sticky top-24 h-fit rounded-3xl border border-primary/10 bg-white/80 p-6 backdrop-blur-md shadow-xl shadow-primary/5">
-        <div className="flex flex-col gap-2 mb-8">
-          <span className="text-primary font-bold tracking-[0.4em] uppercase text-[10px]">
-            Filter By
+      <aside className="hidden md:block w-72 shrink-0 animate-in sticky top-24 h-fit rounded-[2.5rem] border border-zinc-100 bg-white p-8 shadow-2xl shadow-black/5">
+        <div className="flex flex-col gap-1 mb-10">
+          <span className="text-secondary font-black tracking-[0.3em] uppercase text-[10px]">
+            Personalize
           </span>
-          <h3 className="font-extrabold text-3xl tracking-tighter uppercase font-serif">
-            The <span className="text-primary italic">Lab</span>
+          <h3 className="font-black text-4xl tracking-tighter uppercase font-serif text-black leading-none">
+            THE <span className="text-primary italic">LAB</span>
           </h3>
         </div>
         <FilterContent categories={categories} />
@@ -176,9 +176,9 @@ function FilterContent({ categories }: { categories: Category[] }) {
           variant="outline"
           size="sm"
           onClick={clearFilters}
-          className="w-full h-12 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all bg-transparent text-primary border-primary/20 hover:bg-primary/5 hover:text-primary hover:border-primary/50 shadow-sm"
+          className="w-full h-12 rounded-full font-black uppercase tracking-widest text-[10px] transition-all bg-zinc-50 text-black border-zinc-200 hover:bg-black hover:text-white hover:border-black shadow-sm"
         >
-          Reset Selections
+          Clear All
         </Button>
       )}
 
@@ -202,23 +202,23 @@ function FilterContent({ categories }: { categories: Category[] }) {
               <button
                 onClick={() => setCategory(null)}
                 className={cn(
-                  "text-left text-[11px] py-3.5 px-6 rounded-2xl transition-all font-bold uppercase tracking-wider border",
+                  "text-left text-[11px] py-4 px-6 rounded-full transition-all font-black uppercase tracking-widest border",
                   !category
-                    ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(20,184,166,0.25)] scale-[1.02] border-primary"
-                    : "bg-muted/30 border-transparent hover:border-primary/20 text-muted-foreground hover:text-foreground",
+                    ? "bg-primary text-black shadow-xl shadow-primary/20 scale-[1.02] border-primary"
+                    : "bg-zinc-50 border-transparent hover:border-zinc-200 text-zinc-400 hover:text-black",
                 )}
               >
-                All Picks
+                Everything
               </button>
               {categories.map((c) => (
                 <button
                   key={c.id}
                   onClick={() => setCategory(c.slug)}
                   className={cn(
-                    "text-left text-[11px] py-3.5 px-6 rounded-2xl transition-all font-bold uppercase tracking-wider border",
+                    "text-left text-[11px] py-4 px-6 rounded-full transition-all font-black uppercase tracking-widest border",
                     category === (c.slug || c.id)
-                      ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(20,184,166,0.25)] scale-[1.02] border-primary"
-                      : "bg-muted/30 border-transparent hover:border-primary/20 text-muted-foreground hover:text-foreground",
+                      ? "bg-primary text-black shadow-xl shadow-primary/20 scale-[1.02] border-primary"
+                      : "bg-zinc-50 border-transparent hover:border-zinc-200 text-zinc-400 hover:text-black",
                   )}
                 >
                   {c.name}
@@ -277,7 +277,7 @@ function FilterContent({ categories }: { categories: Category[] }) {
             Select Weight
           </AccordionTrigger>
           <AccordionContent>
-            <div className="grid grid-cols-3 gap-3 pt-2">
+            <div className="grid grid-cols-2 gap-3 pt-2">
               {SIZES.map((s) => (
                 <Button
                   key={s}
@@ -285,13 +285,10 @@ function FilterContent({ categories }: { categories: Category[] }) {
                   size="sm"
                   onClick={() => setSize(size === s ? null : s)}
                   className={cn(
-                    "h-12 w-full rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all",
+                    "h-12 w-full rounded-full text-[10px] font-black uppercase tracking-widest transition-all",
                     size === s
-                      ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20 scale-105 border-primary"
-                      : cn(
-                          "border-border hover:border-primary/50 hover:bg-muted text-muted-foreground hover:text-foreground",
-                          mutedClass,
-                        ),
+                      ? "bg-primary text-black shadow-xl shadow-primary/20 scale-105 border-primary"
+                      : "border-zinc-200 hover:border-black hover:bg-zinc-50 text-zinc-400 hover:text-black",
                   )}
                 >
                   {s}

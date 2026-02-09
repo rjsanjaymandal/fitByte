@@ -452,7 +452,7 @@ export function ProductCard({
         {/* Image Container */}
         <Link
           href={`/product/${product.slug || product.id}`}
-          className="block relative aspect-[4/5] overflow-hidden rounded-2xl bg-slate-50 border border-slate-100 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-primary/5"
+          className="block relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white border border-zinc-100 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-black/5"
         >
           {/* Badges */}
           <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
@@ -539,16 +539,16 @@ export function ProductCard({
           </div>
 
           {/* Desktop Action Overlay */}
-          <div className="hidden lg:flex absolute inset-x-2 bottom-2 gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ease-out z-20">
+          <div className="hidden lg:flex absolute inset-x-2 bottom-3 gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ease-out z-20">
             {!isOutOfStock ? (
               <>
                 <Button
                   size="sm"
-                  className="flex-1 bg-primary text-white hover:opacity-90 shadow-lg hover:shadow-primary/25 font-bold h-10 rounded-full transition-all duration-300 uppercase text-[10px] tracking-wider border-none"
+                  className="flex-1 bg-primary text-black hover:scale-105 shadow-xl shadow-primary/20 font-black h-11 rounded-full transition-all duration-300 uppercase text-[11px] tracking-widest border-none"
                   onClick={handleAddToCart}
                   disabled={isAddingToCart}
                 >
-                  {isAddingToCart ? "Adding..." : "Add to bag"}
+                  {isAddingToCart ? "Adding..." : "Add to Cart"}
                 </Button>
                 <div onClick={(e) => e.preventDefault()} className="shrink-0">
                   <QuickView product={product} />
@@ -558,10 +558,10 @@ export function ProductCard({
               <Button
                 size="sm"
                 className={cn(
-                  "flex-1 shadow-lg font-bold h-10 rounded-full transition-all duration-300 uppercase text-[10px] tracking-wider",
+                  "flex-1 shadow-lg font-black h-11 rounded-full transition-all duration-300 uppercase text-[11px] tracking-widest",
                   isOnWaitlist
-                    ? "bg-slate-100 text-slate-400"
-                    : "bg-slate-900 text-white hover:opacity-90 shadow-slate-900/10",
+                    ? "bg-zinc-100 text-zinc-400"
+                    : "bg-black text-white hover:opacity-90 shadow-black/10",
                 )}
                 onClick={handlePreOrder}
                 disabled={isLoadingWaitlist}
@@ -570,41 +570,72 @@ export function ProductCard({
                   ? "..."
                   : isOnWaitlist
                     ? "Joined"
-                    : "Notify me"}
+                    : "Notify Me"}
               </Button>
             )}
           </div>
         </Link>
 
         {/* Details */}
-        <div className="space-y-2 px-0.5">
-          <div className="flex flex-col gap-1">
-            <div className="flex justify-between items-baseline gap-2">
+        <div className="space-y-3 px-1 py-2">
+          <div className="flex flex-col gap-1.5">
+            <div className="flex justify-between items-start gap-2">
               <Link
                 href={`/product/${product.slug || product.id}`}
                 className="hover:text-primary transition-colors flex-1 min-w-0"
               >
-                <h3 className="font-bold text-[16px] leading-tight text-slate-900 tracking-tight line-clamp-2 h-10 group-hover:text-primary transition-colors">
+                <h3 className="font-bold text-[17px] leading-snug text-black tracking-tight line-clamp-2 min-h-[3rem]">
                   {product.name}
                 </h3>
               </Link>
-              <div className="flex flex-col items-end min-h-12 justify-start">
-                <p className="font-black text-[15px] text-primary tracking-tight tabular-nums whitespace-nowrap">
+              <div className="flex flex-col items-end pt-1">
+                <p className="font-black text-[18px] text-black tracking-tighter tabular-nums">
                   {formatCurrency(product.price)}
                 </p>
                 {product.original_price &&
                   product.original_price > product.price && (
-                    <p className="text-[12px] text-slate-400 line-through tracking-tight tabular-nums opacity-80">
+                    <p className="text-[13px] text-muted-foreground line-through tracking-tight opacity-70">
                       {formatCurrency(product.original_price)}
                     </p>
                   )}
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-[9px] sm:text-[10px] text-muted-foreground/70 uppercase tracking-[0.2em] sm:tracking-[0.3em] font-medium border-t border-foreground/5 pt-1.5">
+            {/* Macro Pills - Phab Signature */}
+            <div className="flex flex-wrap gap-1.5 mt-1">
+              {product.categories?.name?.toLowerCase().includes("protein") && (
+                <>
+                  <Badge className="bg-secondary/10 text-secondary border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
+                    25g Protein
+                  </Badge>
+                  <Badge className="bg-primary/10 text-black border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
+                    0g Sugar
+                  </Badge>
+                </>
+              )}
+              {product.categories?.name?.toLowerCase().includes("energy") && (
+                <>
+                  <Badge className="bg-accent/10 text-accent border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
+                    No Crash
+                  </Badge>
+                  <Badge className="bg-primary/10 text-black border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
+                    Plant Based
+                  </Badge>
+                </>
+              )}
+              {!product.categories?.name && (
+                <Badge className="bg-zinc-100 text-zinc-500 border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
+                  Bio-Optimized
+                </Badge>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between text-[11px] text-muted-foreground/60 uppercase tracking-widest font-semibold pt-2 border-t border-zinc-50">
               <span>{product.categories?.name || "Collection"}</span>
               {hasMultipleOptions && (
-                <span>{stock.length > 0 ? "+ Options" : ""}</span>
+                <span className="text-secondary font-bold">
+                  Variations Available
+                </span>
               )}
             </div>
           </div>
@@ -617,7 +648,7 @@ export function ProductCard({
               <Button
                 variant="outline"
                 size="sm"
-                className="h-9 rounded-none text-[9px] font-medium uppercase tracking-[0.2em] border-foreground/10 hover:bg-zinc-50"
+                className="h-10 rounded-full text-[10px] font-black uppercase tracking-widest border-zinc-200 hover:bg-zinc-50"
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
               >
@@ -625,7 +656,7 @@ export function ProductCard({
               </Button>
               <Button
                 size="sm"
-                className="h-9 rounded-none text-[9px] font-medium uppercase tracking-[0.2em] bg-foreground text-background hover:opacity-90"
+                className="h-10 rounded-full text-[10px] font-black uppercase tracking-widest bg-primary text-black hover:opacity-90 shadow-md shadow-primary/10"
                 onClick={handleBuyNow}
                 disabled={isAddingToCart}
               >
@@ -636,10 +667,10 @@ export function ProductCard({
             <Button
               size="sm"
               className={cn(
-                "col-span-2 h-9 rounded-none text-[9px] font-medium uppercase tracking-[0.2em]",
+                "col-span-2 h-10 rounded-full text-[10px] font-black uppercase tracking-widest",
                 isOnWaitlist
-                  ? "bg-muted text-muted-foreground"
-                  : "bg-foreground text-background hover:opacity-90",
+                  ? "bg-zinc-100 text-zinc-400"
+                  : "bg-black text-white hover:opacity-90",
               )}
               onClick={handlePreOrder}
               disabled={isLoadingWaitlist}
@@ -647,7 +678,7 @@ export function ProductCard({
               {isLoadingWaitlist
                 ? "..."
                 : isOnWaitlist
-                  ? "Joined Waitlist"
+                  ? "Joined"
                   : "Notify Me"}
             </Button>
           )}

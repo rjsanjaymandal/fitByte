@@ -23,13 +23,14 @@ export function Footer() {
         <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-16">
           <div className="space-y-4 max-w-sm">
             <Link href="/" className="inline-block">
-              <h3 className="text-3xl font-serif tracking-tight text-foreground font-extrabold items-center flex">
-                fit<span className="text-primary italic">Byte</span>
+              <h3 className="text-2xl font-serif tracking-tighter text-black font-black flex items-center">
+                FIT<span className="text-secondary">BYTE</span>
               </h3>
             </Link>
-            <p className="text-muted-foreground text-base leading-relaxed">
-              Fueling your lifestyle with premium FMCG products. Quality
-              nutrition meets modern living.
+            <p className="text-zinc-500 text-sm leading-relaxed font-medium">
+              Join the movement. Premium nutrition for the modern human.
+              Bio-engineered, taste-refined, and lab-tested for peak
+              performance.
             </p>
             <div className="flex gap-2 pt-2">
               {[
@@ -48,38 +49,36 @@ export function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="h-10 w-10 rounded-full border border-primary/20 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 cursor-pointer group"
+                  className="h-10 w-10 rounded-full border border-zinc-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-all duration-300 cursor-pointer group"
                 >
-                  <Icon className="h-5 w-5 group-hover:scale-110 transition-transform" />
+                  <Icon className="h-4 w-4 group-hover:scale-110 transition-transform" />
                 </a>
               ))}
             </div>
           </div>
 
-          <div className="w-full max-w-md bg-primary/5 p-6 rounded-3xl border border-primary/10 relative overflow-hidden group">
+          <div className="w-full max-w-md bg-primary p-10 rounded-[2.5rem] border-none relative overflow-hidden group shadow-2xl shadow-primary/20">
             {/* Brand Glow Background */}
-            <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 blur-3xl group-hover:bg-primary/20 transition-all duration-700" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 blur-3xl group-hover:bg-white/30 transition-all duration-700" />
 
-            <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
-              Stay Fit & Informed
+            <h4 className="font-black text-2xl mb-2 flex items-center gap-2 text-black uppercase tracking-tighter">
+              DROP ALERT
             </h4>
-            <p className="text-sm text-muted-foreground mb-4">
-              Join the fitByte community for exclusive drops, health tips, and{" "}
-              <span className="text-primary font-black">
-                10% OFF YOUR FIRST PACK
-              </span>
-              .
+            <p className="text-xs text-black/70 mb-6 font-bold uppercase tracking-widest">
+              Be the first to fuel up.{" "}
+              <span className="text-black font-black underline">10% OFF</span>{" "}
+              your first lab order.
             </p>
-            <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
+            <form
+              className="flex flex-col gap-3"
+              onSubmit={(e) => e.preventDefault()}
+            >
               <Input
-                placeholder="Enter your email"
-                className="bg-white border-primary/10 h-12 focus-visible:ring-primary rounded-xl"
+                placeholder="EMAIL ADDRESS"
+                className="bg-white/90 border-none h-14 focus-visible:ring-black rounded-full px-6 font-bold text-xs placeholder:text-zinc-400"
               />
-              <Button
-                size="icon"
-                className="h-12 w-12 shrink-0 rounded-xl bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
-              >
-                <ArrowRight className="h-5 w-5" />
+              <Button className="h-14 w-full rounded-full bg-black hover:bg-zinc-900 text-white font-black uppercase tracking-widest text-[11px] shadow-xl shadow-black/20">
+                JOIN THE LAB
               </Button>
             </form>
           </div>
@@ -237,8 +236,8 @@ export function Footer() {
         </div>
 
         {/* BOTTOM SECTION */}
-        <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground font-medium">
-          <p>&copy; 2026 FLASH FASHION. All rights reserved.</p>
+        <div className="border-t border-zinc-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-zinc-400 font-black uppercase tracking-[0.2em]">
+          <p>&copy; 2026 FITBYTE LABS. ALL RIGHTS RESERVED.</p>
           <div className="flex items-center gap-6">
             <span>India</span>
             <span className="hidden md:inline-block w-1 h-1 bg-border rounded-full" />

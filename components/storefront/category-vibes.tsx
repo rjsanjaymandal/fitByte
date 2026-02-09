@@ -55,18 +55,18 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
         <div className="flex flex-col items-start gap-4 mb-12">
           <BrandBadge
             variant="primary"
-            className="mb-2 bg-primary text-white rounded-full px-5 py-1.5 font-bold uppercase tracking-wider shadow-lg shadow-primary/20"
+            className="mb-2 bg-primary text-black rounded-full px-6 py-2 font-black uppercase tracking-widest shadow-xl shadow-primary/20"
           >
-            <Sparkles className="w-3.5 h-3.5 mr-2 animate-pulse" /> Discover the
-            Vibes
+            <Sparkles className="w-3.5 h-3.5 mr-2 animate-pulse" /> DISCOVER THE
+            VIBES
           </BrandBadge>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl md:text-6xl font-serif tracking-tight text-foreground leading-tight"
+            className="text-4xl md:text-7xl font-serif tracking-tighter text-black leading-none font-black uppercase"
           >
-            Pick your <span className="opacity-50 italic">category</span>
+            PICK YOUR <span className="opacity-30 italic">CATEGORY</span>
           </motion.h2>
         </div>
 
@@ -103,7 +103,7 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
                 key={cat.id}
                 href={`/shop?category=${cat.id}`}
                 className={cn(
-                  "group relative overflow-hidden rounded-3xl bg-zinc-100 border border-primary/5 transition-all duration-700 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/10",
+                  "group relative overflow-hidden rounded-[2.5rem] bg-zinc-100 border border-zinc-200 transition-all duration-700 hover:border-primary hover:shadow-2xl hover:shadow-black/10",
                   "flex-none w-[85vw] sm:w-[50vw] md:w-auto", // Mobile: Fixed width carousel items
                   "h-[400px] md:h-auto", // Mobile: Fixed height
                   "snap-center", // Mobile: Snapping
@@ -138,12 +138,12 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
                       {cat.name}
                     </h3>
 
-                    <div className="flex items-center gap-3 text-white/90 group-hover:text-white transition-colors duration-300">
-                      <span className="text-[10px] font-bold uppercase tracking-widest hidden md:inline-block">
+                    <div className="flex items-center gap-3 text-white group-hover:text-white transition-colors duration-300">
+                      <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline-block">
                         Shop Collection
                       </span>
-                      <div className="p-2.5 bg-primary text-white rounded-full group-hover:scale-110 group-hover:bg-primary/90 transition-all duration-500 shadow-lg shadow-primary/20">
-                        <ArrowUpRight className="w-4 h-4" />
+                      <div className="p-3 bg-primary text-black rounded-full group-hover:scale-110 group-hover:bg-primary/90 transition-all duration-500 shadow-xl shadow-primary/30">
+                        <ArrowUpRight className="w-5 h-5" />
                       </div>
                     </div>
                   </div>

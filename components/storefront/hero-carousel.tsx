@@ -112,11 +112,11 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
     }
 
     const defaultTaglines = [
-      "Fuel Your Fitness Journey",
-      "Deliciously Healthy Snacking",
-      "Pure Ingredients. Peak Performance.",
-      "Balanced Nutrition, Anywhere.",
-      "Summer Energy Collection 2026",
+      "Protein Reimagined. Taste Refined.",
+      "Fuel for Your Ambition.",
+      "The Lab's Cleanest Energy.",
+      "Zero Compromise. Peak Performance.",
+      "Bio-Engineered for the Bold.",
     ];
 
     return defaultTaglines[hash(product.id) % defaultTaglines.length];
@@ -231,41 +231,29 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
             )}
 
             {/* Gradient Overlay for Text Readability */}
-            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-linear-to-t from-black/60 lg:from-black/40 to-transparent z-10" />
-            <div className="hidden lg:block absolute inset-y-0 left-0 w-1/3 bg-linear-to-r from-black/20 to-transparent z-10" />
+            <div className="absolute inset-0 bg-black/30 z-10" />
           </div>
 
           {/* CONTENT LAYER */}
-          <div className="relative z-20 h-full w-full container mx-auto px-6 lg:px-12 flex flex-col justify-end lg:justify-center pb-16 lg:pb-0">
-            <div className="max-w-2xl text-white">
+          <div className="relative z-20 h-full w-full container mx-auto px-6 lg:px-12 flex flex-col justify-center items-center text-center pb-16 lg:pb-0">
+            <div className="max-w-4xl text-white flex flex-col items-center">
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="mb-4"
+                className="mb-6"
               >
-                <span className="inline-block bg-primary text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-primary/20">
-                  New Launch
+                <span className="inline-block bg-primary text-black px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-widest shadow-xl shadow-primary/30">
+                  NEW LAUNCH
                 </span>
-                {currentProduct.name.toLowerCase().includes("protein") && (
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 }}
-                    className="ml-3 inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-white"
-                  >
-                    <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse shadow-sm shadow-green-400/50" />
-                    High Protein
-                  </motion.span>
-                )}
               </motion.div>
 
-              <div className="min-h-[80px] lg:min-h-[160px] flex flex-col justify-end mb-4">
+              <div className="min-h-[100px] lg:min-h-[180px] flex flex-col justify-center mb-6">
                 <motion.h1
-                  initial={{ y: 20, opacity: 0 }}
+                  initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif text-white font-extrabold leading-tight tracking-tight drop-shadow-2xl"
+                  className="text-5xl sm:text-6xl lg:text-8xl xl:text-9xl font-serif text-white font-black leading-[0.9] tracking-tighter drop-shadow-2xl uppercase"
                 >
                   {currentProduct.name}
                 </motion.h1>
@@ -275,45 +263,42 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="flex items-center gap-3 lg:gap-4 mb-8"
+                className="flex items-center justify-center gap-4 lg:gap-6 mb-10"
               >
-                <div className="h-px w-6 sm:w-8 lg:w-16 bg-white/40" />
-                <span className="text-[9px] lg:text-xs text-white/80 font-medium tracking-[0.3em] lg:tracking-[0.4em] uppercase whitespace-nowrap overflow-hidden text-ellipsis max-w-[180px] sm:max-w-[250px] lg:max-w-none">
+                <div className="h-[2px] w-8 lg:w-20 bg-primary" />
+                <span className="text-[10px] lg:text-sm text-white font-bold tracking-[0.4em] uppercase whitespace-nowrap">
                   {getTagline(currentProduct)}
                 </span>
-                <div className="h-px w-6 sm:w-8 lg:w-16 bg-white/40" />
+                <div className="h-[2px] w-8 lg:w-20 bg-primary" />
               </motion.div>
 
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="flex flex-col lg:flex-row lg:items-center gap-6"
+                className="flex flex-col lg:flex-row lg:items-center justify-center gap-8"
               >
-                <div className="flex flex-col">
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black">
+                <div className="flex flex-col items-center lg:items-start">
+                  <div className="flex items-baseline justify-center gap-3">
+                    <span className="text-4xl sm:text-5xl lg:text-6xl font-serif font-black">
                       {formatCurrency(currentProduct.price)}
                     </span>
                     {currentProduct.original_price &&
                       currentProduct.original_price > currentProduct.price && (
-                        <span className="text-white/50 line-through text-lg sm:text-xl lg:text-2xl font-serif">
+                        <span className="text-white/40 line-through text-xl lg:text-2xl font-serif">
                           {formatCurrency(currentProduct.original_price)}
                         </span>
                       )}
                   </div>
-                  <span className="text-[10px] lg:text-xs font-black uppercase tracking-[0.3em] text-white/50 mt-1">
-                    Tax Inclusive // Fast Shipping
-                  </span>
                 </div>
 
                 <Button
                   size="lg"
-                  className="h-14 sm:h-16 lg:h-18 px-10 lg:px-20 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-white text-primary hover:bg-slate-50 active:scale-95 transition-all shadow-xl shadow-black/10 mt-4 lg:mt-0 group"
+                  className="h-14 lg:h-20 px-12 lg:px-24 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest bg-primary text-black hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-primary/30 mt-4 lg:mt-0 group border-none"
                   onClick={handleBuyNow}
                 >
-                  Fuel Your Day
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  SHOP NOW
+                  <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
             </div>

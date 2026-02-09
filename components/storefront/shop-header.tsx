@@ -8,13 +8,13 @@ export function ShopHeader() {
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col items-center gap-2"
+        className="flex flex-col items-center gap-1"
       >
-        <h1 className="text-4xl md:text-6xl font-serif text-foreground font-black tracking-tight flex items-center gap-3">
-          The <span className="text-primary italic">Lab</span>
+        <h1 className="text-5xl md:text-8xl font-serif text-black font-black tracking-tighter flex items-center gap-3 uppercase">
+          THE <span className="text-primary italic">LAB</span>
         </h1>
-        <p className="text-muted-foreground text-xs md:text-sm font-medium tracking-[0.3em] uppercase opacity-70">
-          Precision Nutrition & Bio-Essentials
+        <p className="text-zinc-400 text-[10px] md:text-xs font-black tracking-[0.4em] uppercase">
+          Engineered for Human Performance
         </p>
       </motion.div>
 

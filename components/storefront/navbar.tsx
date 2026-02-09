@@ -110,18 +110,18 @@ export function StorefrontNavbar() {
                 className="flex items-center gap-2 group"
                 title="Home"
               >
-                <div className="relative h-10 w-10 overflow-hidden rounded-xl border-2 border-primary/20 group-hover:scale-105 transition-all duration-300 shadow-sm">
+                <div className="relative h-9 w-9 overflow-hidden rounded-full border-2 border-primary group-hover:scale-105 transition-all duration-300 shadow-md">
                   <FlashImage
                     src="/flash-logo.jpg"
                     alt="Flash Logo"
-                    width={60}
-                    height={60}
+                    width={40}
+                    height={40}
                     unoptimized
                     className="bg-background"
                   />
                 </div>
-                <span className="hidden lg:flex text-2xl font-serif tracking-tight text-foreground font-extrabold items-center">
-                  fit<span className="text-primary italic">Byte</span>
+                <span className="hidden lg:flex text-xl font-serif tracking-tighter text-black font-black items-center">
+                  FIT<span className="text-secondary">BYTE</span>
                 </span>
               </Link>
             </div>
@@ -141,35 +141,35 @@ export function StorefrontNavbar() {
               <Link
                 href="/lab"
                 className={cn(
-                  "text-xs font-semibold tracking-tight transition-all px-4 py-2 rounded-full",
+                  "text-[11px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-full",
                   pathname === "/lab"
-                    ? "text-primary bg-primary/10"
-                    : "text-muted-foreground hover:text-primary hover:bg-primary/5",
+                    ? "text-black bg-primary"
+                    : "text-zinc-500 hover:text-black hover:bg-zinc-100",
                 )}
               >
-                Lab
+                The Lab
               </Link>
               <Link
                 href="/blog"
                 className={cn(
-                  "text-xs font-semibold tracking-tight transition-all px-4 py-2 rounded-full",
+                  "text-[11px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-full",
                   pathname?.startsWith("/blog")
-                    ? "text-primary bg-primary/10"
-                    : "text-muted-foreground hover:text-primary hover:bg-primary/5",
+                    ? "text-black bg-primary"
+                    : "text-zinc-500 hover:text-black hover:bg-zinc-100",
                 )}
               >
-                Blog
+                Log
               </Link>
               <Link
                 href="/contact"
                 className={cn(
-                  "text-xs font-semibold tracking-tight transition-all px-4 py-2 rounded-full",
+                  "text-[11px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-full",
                   pathname === "/contact"
-                    ? "text-primary bg-primary/10"
-                    : "text-muted-foreground hover:text-primary hover:bg-primary/5",
+                    ? "text-black bg-primary"
+                    : "text-zinc-500 hover:text-black hover:bg-zinc-100",
                 )}
               >
-                Contact
+                Reach Out
               </Link>
             </nav>
 
@@ -260,9 +260,9 @@ export function StorefrontNavbar() {
                     <Link href="/login" className="hidden sm:block">
                       <Button
                         size="sm"
-                        className="rounded-full px-6 font-bold uppercase tracking-wider text-[10px] bg-primary text-white shadow-lg hover:shadow-primary/25 hover:opacity-90 transition-all duration-300"
+                        className="rounded-full px-6 font-black uppercase tracking-widest text-[10px] bg-primary text-black shadow-lg shadow-primary/20 hover:scale-105 transition-all duration-300 h-10"
                       >
-                        Join fitByte
+                        Join the Movement
                       </Button>
                     </Link>
                   )}

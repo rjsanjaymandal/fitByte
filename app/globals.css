@@ -26,46 +26,46 @@
 }
 
 :root {
-  /* "The Phab" - Vibrant FMCG Aesthetic (Teal, Coral, Clean White) */
+  /* "The Phab" - Refined Exact Aesthetic (Vibrant Yellow, Lab Teal, Deep Black) */
   --background: #ffffff;
-  --foreground: #0f172a; /* Deep Slate for readability */
+  --foreground: #000000;
 
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-serif: "Poppins", sans-serif; /* Using Poppins as the new 'brand' font */
+  --font-serif: "Poppins", sans-serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* Primary: Vibrant Teal */
-  --primary: #14b8a6;
-  --primary-foreground: #ffffff;
+  /* Primary: Vibrant Yellow (Phab's Signature Action Color) */
+  --primary: #ffde00;
+  --primary-foreground: #000000;
 
-  /* Secondary: Energetic Coral/Pink */
-  --secondary: #f43f5e;
+  /* Secondary: Lab Teal (Category Accents) */
+  --secondary: #00b5a3;
   --secondary-foreground: #ffffff;
 
-  /* Accent: Electric Purple */
-  --accent: #8b5cf6;
+  /* Accent: Deep Navy/Black (High Contrast Headers) */
+  --accent: #000000;
   --accent-foreground: #ffffff;
 
   /* Brand Palette */
-  --brand-teal: #14b8a6;
-  --brand-pink: #f43f5e;
-  --brand-violet: #8b5cf6;
+  --brand-yellow: #ffde00;
+  --brand-teal: #00b5a3;
+  --brand-black: #000000;
 
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #000000;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
+  --popover-foreground: #000000;
 
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  --muted: #f8f9fa;
+  --muted-foreground: #666666;
 
-  --destructive: #ef4444;
+  --destructive: #ff3b30;
   --destructive-foreground: #ffffff;
 
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #14b8a6;
-  --radius: 1rem; /* Modern, friendly curves */
+  --border: #eeeeee;
+  --input: #eeeeee;
+  --ring: #ffde00;
+  --radius: 1.5rem; /* Modern professional curves */
 }
 
 .dark {

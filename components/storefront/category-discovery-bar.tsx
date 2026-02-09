@@ -21,23 +21,23 @@ export function CategoryDiscoveryBar({
       <button
         onClick={() => setActiveCategory(null)}
         className={cn(
-          "shrink-0 px-6 py-3 rounded-2xl font-bold uppercase tracking-wider text-[11px] transition-all border outline-none",
+          "shrink-0 px-8 py-4 rounded-full font-black uppercase tracking-widest text-[11px] transition-all border outline-none",
           !activeCategory
-            ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(20,184,166,0.2)] border-primary"
-            : "bg-muted/30 text-muted-foreground hover:bg-muted/50 border-transparent hover:border-primary/20",
+            ? "bg-primary text-black shadow-xl shadow-primary/20 border-primary scale-105"
+            : "bg-zinc-50 text-zinc-400 hover:bg-zinc-100 border-transparent hover:border-zinc-200",
         )}
       >
-        All Picks
+        Everything
       </button>
       {categories?.map((c) => (
         <button
           key={c.id}
           onClick={() => setActiveCategory(c.slug)}
           className={cn(
-            "shrink-0 px-6 py-3 rounded-2xl font-bold uppercase tracking-wider text-[11px] transition-all border outline-none",
+            "shrink-0 px-8 py-4 rounded-full font-black uppercase tracking-widest text-[11px] transition-all border outline-none",
             activeCategory === (c.slug || c.id)
-              ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(20,184,166,0.2)] border-primary"
-              : "bg-muted/30 text-muted-foreground hover:bg-muted/50 border-transparent hover:border-primary/20",
+              ? "bg-primary text-black shadow-xl shadow-primary/20 border-primary scale-105"
+              : "bg-zinc-50 text-zinc-400 hover:bg-zinc-100 border-transparent hover:border-zinc-200",
           )}
         >
           {c.name}
