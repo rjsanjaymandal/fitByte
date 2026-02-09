@@ -10,12 +10,11 @@ import { Suspense } from "react";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title:
-    "Shop All | Premium Minimalist Streetwear & Japanese Aesthetics | FLASH",
+  title: "Shop All | Premium Health Supplements & Daily Nutrition | fitByte",
   description:
-    "Explore the complete FLASH collection. Premium anime streetwear, Japanese-inspired heavyweight t-shirts, and minimalist luxury essentials. High-quality prints and tech fabrics designed in India.",
+    "Explore the complete fitByte collection. Premium plant-based nutrition, healthy snacks, and daily energy essentials. High-quality ingredients and lab-tested formulas shipped across India.",
   alternates: {
-    canonical: "https://flashhfashion.in/shop",
+    canonical: "https://fitbyte.in/shop",
   },
 };
 

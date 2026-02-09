@@ -110,7 +110,7 @@ export function StorefrontNavbar() {
                 className="flex items-center gap-2 group"
                 title="Home"
               >
-                <div className="relative h-9 w-9 overflow-hidden rounded-full border border-border group-hover:scale-105 transition-all duration-300 shadow-lg">
+                <div className="relative h-10 w-10 overflow-hidden rounded-xl border-2 border-primary/20 group-hover:scale-105 transition-all duration-300 shadow-sm">
                   <FlashImage
                     src="/flash-logo.jpg"
                     alt="Flash Logo"
@@ -120,31 +120,31 @@ export function StorefrontNavbar() {
                     className="bg-background"
                   />
                 </div>
-                <span className="hidden lg:flex text-2xl font-serif tracking-[0.2em] text-foreground lowercase">
-                  flash
+                <span className="hidden lg:flex text-2xl font-serif tracking-tight text-foreground font-extrabold items-center">
+                  fit<span className="text-primary italic">Byte</span>
                 </span>
               </Link>
             </div>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-2">
+            <nav className="hidden lg:flex items-center gap-1">
               <div className="group relative">
                 <Link
                   href="/shop"
-                  className="flex items-center gap-1.5 text-[10px] font-medium uppercase tracking-[0.3em] text-muted-foreground hover:text-foreground transition-all px-4 py-2"
+                  className="flex items-center gap-1.5 text-xs font-semibold tracking-tight text-muted-foreground hover:text-primary transition-all px-4 py-2 rounded-full hover:bg-primary/5"
                 >
                   Shop
-                  <ChevronDown className="h-3 w-3 opacity-30 group-hover:opacity-100 transition-opacity" />
+                  <ChevronDown className="h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" />
                 </Link>
                 <CategoryDropdown categories={categories} />
               </div>
               <Link
                 href="/lab"
                 className={cn(
-                  "text-[10px] font-medium uppercase tracking-[0.3em] transition-all px-4 py-2",
+                  "text-xs font-semibold tracking-tight transition-all px-4 py-2 rounded-full",
                   pathname === "/lab"
-                    ? "text-foreground font-black"
-                    : "text-muted-foreground hover:text-foreground",
+                    ? "text-primary bg-primary/10"
+                    : "text-muted-foreground hover:text-primary hover:bg-primary/5",
                 )}
               >
                 Lab
@@ -152,10 +152,10 @@ export function StorefrontNavbar() {
               <Link
                 href="/blog"
                 className={cn(
-                  "text-[10px] font-medium uppercase tracking-[0.3em] transition-all px-4 py-2",
+                  "text-xs font-semibold tracking-tight transition-all px-4 py-2 rounded-full",
                   pathname?.startsWith("/blog")
-                    ? "text-foreground font-black"
-                    : "text-muted-foreground hover:text-foreground",
+                    ? "text-primary bg-primary/10"
+                    : "text-muted-foreground hover:text-primary hover:bg-primary/5",
                 )}
               >
                 Blog
@@ -163,10 +163,10 @@ export function StorefrontNavbar() {
               <Link
                 href="/contact"
                 className={cn(
-                  "text-[10px] font-medium uppercase tracking-[0.3em] transition-all px-4 py-2",
+                  "text-xs font-semibold tracking-tight transition-all px-4 py-2 rounded-full",
                   pathname === "/contact"
-                    ? "text-foreground font-black"
-                    : "text-muted-foreground hover:text-foreground",
+                    ? "text-primary bg-primary/10"
+                    : "text-muted-foreground hover:text-primary hover:bg-primary/5",
                 )}
               >
                 Contact
@@ -180,7 +180,7 @@ export function StorefrontNavbar() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsSearchOpen(true)}
-                className="rounded-full hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors h-10 w-10"
+                className="rounded-full hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors h-11 w-11"
               >
                 <Search className="h-5 w-5" />
               </Button>
@@ -189,11 +189,11 @@ export function StorefrontNavbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="relative rounded-full hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors h-10 w-10"
+                  className="relative rounded-full hover:bg-secondary/10 text-muted-foreground hover:text-secondary transition-colors h-11 w-11"
                 >
                   <Heart className="h-5 w-5" />
                   {mounted && wishlistCount > 0 && (
-                    <span className="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center rounded-none bg-foreground text-[8px] font-medium text-background">
+                    <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-white shadow-sm">
                       {wishlistCount}
                     </span>
                   )}
@@ -203,7 +203,7 @@ export function StorefrontNavbar() {
               {mounted && user ? (
                 <NotificationBell />
               ) : (
-                <Skeleton className="h-10 w-10 rounded-full bg-muted/50 hidden sm:block" />
+                <Skeleton className="h-11 w-11 rounded-full bg-muted/50 hidden sm:block" />
               )}
 
               <div className="hidden sm:block">
@@ -214,17 +214,17 @@ export function StorefrontNavbar() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setIsCartOpen(true)}
-                className="relative rounded-full hover:bg-primary/5 text-muted-foreground hover:text-primary transition-colors h-10 w-10"
+                className="relative rounded-full hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors h-11 w-11"
               >
                 <ShoppingBag className="h-5 w-5" />
                 {mounted && cartCount > 0 && (
-                  <span className="absolute top-1 right-1 flex h-3.5 w-3.5 items-center justify-center rounded-none bg-foreground text-[8px] font-medium text-background">
+                  <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white shadow-sm">
                     {cartCount}
                   </span>
                 )}
               </Button>
 
-              <div className="h-6 w-px bg-border mx-1 hidden sm:block" />
+              <div className="h-6 w-px bg-border/50 mx-1 hidden sm:block" />
 
               {mounted && (
                 <>
@@ -234,12 +234,12 @@ export function StorefrontNavbar() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="rounded-full gap-2 px-3 font-bold border border-border/50 hover:border-primary/50 transition-all"
+                          className="rounded-full gap-2 px-3 font-semibold border border-primary/10 hover:border-primary/30 hover:bg-primary/5 transition-all"
                         >
-                          <div className="h-6 w-6 rounded-full gradient-primary flex items-center justify-center text-[10px] text-white">
+                          <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-[10px] text-white font-bold shadow-sm">
                             {user.email?.[0]?.toUpperCase()}
                           </div>
-                          <span className="max-w-[100px] truncate text-xs uppercase tracking-tight">
+                          <span className="max-w-[100px] truncate text-xs">
                             {profile?.name || user.email?.split("@")[0]}
                           </span>
                         </Button>
@@ -249,7 +249,7 @@ export function StorefrontNavbar() {
                         <Link href="/admin" className="hidden md:block">
                           <Button
                             size="sm"
-                            className="rounded-none bg-foreground text-background shadow-none text-[9px] font-medium uppercase tracking-[0.3em] h-7"
+                            className="rounded-full bg-primary text-white shadow-lg hover:shadow-primary/20 transition-all text-[10px] font-bold uppercase tracking-wider h-8"
                           >
                             Admin
                           </Button>
@@ -260,9 +260,9 @@ export function StorefrontNavbar() {
                     <Link href="/login" className="hidden sm:block">
                       <Button
                         size="sm"
-                        className="rounded-none px-6 font-medium uppercase tracking-[0.3em] text-[9px] bg-foreground text-background shadow-none hover:opacity-80 transition-all duration-300"
+                        className="rounded-full px-6 font-bold uppercase tracking-wider text-[10px] bg-primary text-white shadow-lg hover:shadow-primary/25 hover:opacity-90 transition-all duration-300"
                       >
-                        Join Now
+                        Join fitByte
                       </Button>
                     </Link>
                   )}

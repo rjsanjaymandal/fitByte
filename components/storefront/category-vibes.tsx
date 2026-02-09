@@ -37,16 +37,16 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
   return (
     <section className="py-20 bg-background relative overflow-hidden">
       {/* BACKGROUND MARQUEE */}
-      <div className="absolute top-20 left-0 right-0 opacity-[0.03] pointer-events-none select-none z-0">
-        <Marquee className="[--duration:60s] [--gap:2rem]" reverse>
-          <span className="text-[5rem] sm:text-[10rem] font-serif tracking-[0.2em] mx-8 lowercase">
-            the collections
+      <div className="absolute top-20 left-0 right-0 opacity-[0.05] pointer-events-none select-none z-0">
+        <Marquee className="[--duration:40s] [--gap:1.5rem]" reverse>
+          <span className="text-[5rem] sm:text-[10rem] font-serif font-black tracking-tight mx-8">
+            the energy
           </span>
-          <span className="text-[5rem] sm:text-[10rem] font-serif tracking-[0.2em] mx-8 opacity-50 lowercase">
-            aesthetic
+          <span className="text-[5rem] sm:text-[10rem] font-serif font-black tracking-tight mx-8 opacity-50">
+            pure nutrition
           </span>
-          <span className="text-[5rem] sm:text-[10rem] font-serif tracking-[0.2em] mx-8 lowercase">
-            minimalist
+          <span className="text-[5rem] sm:text-[10rem] font-serif font-black tracking-tight mx-8">
+            daily fuel
           </span>
         </Marquee>
       </div>
@@ -55,9 +55,10 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
         <div className="flex flex-col items-start gap-4 mb-12">
           <BrandBadge
             variant="primary"
-            className="mb-2 bg-foreground text-background rounded-none px-4 py-1"
+            className="mb-2 bg-primary text-white rounded-full px-5 py-1.5 font-bold uppercase tracking-wider shadow-lg shadow-primary/20"
           >
-            <Sparkles className="w-3 h-3 mr-2" /> The Collections
+            <Sparkles className="w-3.5 h-3.5 mr-2 animate-pulse" /> Discover the
+            Vibes
           </BrandBadge>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -102,7 +103,7 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
                 key={cat.id}
                 href={`/shop?category=${cat.id}`}
                 className={cn(
-                  "group relative overflow-hidden rounded-none bg-zinc-900 border border-foreground/5 transition-all duration-700 hover:border-foreground/20",
+                  "group relative overflow-hidden rounded-3xl bg-zinc-100 border border-primary/5 transition-all duration-700 hover:border-primary/20 hover:shadow-2xl hover:shadow-primary/10",
                   "flex-none w-[85vw] sm:w-[50vw] md:w-auto", // Mobile: Fixed width carousel items
                   "h-[400px] md:h-auto", // Mobile: Fixed height
                   "snap-center", // Mobile: Snapping
@@ -137,12 +138,12 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
                       {cat.name}
                     </h3>
 
-                    <div className="flex items-center gap-2 text-white/80 group-hover:text-primary transition-colors duration-300">
-                      <span className="text-[10px] font-medium uppercase tracking-[0.3em] hidden md:inline-block">
-                        explore
+                    <div className="flex items-center gap-3 text-white/90 group-hover:text-white transition-colors duration-300">
+                      <span className="text-[10px] font-bold uppercase tracking-widest hidden md:inline-block">
+                        Shop Collection
                       </span>
-                      <div className="p-2 bg-white text-black group-hover:bg-white group-hover:scale-110 transition-all duration-500">
-                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      <div className="p-2.5 bg-primary text-white rounded-full group-hover:scale-110 group-hover:bg-primary/90 transition-all duration-500 shadow-lg shadow-primary/20">
+                        <ArrowUpRight className="w-4 h-4" />
                       </div>
                     </div>
                   </div>

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 @import "tailwindcss";
 
@@ -26,71 +26,63 @@
 }
 
 :root {
-  /* "The Atelier" - Gucci-Inspired Luxury (Bone, Noir, Gold) */
-  --background: #f9f9f7; /* Bone/Luxury Paper */
-  --foreground: #111111; /* Noir Ink */
+  /* "The Phab" - Vibrant FMCG Aesthetic (Teal, Coral, Clean White) */
+  --background: #ffffff;
+  --foreground: #0f172a; /* Deep Slate for readability */
 
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-serif: "EB Garamond", serif;
+  --font-serif: "Poppins", sans-serif; /* Using Poppins as the new 'brand' font */
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* Primary: Noir (Classic Luxury) */
-  --primary: #111111;
+  /* Primary: Vibrant Teal */
+  --primary: #14b8a6;
   --primary-foreground: #ffffff;
 
-  /* Secondary: Warm Sand */
-  --secondary: #e7e5e4;
-  --secondary-foreground: #2b2926;
+  /* Secondary: Energetic Coral/Pink */
+  --secondary: #f43f5e;
+  --secondary-foreground: #ffffff;
 
-  /* Accent: Muted Clay */
-  --accent: #e5e5e5;
-  --accent-foreground: #2b2926;
+  /* Accent: Electric Purple */
+  --accent: #8b5cf6;
+  --accent-foreground: #ffffff;
 
   /* Brand Palette */
-  --brand-olive: #4d7c0f;
-  --brand-rust: #ea580c;
-  --brand-navy: #1e40af;
+  --brand-teal: #14b8a6;
+  --brand-pink: #f43f5e;
+  --brand-violet: #8b5cf6;
 
   --card: #ffffff;
-  --card-foreground: #2b2926;
+  --card-foreground: #0f172a;
   --popover: #ffffff;
-  --popover-foreground: #2b2926;
+  --popover-foreground: #0f172a;
 
-  --muted: #ebe5dd;
-  --muted-foreground: #78716c;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
 
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #d6d3cd; /* Visible, tactile borders */
-  --input: #d6d3cd;
-  --ring: #ea580c;
-  --radius: 0.75rem; /* Friendly, modern curves */
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #14b8a6;
+  --radius: 1rem; /* Modern, friendly curves */
 }
 
 .dark {
-  /* "The Cyber" - Dark Mode (Electric, Tech, Void) */
-  --background: #020617; /* Deep Void Blue */
-  --foreground: #f8fafc; /* Ice White */
+  /* Minimal Dark Mode for Phab */
+  --background: #020617;
+  --foreground: #f8fafc;
 
-  /* Primary: Acid Lime/Volt (Electric Flash) */
-  --primary: #a3e635;
+  --primary: #2dd4bf; /* Lighter Teal */
   --primary-foreground: #020617;
 
-  /* Secondary: Deep Slate */
-  --secondary: #0f172a;
-  --secondary-foreground: #f8fafc;
+  --secondary: #fb7185; /* Lighter Pink */
+  --secondary-foreground: #020617;
 
-  /* Accent: Night Glass */
-  --accent: #1e293b;
-  --accent-foreground: #f8fafc;
+  --accent: #a78bfa; /* Lighter Purple */
+  --accent-foreground: #020617;
 
-  /* Brand Palette (Neon) */
-  --brand-olive: #a3e635; /* Volt */
-  --brand-rust: #fb923c; /* Neon Orange */
-  --brand-navy: #38bdf8; /* Cyan */
-
-  --card: #0f172a; /* Slate 900 */
+  --card: #0f172a;
   --card-foreground: #f8fafc;
   --popover: #0f172a;
   --popover-foreground: #f8fafc;
@@ -98,13 +90,11 @@
   --muted: #1e293b;
   --muted-foreground: #94a3b8;
 
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-
-  --border: #1e293b; /* Subtle tech borders */
+  --border: #1e293b;
   --input: #1e293b;
-  --ring: #a3e635;
+  --ring: #2dd4bf;
 }
+
 
 body {
   background: var(--background);

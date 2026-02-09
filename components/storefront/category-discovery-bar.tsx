@@ -21,22 +21,22 @@ export function CategoryDiscoveryBar({
       <button
         onClick={() => setActiveCategory(null)}
         className={cn(
-          "shrink-0 px-6 py-3 rounded-2xl font-black uppercase tracking-tighter italic text-[10px] transition-all border outline-none",
+          "shrink-0 px-6 py-3 rounded-2xl font-bold uppercase tracking-wider text-[11px] transition-all border outline-none",
           !activeCategory
-            ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(234,88,12,0.2)] border-primary"
+            ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(20,184,166,0.2)] border-primary"
             : "bg-muted/30 text-muted-foreground hover:bg-muted/50 border-transparent hover:border-primary/20",
         )}
       >
-        All Drops
+        All Picks
       </button>
       {categories?.map((c) => (
         <button
           key={c.id}
           onClick={() => setActiveCategory(c.slug)}
           className={cn(
-            "shrink-0 px-6 py-3 rounded-2xl font-black uppercase tracking-tighter italic text-[10px] transition-all border outline-none",
+            "shrink-0 px-6 py-3 rounded-2xl font-bold uppercase tracking-wider text-[11px] transition-all border outline-none",
             activeCategory === (c.slug || c.id)
-              ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(234,88,12,0.2)] border-primary"
+              ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(20,184,166,0.2)] border-primary"
               : "bg-muted/30 text-muted-foreground hover:bg-muted/50 border-transparent hover:border-primary/20",
           )}
         >

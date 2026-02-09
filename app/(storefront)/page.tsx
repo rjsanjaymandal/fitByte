@@ -39,16 +39,16 @@ function GridSkeleton() {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="flex flex-col items-center text-center mb-12 space-y-4">
-        <Skeleton className="h-6 w-24 rounded-none" />
-        <Skeleton className="h-10 w-64 rounded-none" />
-        <Skeleton className="h-4 w-96 rounded-none" />
+        <Skeleton className="h-6 w-24 rounded-full" />
+        <Skeleton className="h-10 w-64 rounded-xl" />
+        <Skeleton className="h-4 w-96 rounded-lg" />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="flex flex-col gap-3">
-            <Skeleton className="aspect-3/4 rounded-none" />
-            <Skeleton className="h-4 w-3/4 rounded-none" />
-            <Skeleton className="h-4 w-1/4 rounded-none" />
+            <Skeleton className="aspect-3/4 rounded-2xl" />
+            <Skeleton className="h-4 w-3/4 rounded-lg" />
+            <Skeleton className="h-4 w-1/4 rounded-lg" />
           </div>
         ))}
       </div>
@@ -76,15 +76,13 @@ export default async function Home() {
     // Fetch more categories to ensure we find the target ones
     const allCategories = await getRootCategories(10);
 
-    // Sort "T-Shirt" / "Oversized Tees" to the front
+    // Sort FMCG categories to the front (e.g., Protein, Snacks)
     categories = allCategories
       .sort((a, b) => {
         const aIsTarget =
-          a.slug === "oversized-tees" ||
-          a.name.toLowerCase().includes("t-shirt");
+          a.slug.includes("protein") || a.name.toLowerCase().includes("snack");
         const bIsTarget =
-          b.slug === "oversized-tees" ||
-          b.name.toLowerCase().includes("t-shirt");
+          b.slug.includes("protein") || b.name.toLowerCase().includes("snack");
 
         if (aIsTarget && !bIsTarget) return -1;
         if (!aIsTarget && bIsTarget) return 1;
@@ -111,9 +109,9 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground pb-12">
-      {/* SEO H1: Anime Streetwear Primary Keyword */}
+      {/* SEO H1: FMCG Primary Keyword */}
       <h1 className="sr-only">
-        FLASH | Minimalist Luxury Fashion & Premium Streetwear Label India
+        fitByte | Premium FMCG Products, Health Supplements & Daily Nutrition
       </h1>
 
       {/* 1. HERO CAROUSEL (Dynamic) */}

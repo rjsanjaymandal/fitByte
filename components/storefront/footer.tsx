@@ -23,24 +23,24 @@ export function Footer() {
         <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-16">
           <div className="space-y-4 max-w-sm">
             <Link href="/" className="inline-block">
-              <h3 className="text-3xl font-black tracking-tighter text-gradient">
-                FLASH
+              <h3 className="text-3xl font-serif tracking-tight text-foreground font-extrabold items-center flex">
+                fit<span className="text-primary italic">Byte</span>
               </h3>
             </Link>
             <p className="text-muted-foreground text-base leading-relaxed">
-              Redefining fashion with bold, inclusive styles for everyone.
-              Quality meets unapologetic self-expression.
+              Fueling your lifestyle with premium FMCG products. Quality
+              nutrition meets modern living.
             </p>
             <div className="flex gap-2 pt-2">
               {[
                 {
                   Icon: Instagram,
-                  href: "https://www.instagram.com/flashhfashion/",
+                  href: "https://www.instagram.com/fitbyte/",
                 },
                 { Icon: Twitter, href: "#" },
                 {
                   Icon: Facebook,
-                  href: "https://www.facebook.com/share/1Ec2dVLnh4/",
+                  href: "#",
                 },
               ].map(({ Icon, href }, i) => (
                 <a
@@ -48,7 +48,7 @@ export function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="h-10 w-10 rounded-full border border-input flex items-center justify-center hover:bg-foreground hover:text-background hover:border-foreground transition-all duration-300 cursor-pointer group"
+                  className="h-10 w-10 rounded-full border border-primary/20 flex items-center justify-center hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 cursor-pointer group"
                 >
                   <Icon className="h-5 w-5 group-hover:scale-110 transition-transform" />
                 </a>
@@ -56,28 +56,28 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="w-full max-w-md bg-muted/30 p-6 rounded-2xl border border-border/50 relative overflow-hidden group">
+          <div className="w-full max-w-md bg-primary/5 p-6 rounded-3xl border border-primary/10 relative overflow-hidden group">
             {/* Brand Glow Background */}
             <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 blur-3xl group-hover:bg-primary/20 transition-all duration-700" />
 
             <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
-              Stay in the Loop
+              Stay Fit & Informed
             </h4>
             <p className="text-sm text-muted-foreground mb-4">
-              Subscribe for exclusive drops, early access, and{" "}
+              Join the fitByte community for exclusive drops, health tips, and{" "}
               <span className="text-primary font-black">
-                10% OFF YOUR FIRST ORDER
+                10% OFF YOUR FIRST PACK
               </span>
               .
             </p>
             <form className="flex gap-2" onSubmit={(e) => e.preventDefault()}>
               <Input
                 placeholder="Enter your email"
-                className="bg-background border-border/50 h-12 focus-visible:ring-primary"
+                className="bg-white border-primary/10 h-12 focus-visible:ring-primary rounded-xl"
               />
               <Button
                 size="icon"
-                className="h-12 w-12 shrink-0 rounded-lg bg-primary hover:bg-primary/90 text-white"
+                className="h-12 w-12 shrink-0 rounded-xl bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
               >
                 <ArrowRight className="h-5 w-5" />
               </Button>

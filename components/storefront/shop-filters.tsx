@@ -25,18 +25,25 @@ import { Database } from "@/types/supabase";
 type Category = Database["public"]["Tables"]["categories"]["Row"];
 
 // Constants
-const SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
+const SIZES = ["500G", "1KG", "2KG", "B-12", "B-24"];
 const COLORS = [
-  { name: "Black", value: "black", class: "bg-black border border-white/10" },
   {
-    name: "White",
-    value: "white",
-    class: "bg-background border-2 border-border",
+    name: "Chocolate",
+    value: "chocolate",
+    class: "bg-amber-900 border border-white/10",
   },
-  { name: "Blue", value: "blue", class: "bg-blue-500 border-none" },
-  { name: "Red", value: "red", class: "bg-red-500 border-none" },
-  { name: "Green", value: "green", class: "bg-green-500 border-none" },
-  { name: "Beige", value: "beige", class: "bg-[#F5F5DC] border border-border" },
+  {
+    name: "Vanilla",
+    value: "vanilla",
+    class: "bg-yellow-50 border border-border",
+  },
+  { name: "Berry", value: "berry", class: "bg-rose-500 border-none" },
+  { name: "Citrus", value: "citrus", class: "bg-lime-500 border-none" },
+  {
+    name: "Unflavored",
+    value: "natural",
+    class: "bg-slate-200 border border-border",
+  },
 ];
 
 export function ShopFilters({ categories }: { categories: Category[] }) {
@@ -46,7 +53,7 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
       <div className="md:hidden fixed bottom-24 right-5 z-40 group">
         <Sheet>
           <SheetTrigger asChild>
-            <Button className="h-14 w-14 rounded-2xl shadow-[0_20px_40px_rgba(234,88,12,0.4)] flex items-center justify-center p-0 transition-all duration-500 hover:scale-110 active:scale-90 bg-primary border-none">
+            <Button className="h-14 w-14 rounded-2xl shadow-[0_20px_40px_rgba(20,184,166,0.4)] flex items-center justify-center p-0 transition-all duration-500 hover:scale-110 active:scale-90 bg-primary border-none">
               <Filter className="h-6 w-6 text-white" />
               <motion.div
                 animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
@@ -62,11 +69,11 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
             <div className="flex flex-col h-full">
               <SheetHeader className="mb-8 pt-6">
                 <div className="flex flex-col gap-2">
-                  <span className="text-primary font-black tracking-[0.5em] uppercase text-[10px]">
-                    Customize Vibe
+                  <span className="text-primary font-bold tracking-[0.5em] uppercase text-[10px]">
+                    Filter Nutrition
                   </span>
-                  <SheetTitle className="text-4xl font-black italic tracking-tighter uppercase text-foreground leading-none">
-                    THE <span className="text-gradient">FILTER</span>
+                  <SheetTitle className="text-4xl font-black tracking-tighter uppercase text-foreground leading-none">
+                    THE <span className="text-primary italic">LAB</span>
                   </SheetTitle>
                 </div>
               </SheetHeader>
@@ -77,7 +84,7 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
               {/* Mobile Stick Apply */}
               <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-background via-background/95 to-transparent pt-16 z-10">
                 <SheetTrigger asChild>
-                  <Button className="w-full h-16 rounded-2xl font-black uppercase tracking-[0.2em] gradient-primary shadow-[0_15px_40px_rgba(234,88,12,0.4)] border-none text-white text-base">
+                  <Button className="w-full h-16 rounded-2xl font-bold uppercase tracking-[0.2em] bg-primary shadow-[0_15px_40px_rgba(20,184,166,0.4)] border-none text-white text-base hover:bg-primary/90">
                     View Results
                   </Button>
                 </SheetTrigger>
@@ -88,13 +95,13 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
       </div>
 
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-72 shrink-0 animate-in sticky top-24 h-fit rounded-3xl border border-border/60 bg-card/80 p-6 backdrop-blur-md">
+      <aside className="hidden md:block w-72 shrink-0 animate-in sticky top-24 h-fit rounded-3xl border border-primary/10 bg-white/80 p-6 backdrop-blur-md shadow-xl shadow-primary/5">
         <div className="flex flex-col gap-2 mb-8">
-          <span className="text-primary font-black tracking-[0.4em] uppercase text-[10px]">
+          <span className="text-primary font-bold tracking-[0.4em] uppercase text-[10px]">
             Filter By
           </span>
-          <h3 className="font-black text-3xl italic tracking-tighter uppercase">
-            Category
+          <h3 className="font-extrabold text-3xl tracking-tighter uppercase font-serif">
+            The <span className="text-primary italic">Lab</span>
           </h3>
         </div>
         <FilterContent categories={categories} />
@@ -169,7 +176,7 @@ function FilterContent({ categories }: { categories: Category[] }) {
           variant="outline"
           size="sm"
           onClick={clearFilters}
-          className="w-full h-12 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all bg-transparent text-primary border-primary/20 hover:bg-primary/5 hover:text-primary hover:border-primary/50 shadow-sm"
+          className="w-full h-12 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all bg-transparent text-primary border-primary/20 hover:bg-primary/5 hover:text-primary hover:border-primary/50 shadow-sm"
         >
           Reset Selections
         </Button>
@@ -184,33 +191,33 @@ function FilterContent({ categories }: { categories: Category[] }) {
         <AccordionItem value="categories" className="border-none">
           <AccordionTrigger
             className={cn(
-              "py-4 text-[10px] uppercase font-black tracking-[0.3em] hover:no-underline",
+              "py-4 text-[10px] uppercase font-bold tracking-[0.3em] hover:no-underline",
               textClass,
             )}
           >
-            Drop Collection
+            Categories
           </AccordionTrigger>
           <AccordionContent>
             <div className="flex flex-col gap-2.5 pt-2">
               <button
                 onClick={() => setCategory(null)}
                 className={cn(
-                  "text-left text-[11px] py-3.5 px-6 rounded-2xl transition-all font-black uppercase tracking-tighter italic border",
+                  "text-left text-[11px] py-3.5 px-6 rounded-2xl transition-all font-bold uppercase tracking-wider border",
                   !category
-                    ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(234,88,12,0.25)] scale-[1.02] border-primary"
+                    ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(20,184,166,0.25)] scale-[1.02] border-primary"
                     : "bg-muted/30 border-transparent hover:border-primary/20 text-muted-foreground hover:text-foreground",
                 )}
               >
-                All Drops
+                All Picks
               </button>
               {categories.map((c) => (
                 <button
                   key={c.id}
                   onClick={() => setCategory(c.slug)}
                   className={cn(
-                    "text-left text-[11px] py-3.5 px-6 rounded-2xl transition-all font-black uppercase tracking-tighter italic border",
+                    "text-left text-[11px] py-3.5 px-6 rounded-2xl transition-all font-bold uppercase tracking-wider border",
                     category === (c.slug || c.id)
-                      ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(234,88,12,0.25)] scale-[1.02] border-primary"
+                      ? "bg-primary text-primary-foreground shadow-[0_10px_20px_rgba(20,184,166,0.25)] scale-[1.02] border-primary"
                       : "bg-muted/30 border-transparent hover:border-primary/20 text-muted-foreground hover:text-foreground",
                   )}
                 >
@@ -225,7 +232,7 @@ function FilterContent({ categories }: { categories: Category[] }) {
         <AccordionItem value="price" className="border-none">
           <AccordionTrigger
             className={cn(
-              "py-4 text-[10px] uppercase font-black tracking-[0.3em] hover:no-underline",
+              "py-4 text-[10px] uppercase font-bold tracking-[0.3em] hover:no-underline",
               textClass,
             )}
           >
@@ -244,14 +251,14 @@ function FilterContent({ categories }: { categories: Category[] }) {
               />
               <div
                 className={cn(
-                  "flex items-center justify-between text-[10px] font-black uppercase tracking-widest",
+                  "flex items-center justify-between text-[10px] font-bold uppercase tracking-widest",
                   mutedClass,
                 )}
               >
-                <span className="bg-primary/10 px-3 py-1 rounded-full">
+                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20">
                   ₹{priceRange[0]}
                 </span>
-                <span className="bg-primary/10 px-3 py-1 rounded-full">
+                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20">
                   ₹{priceRange[1]}+
                 </span>
               </div>
@@ -263,11 +270,11 @@ function FilterContent({ categories }: { categories: Category[] }) {
         <AccordionItem value="size" className="border-none">
           <AccordionTrigger
             className={cn(
-              "py-4 text-[10px] uppercase font-black tracking-[0.3em] hover:no-underline",
+              "py-4 text-[10px] uppercase font-bold tracking-[0.3em] hover:no-underline",
               textClass,
             )}
           >
-            Select Size
+            Select Weight
           </AccordionTrigger>
           <AccordionContent>
             <div className="grid grid-cols-3 gap-3 pt-2">
@@ -278,7 +285,7 @@ function FilterContent({ categories }: { categories: Category[] }) {
                   size="sm"
                   onClick={() => setSize(size === s ? null : s)}
                   className={cn(
-                    "h-12 w-full rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all",
+                    "h-12 w-full rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all",
                     size === s
                       ? "bg-primary text-primary-foreground shadow-xl shadow-primary/20 scale-105 border-primary"
                       : cn(
@@ -298,11 +305,11 @@ function FilterContent({ categories }: { categories: Category[] }) {
         <AccordionItem value="color" className="border-none">
           <AccordionTrigger
             className={cn(
-              "py-4 text-[10px] uppercase font-black tracking-[0.3em] hover:no-underline",
+              "py-4 text-[10px] uppercase font-bold tracking-[0.3em] hover:no-underline",
               textClass,
             )}
           >
-            Select Hue
+            Select Flavor
           </AccordionTrigger>
           <AccordionContent>
             <div className="flex flex-wrap gap-4 pt-4">

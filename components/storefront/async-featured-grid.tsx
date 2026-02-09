@@ -15,9 +15,9 @@ export async function AsyncFeaturedGrid() {
   return (
     <FeaturedGrid
       products={products || []}
-      title="NEW ARRIVALS"
-      subtitle="The latest drops and freshest fits, curated just for you."
-      badge="Just In"
+      title="FRESH ARRIVALS"
+      subtitle="Fuel your day with our latest nutrition packs and energy snacks."
+      badge="New Bio"
     />
   );
 }

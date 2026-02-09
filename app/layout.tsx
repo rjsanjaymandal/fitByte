@@ -25,28 +25,27 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "FLASH | Minimalist Luxury & Premium Streetwear India",
-    template: "%s | FLASH",
+    default: "fitByte | Premium Health & Bio-Nutrition Essentials",
+    template: "%s | fitByte",
   },
   description:
-    "Explore FLASH - India's premier minimalist luxury label. Cinematic aesthetic meeting high-performance craftsmanship. Discover our collection of premium streetwear, heavyweight essentials, and artistic apparel.",
+    "Explore fitByte - India's premier bio-nutrition label. Optimized health meeting high-performance bio-hacking. Discover our collection of premium supplements, plant-based nutrition, and energy essentials.",
   keywords: [
-    "luxury clothing brand",
-    "minimalist luxury india",
-    "premium streetwear",
-    "high-end apparel",
-    "flash fashion",
-    "flashhfashion",
-    "minimalist fashion",
-    "premium basics india",
-    "luxury streetwear delhi",
-    "designer streetwear india",
-    "cinematic fashion label",
-    "heavyweight cotton quality",
-    "luxury essentials",
-    "flashhfashion clothing",
+    "health supplements brand",
+    "premium nutrition india",
+    "bio-hacking essentials",
+    "plant-based protein",
+    "fitByte",
+    "fitbyte india",
+    "daily wellness",
+    "premium health snacks",
+    "bio-nutrition delhi",
+    "nutrition supplements india",
+    "lab-tested health food",
+    "premium protein powders",
+    "wellness essentials",
   ],
-  metadataBase: new URL("https://flashhfashion.in"),
+  metadataBase: new URL("https://fitbyte.in"),
   alternates: {
     canonical: "/",
     languages: {
@@ -59,17 +58,17 @@ export const metadata: Metadata = {
     apple: "/apple-icon",
   },
   openGraph: {
-    title: "Flash Fashion | Flash Clothing & Anime Streetwear India",
+    title: "fitByte | Premium Health & Bio-Nutrition India",
     description:
-      "Flash Fashion - The ultimate destination for Flash Clothing and Anime Streetwear in India. Experience the Flash revolution.",
-    url: "https://flashhfashion.in",
-    siteName: "Flash Fashion",
+      "fitByte - The ultimate destination for health supplements and bio-nutrition in India. Experience the wellness revolution.",
+    url: "https://fitbyte.in",
+    siteName: "fitByte",
     images: [
       {
         url: "/flash-logo.jpg",
         width: 1200,
         height: 630,
-        alt: "Flash Fashion Anime Streetwear",
+        alt: "fitByte Bio-Nutrition",
       },
     ],
     locale: "en_IN",
@@ -77,21 +76,21 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Flash Fashion | Flash Clothing & Anime Streetwear India",
+    title: "fitByte | Premium Health & Bio-Nutrition India",
     description:
-      "Flash Fashion - The ultimate destination for Flash Clothing and Anime Streetwear in India.",
+      "fitByte - The ultimate destination for health supplements and bio-nutrition in India.",
     images: ["/flash-logo.jpg"],
-    creator: "@flashhfashion",
+    creator: "@fitbyte",
   },
-  category: "clothing",
-  classification: "Flash Clothing, Anime Streetwear, Queer Fashion",
+  category: "health",
+  classification: "Health Supplements, Bio-Nutrition, Wellness",
   verification: {
     google: "CqVr1TGrfamesut-wOLLkyz2PQUjYb-ihMDqj9zL2X0",
   },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "FLASH",
+    title: "fitByte",
   },
 };
 

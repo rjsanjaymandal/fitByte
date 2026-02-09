@@ -452,23 +452,23 @@ export function ProductCard({
         {/* Image Container */}
         <Link
           href={`/product/${product.slug || product.id}`}
-          className="block relative aspect-3/4 overflow-hidden rounded-none bg-zinc-50 border border-foreground/5 transition-all duration-300"
+          className="block relative aspect-[4/5] overflow-hidden rounded-2xl bg-slate-50 border border-slate-100 transition-all duration-500 group-hover:shadow-xl group-hover:shadow-primary/5"
         >
           {/* Badges */}
           <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
             {isOutOfStock ? (
-              <Badge className="bg-foreground text-background hover:bg-foreground uppercase tracking-[0.3em] text-[7px] sm:text-[8px] font-medium px-1.5 sm:px-2 py-0.5 rounded-none border-none shadow-none">
+              <Badge className="bg-slate-900/80 backdrop-blur-md text-white uppercase tracking-wider text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm">
                 Sold Out
               </Badge>
             ) : (
               <>
                 {isNew && (
-                  <Badge className="bg-background text-foreground hover:bg-background uppercase tracking-[0.3em] text-[8px] font-medium px-2 py-0.5 rounded-none border-none shadow-none backdrop-blur-md">
+                  <Badge className="bg-primary text-white uppercase tracking-wider text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm">
                     New
                   </Badge>
                 )}
                 {calculateDiscount(product.price, product.original_price) && (
-                  <Badge className="bg-foreground text-background uppercase tracking-[0.3em] text-[8px] font-medium px-2 py-0.5 rounded-none border-none shadow-none">
+                  <Badge className="bg-secondary text-white uppercase tracking-wider text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm">
                     -{calculateDiscount(product.price, product.original_price)}%
                   </Badge>
                 )}
@@ -480,13 +480,15 @@ export function ProductCard({
           <button
             onClick={handleWishlistClick}
             className={cn(
-              "absolute top-3 right-3 z-10 h-7 w-7 flex items-center justify-center rounded-none bg-background/80 backdrop-blur-sm transition-all duration-200 hover:scale-110 shadow-none opacity-0 group-hover:opacity-100",
-              isWishlisted ? "text-red-500 opacity-100" : "text-foreground",
+              "absolute top-3 right-3 z-10 h-8 w-8 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm transition-all duration-200 hover:scale-110 shadow-sm opacity-0 group-hover:opacity-100",
+              isWishlisted
+                ? "text-secondary opacity-100"
+                : "text-slate-400 hover:text-secondary",
             )}
           >
             <Heart
               className={cn(
-                "h-3.5 w-3.5 transition-colors",
+                "h-4 w-4 transition-colors",
                 isWishlisted ? "fill-current" : "",
               )}
             />
@@ -542,7 +544,7 @@ export function ProductCard({
               <>
                 <Button
                   size="sm"
-                  className="flex-1 bg-foreground text-background hover:opacity-90 shadow-none font-medium h-9 rounded-none transition-all duration-200 uppercase text-[9px] tracking-[0.3em] border-none"
+                  className="flex-1 bg-primary text-white hover:opacity-90 shadow-lg hover:shadow-primary/25 font-bold h-10 rounded-full transition-all duration-300 uppercase text-[10px] tracking-wider border-none"
                   onClick={handleAddToCart}
                   disabled={isAddingToCart}
                 >
@@ -556,10 +558,10 @@ export function ProductCard({
               <Button
                 size="sm"
                 className={cn(
-                  "flex-1 shadow-none font-medium h-9 rounded-none transition-all duration-200 uppercase text-[9px] tracking-[0.3em]",
+                  "flex-1 shadow-lg font-bold h-10 rounded-full transition-all duration-300 uppercase text-[10px] tracking-wider",
                   isOnWaitlist
-                    ? "bg-muted text-muted-foreground"
-                    : "bg-foreground text-background hover:opacity-90",
+                    ? "bg-slate-100 text-slate-400"
+                    : "bg-slate-900 text-white hover:opacity-90 shadow-slate-900/10",
                 )}
                 onClick={handlePreOrder}
                 disabled={isLoadingWaitlist}
@@ -580,19 +582,19 @@ export function ProductCard({
             <div className="flex justify-between items-baseline gap-2">
               <Link
                 href={`/product/${product.slug || product.id}`}
-                className="hover:opacity-70 transition-opacity flex-1 min-w-0"
+                className="hover:text-primary transition-colors flex-1 min-w-0"
               >
-                <h3 className="font-serif text-[15px] leading-tight text-foreground tracking-tight line-clamp-2 h-9">
+                <h3 className="font-bold text-[16px] leading-tight text-slate-900 tracking-tight line-clamp-2 h-10 group-hover:text-primary transition-colors">
                   {product.name}
                 </h3>
               </Link>
-              <div className="flex flex-col items-end min-h-10 justify-start">
-                <p className="font-serif text-[13px] text-foreground tracking-tight tabular-nums whitespace-nowrap">
+              <div className="flex flex-col items-end min-h-12 justify-start">
+                <p className="font-black text-[15px] text-primary tracking-tight tabular-nums whitespace-nowrap">
                   {formatCurrency(product.price)}
                 </p>
                 {product.original_price &&
                   product.original_price > product.price && (
-                    <p className="text-[10px] text-muted-foreground line-through tracking-tight tabular-nums opacity-60">
+                    <p className="text-[12px] text-slate-400 line-through tracking-tight tabular-nums opacity-80">
                       {formatCurrency(product.original_price)}
                     </p>
                   )}

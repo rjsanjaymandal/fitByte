@@ -5,7 +5,7 @@ import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import FlashImage from "@/components/ui/flash-image"; // Optimized image component
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { cn, formatCurrency } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
@@ -112,11 +112,11 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
     }
 
     const defaultTaglines = [
-      "Level Up Your Aesthetic",
-      "Limited Edition Drop",
-      "The Future of Streetwear",
-      "Bold. Unfiltered. Authentic.",
-      "Summer Collection 2026",
+      "Fuel Your Fitness Journey",
+      "Deliciously Healthy Snacking",
+      "Pure Ingredients. Peak Performance.",
+      "Balanced Nutrition, Anywhere.",
+      "Summer Energy Collection 2026",
     ];
 
     return defaultTaglines[hash(product.id) % defaultTaglines.length];
@@ -244,18 +244,18 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                 transition={{ delay: 0.3 }}
                 className="mb-4"
               >
-                <span className="inline-block bg-white text-black px-3 py-1 rounded-none text-[8px] font-medium uppercase tracking-[0.3em]">
-                  New Arrival
+                <span className="inline-block bg-primary text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-lg shadow-primary/20">
+                  New Launch
                 </span>
-                {currentProduct.name.toLowerCase().includes("hoodie") && (
+                {currentProduct.name.toLowerCase().includes("protein") && (
                   <motion.span
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="ml-3 inline-flex items-center gap-1.5 bg-white/5 backdrop-blur-md border border-white/10 px-3 py-1 rounded-none text-[8px] font-medium uppercase tracking-[0.3em] text-white"
+                    className="ml-3 inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider text-white"
                   >
-                    <span className="h-1 w-1 rounded-none bg-white animate-pulse" />
-                    430 GSM Quality
+                    <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse shadow-sm shadow-green-400/50" />
+                    High Protein
                   </motion.span>
                 )}
               </motion.div>
@@ -265,7 +265,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif text-white leading-tight tracking-tight drop-shadow-2xl"
+                  className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-serif text-white font-extrabold leading-tight tracking-tight drop-shadow-2xl"
                 >
                   {currentProduct.name}
                 </motion.h1>
@@ -292,12 +292,12 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
               >
                 <div className="flex flex-col">
                   <div className="flex items-baseline gap-3">
-                    <span className="text-2xl sm:text-3xl lg:text-4xl font-serif">
+                    <span className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black">
                       {formatCurrency(currentProduct.price)}
                     </span>
                     {currentProduct.original_price &&
                       currentProduct.original_price > currentProduct.price && (
-                        <span className="text-white/40 line-through text-sm sm:text-base lg:text-lg font-serif">
+                        <span className="text-white/50 line-through text-lg sm:text-xl lg:text-2xl font-serif">
                           {formatCurrency(currentProduct.original_price)}
                         </span>
                       )}
@@ -309,10 +309,11 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
 
                 <Button
                   size="lg"
-                  className="h-12 sm:h-14 lg:h-16 px-8 lg:px-16 rounded-none text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.4em] bg-white text-black hover:opacity-90 active:scale-95 transition-all shadow-none mt-2 lg:mt-0"
+                  className="h-14 sm:h-16 lg:h-18 px-10 lg:px-20 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider bg-white text-primary hover:bg-slate-50 active:scale-95 transition-all shadow-xl shadow-black/10 mt-4 lg:mt-0 group"
                   onClick={handleBuyNow}
                 >
-                  Shop the Drop
+                  Fuel Your Day
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
             </div>

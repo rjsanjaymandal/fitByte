@@ -10,7 +10,7 @@ export function PersonalizedPicks({ products }: { products: any[] }) {
   if (!products?.length) return null;
 
   return (
-    <section className="py-24 bg-muted overflow-hidden relative">
+    <section className="py-24 bg-primary/5 overflow-hidden relative border-y border-primary/10">
       <BrandGlow
         className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         size="lg"
@@ -25,15 +25,15 @@ export function PersonalizedPicks({ products }: { products: any[] }) {
             <Sparkles className="h-3 w-3 text-primary" />
             Tailored for You
           </BrandBadge>
-          <h2 className="text-4xl md:text-8xl font-black tracking-tighter text-foreground leading-[0.8] uppercase italic">
-            PICKED{" "}
-            <span className="text-gradient drop-shadow-[0_0_30px_rgba(var(--primary),0.3)]">
-              JUST
+          <h2 className="text-4xl md:text-8xl font-serif text-foreground font-black tracking-tighter leading-tight uppercase italic">
+            CHOSEN{" "}
+            <span className="text-primary drop-shadow-[0_0_30px_rgba(var(--primary),0.2)]">
+              FOR
             </span>{" "}
-            FOR YOU
+            YOUR GOALS
           </h2>
           <p className="text-muted-foreground text-sm md:text-base font-medium tracking-wide max-w-sm mt-2">
-            Based on your recent activity and style preferences.
+            Based on your activity and nutritional needs.
           </p>
         </div>
 

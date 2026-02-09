@@ -26,7 +26,7 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
   const productUrl = product?.slug ? `/product/${product.slug}` : "#";
 
   return (
-    <section className="relative py-16 md:py-24 bg-zinc-950 overflow-hidden border-y border-white/5">
+    <section className="relative py-16 md:py-24 bg-white overflow-hidden border-y border-primary/5">
       {/* BACKGROUND GRID */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-zinc-950 to-transparent pointer-events-none" />
@@ -40,16 +40,16 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl md:text-6xl font-serif text-white leading-tight"
+            className="text-3xl md:text-6xl font-serif text-foreground font-extrabold leading-tight"
           >
-            The <span className="opacity-50 italic">Blueprint</span>
+            The <span className="text-primary italic">Blueprint</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-white/40 font-medium text-[10px] mt-4 tracking-[0.4em] uppercase"
+            className="text-muted-foreground font-bold text-[10px] mt-4 tracking-[0.4em] uppercase"
           >
             {product?.name || "Premium Craftsmanship"}
           </motion.p>
@@ -58,13 +58,13 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
         {/* MAIN BLUEPRINT UI - NOW CLICKABLE */}
         <Link
           href={productUrl}
-          className="block group cursor-pointer relative max-w-5xl mx-auto md:aspect-[16/9] bg-white/5 rounded-none border border-white/10 backdrop-blur-sm overflow-hidden flex flex-col md:block hover:border-white/20 transition-colors duration-500"
+          className="block group cursor-pointer relative max-w-5xl mx-auto md:aspect-[16/9] bg-primary/5 rounded-3xl border border-primary/10 backdrop-blur-sm overflow-hidden flex flex-col md:block hover:border-primary/20 transition-colors duration-500 shadow-2xl shadow-primary/5"
         >
           {/* CROSSHAIRS (Desktop Only) */}
-          <div className="hidden md:block absolute top-8 left-8 w-8 h-8 border-l border-t border-white/20 group-hover:border-emerald-500/50 transition-colors duration-500" />
-          <div className="hidden md:block absolute top-8 right-8 w-8 h-8 border-r border-t border-white/20 group-hover:border-emerald-500/50 transition-colors duration-500" />
-          <div className="hidden md:block absolute bottom-8 left-8 w-8 h-8 border-l border-b border-white/20 group-hover:border-emerald-500/50 transition-colors duration-500" />
-          <div className="hidden md:block absolute bottom-8 right-8 w-8 h-8 border-r border-b border-white/20 group-hover:border-emerald-500/50 transition-colors duration-500" />
+          <div className="hidden md:block absolute top-8 left-8 w-8 h-8 border-l border-t border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
+          <div className="hidden md:block absolute top-8 right-8 w-8 h-8 border-r border-t border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
+          <div className="hidden md:block absolute bottom-8 left-8 w-8 h-8 border-l border-b border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
+          <div className="hidden md:block absolute bottom-8 right-8 w-8 h-8 border-r border-b border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
 
           {/* PRODUCT IMAGE CENTERING WRAPPER */}
           <div className="relative w-full h-[300px] md:h-auto md:aspect-square md:absolute md:inset-0 flex items-center justify-center p-4 md:p-0 z-20">
@@ -73,7 +73,7 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
                 src={imageSrc}
                 alt="Blueprint Product"
                 fill
-                className="object-contain drop-shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-500"
+                className="object-contain drop-shadow-2xl transition-all duration-500 group-hover:scale-105"
               />
 
               {/* Pulsing Core */}
@@ -82,27 +82,27 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
           </div>
 
           {/* SPECS (Pointers) - Stacked on Mobile, Absolute on Desktop */}
-          <div className="grid grid-cols-2 md:grid-cols-1 gap-3 p-4 md:p-0 md:block relative z-30 bg-zinc-950/50 md:bg-transparent">
+          <div className="grid grid-cols-2 md:grid-cols-1 gap-3 p-4 md:p-0 md:block relative z-30 bg-white/50 md:bg-transparent">
             <BlueprintPoint
-              label="Heavyweight"
-              value="240 GSM"
-              icon={Layers}
+              label="Pure Nutrition"
+              value="Plant-Based"
+              icon={ShieldCheck}
               position="md:top-1/4 md:left-[15%]"
               delay={0.3}
               direction="right"
             />
             <BlueprintPoint
-              label="Fit Profile"
-              value="Boxy Fit"
-              icon={Shirt}
+              label="Protein Density"
+              value="25g Per Pack"
+              icon={Layers}
               position="md:bottom-1/3 md:right-[15%]"
               delay={0.5}
               direction="left"
             />
             <BlueprintPoint
-              label="Stitching"
-              value="Double-Needle"
-              icon={Ruler}
+              label="Purity Promise"
+              value="No Added Sugar"
+              icon={ShieldCheck}
               position="md:top-20 md:right-[20%]"
               delay={0.4}
               direction="left"
@@ -120,7 +120,7 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
               y1="0"
               x2="50%"
               y2="100%"
-              stroke="white"
+              stroke="var(--primary)"
               strokeDasharray="4 4"
             />
             <line
@@ -128,14 +128,14 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
               y1="50%"
               x2="100%"
               y2="50%"
-              stroke="white"
+              stroke="var(--primary)"
               strokeDasharray="4 4"
             />
             <circle
               cx="50%"
               cy="50%"
               r="200"
-              stroke="white"
+              stroke="var(--primary)"
               fill="none"
               strokeWidth="0.5"
             />
@@ -170,24 +170,24 @@ function BlueprintPoint({
       {/* Line (Desktop Only) */}
       <div
         className={cn(
-          "hidden md:block w-12 h-px bg-white/50",
+          "hidden md:block w-12 h-px bg-primary/30",
           direction === "left" ? "order-1" : "order-2",
         )}
       />
 
       <div
         className={cn(
-          "bg-white/5 backdrop-blur-md border border-white/10 p-3 md:p-4 rounded-none shadow-none w-full md:w-auto flex flex-col md:block items-center md:items-start text-center md:text-left justify-center md:justify-start",
+          "bg-white backdrop-blur-md border border-primary/10 p-3 md:p-4 rounded-2xl shadow-xl shadow-primary/5 w-full md:w-auto flex flex-col md:block items-center md:items-start text-center md:text-left justify-center md:justify-start",
           direction === "left" ? "md:order-2" : "md:order-1",
         )}
       >
-        <div className="flex items-center gap-2 mb-1 md:mb-2 text-white/60">
+        <div className="flex items-center gap-2 mb-1 md:mb-2 text-primary">
           <Icon className="w-3 h-3" />
-          <span className="text-[9px] uppercase tracking-[0.3em] font-medium">
+          <span className="text-[9px] uppercase tracking-[0.3em] font-bold">
             {label}
           </span>
         </div>
-        <div className="text-lg md:text-xl font-serif text-white leading-none">
+        <div className="text-lg md:text-xl font-serif text-foreground font-black leading-none">
           {value}
         </div>
       </div>

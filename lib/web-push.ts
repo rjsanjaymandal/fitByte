@@ -8,7 +8,7 @@ if (!publicKey || !privateKey) {
 }
 
 webPush.setVapidDetails(
-  'mailto:info@flashhfashion.in', // Subject
+  'mailto:fitbytes99@gmail.com', // Subject Updated for fitByte
   publicKey!,
   privateKey!
 );
