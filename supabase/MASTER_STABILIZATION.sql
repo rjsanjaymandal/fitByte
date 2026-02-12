@@ -160,7 +160,8 @@ ADD COLUMN IF NOT EXISTS seo_title text,
 ADD COLUMN IF NOT EXISTS seo_description text,
 ADD COLUMN IF NOT EXISTS sku text,
 ADD COLUMN IF NOT EXISTS cost_price numeric DEFAULT 0,
-ADD COLUMN IF NOT EXISTS total_stock integer DEFAULT 0;
+ADD COLUMN IF NOT EXISTS total_stock integer DEFAULT 0,
+ADD COLUMN IF NOT EXISTS is_carousel_featured boolean DEFAULT false;
 
 -- Sync legacy is_active to status
 UPDATE public.products SET status = CASE WHEN is_active = true THEN 'active' ELSE 'draft' END WHERE status = 'draft';

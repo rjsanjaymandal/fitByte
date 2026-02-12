@@ -223,9 +223,9 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                 src={currentProduct.main_image_url}
                 alt={currentProduct.name}
                 fill
-                className="object-cover lg:object-contain bg-zinc-50 dark:bg-zinc-950"
+                className="object-contain lg:object-contain"
                 priority={true}
-                resizeMode="cover"
+                resizeMode="contain"
                 sizes="100vw"
               />
             )}

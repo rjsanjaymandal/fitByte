@@ -24,7 +24,28 @@ export async function getSmartCarouselData() {
         .order('created_at', { ascending: false })
         .limit(40) // Increased buffer to ensure 15 in-stock items are available
 
-    if (!data) return []
+    if (!data || data.length === 0) {
+        // Fallback: Fetch any active products with stock
+        const { data: fallbackData } = await supabase
+            .from('products')
+            .select(`
+                id, name, description, price, original_price,
+                main_image_url, slug, created_at, color_options, size_options,
+                product_stock(quantity)
+            `)
+            .eq('is_active', true)
+            .order('created_at', { ascending: false })
+            .limit(10)
+
+        if (!fallbackData) return []
+        
+        return fallbackData
+            .filter(p => {
+                const totalStock = p.product_stock?.reduce((sum: number, s: any) => sum + s.quantity, 0) || 0
+                return totalStock > 0
+            })
+            .slice(0, 5)
+    }
 
     // Client-side filtering for stock > 0
     const smartData = data
@@ -32,7 +53,7 @@ export async function getSmartCarouselData() {
             const totalStock = p.product_stock?.reduce((sum: number, s: any) => sum + s.quantity, 0) || 0
             return totalStock > 0
         })
-        .slice(0, 15) // Increased limit to 15 products
+        .slice(0, 5) // Reduced to 5 for better performance and focus
 
     return smartData
 }
