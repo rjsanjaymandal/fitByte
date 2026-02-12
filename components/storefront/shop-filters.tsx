@@ -98,8 +98,25 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
         </Sheet>
       </div>
 
-      <div className="w-full flex flex-col gap-6 mb-12">
-        {/* Horizontal Category Pills - Scrollable on Mobile */}
+      {/* Desktop Sidebar Filters */}
+      <aside className="hidden md:block w-72 shrink-0 self-start sticky top-24">
+        <div className="flex flex-col gap-2 mb-8">
+          <span className="text-primary font-bold tracking-[0.5em] uppercase text-[10px]">
+            Precision Search
+          </span>
+          <h2 className="text-4xl font-black tracking-tighter uppercase text-foreground leading-none">
+            THE <span className="text-primary italic">LAB</span>
+          </h2>
+        </div>
+        <FilterContent
+          categories={categories}
+          category={category}
+          setCategory={setCategory}
+        />
+      </aside>
+
+      {/* Categories Toolbar (Mobile/Tablet Pills - Hidden on Wide for Sidebar) */}
+      <div className="w-full md:hidden flex flex-col gap-6 mb-12">
         <div className="flex overflow-x-auto snap-x snap-mandatory items-center gap-3 pb-4 scrollbar-hide px-4 md:px-0 md:justify-center md:flex-wrap md:pb-0">
           <button
             onClick={() => setCategory(null)}

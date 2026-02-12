@@ -11,7 +11,12 @@ INSERT INTO storage.buckets (id, name, public)
 VALUES ('categories', 'categories', true)
 ON CONFLICT (id) DO NOTHING;
 
--- Policy: Allow Public Read Access
+-- Create the 'products' storage bucket if it doesn't exist
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('products', 'products', true)
+ON CONFLICT (id) DO NOTHING;
+
+-- Policy: Allow Public Read Access Categories
 DO $$ 
 BEGIN
     IF NOT EXISTS (
@@ -22,7 +27,18 @@ BEGIN
     END IF;
 END $$;
 
--- Policy: Allow Authenticated Users to Upload (Insert)
+-- Policy: Allow Public Read Access Products
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'objects' AND schemaname = 'storage' AND policyname = 'Public Read Access Products'
+    ) THEN
+        CREATE POLICY "Public Read Access Products" ON storage.objects FOR SELECT USING ( bucket_id = 'products' );
+    END IF;
+END $$;
+
+-- Policy: Allow Authenticated Users to Upload Categories
 DO $$ 
 BEGIN
     IF NOT EXISTS (
@@ -33,7 +49,18 @@ BEGIN
     END IF;
 END $$;
 
--- Policy: Allow Authenticated Users to Update
+-- Policy: Allow Authenticated Users to Upload Products
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'objects' AND schemaname = 'storage' AND policyname = 'Authenticated Insert Products'
+    ) THEN
+        CREATE POLICY "Authenticated Insert Products" ON storage.objects FOR INSERT TO authenticated WITH CHECK ( bucket_id = 'products' );
+    END IF;
+END $$;
+
+-- Policy: Allow Authenticated Users to Update Categories
 DO $$ 
 BEGIN
     IF NOT EXISTS (
@@ -44,7 +71,18 @@ BEGIN
     END IF;
 END $$;
 
--- Policy: Allow Authenticated Users to Delete
+-- Policy: Allow Authenticated Users to Update Products
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'objects' AND schemaname = 'storage' AND policyname = 'Authenticated Update Products'
+    ) THEN
+        CREATE POLICY "Authenticated Update Products" ON storage.objects FOR UPDATE TO authenticated USING ( bucket_id = 'products' );
+    END IF;
+END $$;
+
+-- Policy: Allow Authenticated Users to Delete Categories
 DO $$ 
 BEGIN
     IF NOT EXISTS (
@@ -54,6 +92,20 @@ BEGIN
         CREATE POLICY "Authenticated Delete Categories" ON storage.objects FOR DELETE TO authenticated USING ( bucket_id = 'categories' );
     END IF;
 END $$;
+
+-- Policy: Allow Authenticated Users to Delete Products
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'objects' AND schemaname = 'storage' AND policyname = 'Authenticated Delete Products'
+    ) THEN
+        CREATE POLICY "Authenticated Delete Products" ON storage.objects FOR DELETE TO authenticated USING ( bucket_id = 'products' );
+    END IF;
+END $$;
+
+-- Basic Indexes
+CREATE INDEX IF NOT EXISTS idx_products_status ON public.products(status);
 
 
 -- ==========================================
@@ -107,7 +159,8 @@ ADD COLUMN IF NOT EXISTS status text CHECK (status IN ('draft', 'active', 'archi
 ADD COLUMN IF NOT EXISTS seo_title text,
 ADD COLUMN IF NOT EXISTS seo_description text,
 ADD COLUMN IF NOT EXISTS sku text,
-ADD COLUMN IF NOT EXISTS cost_price numeric DEFAULT 0;
+ADD COLUMN IF NOT EXISTS cost_price numeric DEFAULT 0,
+ADD COLUMN IF NOT EXISTS total_stock integer DEFAULT 0;
 
 -- Sync legacy is_active to status
 UPDATE public.products SET status = CASE WHEN is_active = true THEN 'active' ELSE 'draft' END WHERE status = 'draft';
@@ -117,9 +170,38 @@ ALTER TABLE public.product_stock
 ADD COLUMN IF NOT EXISTS sku text,
 ADD COLUMN IF NOT EXISTS cost_price numeric DEFAULT 0;
 
+-- ==========================================
+-- 4. INVENTORY SYNCHRONIZATION (Triggers)
+-- ==========================================
+
+-- Function to calculate and update total_stock for a product automatically
+CREATE OR REPLACE FUNCTION public.sync_product_total_stock()
+RETURNS TRIGGER AS $$
+DECLARE
+  v_product_id UUID;
+  v_total INTEGER;
+BEGIN
+  v_product_id := CASE WHEN (TG_OP = 'DELETE') THEN OLD.product_id ELSE NEW.product_id END;
+  
+  SELECT COALESCE(SUM(quantity), 0) INTO v_total FROM public.product_stock WHERE product_id = v_product_id;
+  UPDATE public.products SET total_stock = v_total WHERE id = v_product_id;
+  RETURN NULL;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger to keep total_stock updated
+DROP TRIGGER IF EXISTS trg_sync_total_stock ON public.product_stock;
+CREATE TRIGGER trg_sync_total_stock
+  AFTER INSERT OR UPDATE OR DELETE ON public.product_stock
+  FOR EACH ROW EXECUTE PROCEDURE public.sync_product_total_stock();
+
+-- Backfill total_stock for existing data
+UPDATE public.products p SET total_stock = (SELECT COALESCE(SUM(quantity), 0) FROM public.product_stock ps WHERE ps.product_id = p.id);
+
 -- Basic Indexes
 CREATE INDEX IF NOT EXISTS idx_products_status ON public.products(status);
 CREATE INDEX IF NOT EXISTS idx_product_stock_sku ON public.product_stock(sku);
+CREATE INDEX IF NOT EXISTS idx_products_total_stock ON public.products(total_stock);
 
 -- ==========================================
 -- STABILIZATION COMPLETE

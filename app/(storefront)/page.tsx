@@ -24,11 +24,6 @@ const AsyncPersonalizedPicks = dynamic(() =>
     (mod) => mod.AsyncPersonalizedPicks,
   ),
 );
-const BlueprintSection = dynamic(() =>
-  import("@/components/storefront/blueprint-section").then(
-    (mod) => mod.BlueprintSection,
-  ),
-);
 const SeoContent = dynamic(() =>
   import("@/components/storefront/seo-content").then((mod) => mod.SeoContent),
 );
@@ -100,13 +95,6 @@ export default async function Home() {
     console.error("[Home] Failed to fetch carousel data:", error);
   }
 
-  // Fetch Random Product for Blueprint Section (Dynamic from Carousel)
-  let blueprintProduct = null;
-  if (heroProducts.length > 0) {
-    // Use the first product deterministically to avoid hydration errors
-    blueprintProduct = heroProducts[0];
-  }
-
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground pb-12">
       {/* SEO H1: FMCG Primary Keyword */}
@@ -129,9 +117,6 @@ export default async function Home() {
       <Suspense fallback={<GridSkeleton />}>
         <AsyncPersonalizedPicks />
       </Suspense>
-
-      {/* 5.5. THE BLUEPRINT (Quality Tech Specs) */}
-      <BlueprintSection product={blueprintProduct} />
 
       {/* 6. SEO CONTENT (Why Choose Us) */}
       <SeoContent />
