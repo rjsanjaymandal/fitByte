@@ -39,13 +39,13 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
       {/* BACKGROUND MARQUEE */}
       <div className="absolute top-20 left-0 right-0 opacity-[0.05] pointer-events-none select-none z-0">
         <Marquee className="[--duration:40s] [--gap:1.5rem]" reverse>
-          <span className="text-[5rem] sm:text-[10rem] font-serif font-black tracking-tight mx-8">
+          <span className="text-[5rem] sm:text-[10rem] font-black tracking-tight mx-8 uppercase">
             the energy
           </span>
-          <span className="text-[5rem] sm:text-[10rem] font-serif font-black tracking-tight mx-8 opacity-50">
+          <span className="text-[5rem] sm:text-[10rem] font-black tracking-tight mx-8 opacity-50 uppercase">
             pure nutrition
           </span>
-          <span className="text-[5rem] sm:text-[10rem] font-serif font-black tracking-tight mx-8">
+          <span className="text-[5rem] sm:text-[10rem] font-black tracking-tight mx-8 uppercase">
             daily fuel
           </span>
         </Marquee>
@@ -55,7 +55,7 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
         <div className="flex flex-col items-start gap-4 mb-12">
           <BrandBadge
             variant="primary"
-            className="mb-2 bg-primary text-black rounded-full px-6 py-2 font-black uppercase tracking-widest shadow-xl shadow-primary/20"
+            className="mb-2 bg-[#e31e24] text-white rounded-none px-6 py-2 font-black uppercase tracking-[0.2em] shadow-2xl"
           >
             <Sparkles className="w-3.5 h-3.5 mr-2 animate-pulse" /> DISCOVER THE
             VIBES
@@ -64,9 +64,9 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-7xl font-serif tracking-tighter text-black leading-none font-black uppercase"
+            className="text-4xl md:text-7xl font-black tracking-tighter text-[#1a2b47] leading-none uppercase"
           >
-            PICK YOUR <span className="opacity-30 italic">CATEGORY</span>
+            PICK YOUR <span className="text-[#e31e24]">VIBE</span>
           </motion.h2>
         </div>
 
@@ -103,7 +103,7 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
                 key={cat.id}
                 href={`/shop?category=${cat.id}`}
                 className={cn(
-                  "group relative overflow-hidden rounded-[2.5rem] bg-zinc-100 border border-zinc-200 transition-all duration-700 hover:border-primary hover:shadow-2xl hover:shadow-black/10",
+                  "group relative overflow-hidden rounded-none bg-[#fdfcf0] border border-[#1a2b47]/5 transition-all duration-700 hover:border-[#1a2b47]/20 hover:shadow-2xl hover:shadow-black/10",
                   "flex-none w-[85vw] sm:w-[50vw] md:w-auto", // Mobile: Fixed width carousel items
                   "h-[400px] md:h-auto", // Mobile: Fixed height
                   "snap-center", // Mobile: Snapping
@@ -134,7 +134,7 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
                 {/* CONTENT */}
                 <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
                   <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    <h3 className="text-xl md:text-4xl font-serif text-white leading-tight mb-2 drop-shadow-lg">
+                    <h3 className="text-xl md:text-4xl font-black text-white leading-tight mb-2 drop-shadow-lg uppercase tracking-tighter">
                       {cat.name}
                     </h3>
 
@@ -142,7 +142,7 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
                       <span className="text-[10px] font-black uppercase tracking-widest hidden md:inline-block">
                         Shop Collection
                       </span>
-                      <div className="p-3 bg-primary text-black rounded-full group-hover:scale-110 group-hover:bg-primary/90 transition-all duration-500 shadow-xl shadow-primary/30">
+                      <div className="p-3 bg-white text-[#1a2b47] rounded-none group-hover:scale-110 group-hover:bg-[#e31e24] group-hover:text-white transition-all duration-500 shadow-xl">
                         <ArrowUpRight className="w-5 h-5" />
                       </div>
                     </div>

@@ -13,7 +13,6 @@ interface CartDbItem {
   product_id: string;
   size: string;
   color: string;
-  fit: string;
   quantity: number;
   product: {
     name: string;
@@ -59,9 +58,7 @@ export function StoreSync() {
         // Consolidated Query: Fetch stock and price in one go
         const { data: stocks } = await supabase
           .from("product_stock")
-          .select(
-            "product_id, size, color, fit, quantity, product:products(price)",
-          )
+          .select("product_id, size, color, quantity, product:products(price)")
           .in(
             "product_id",
             items.map((i) => i.productId),
@@ -75,10 +72,10 @@ export function StoreSync() {
         const newItems = items.map((item) => {
           const stockEntry = (stocks as any[]).find(
             (s) =>
+              s &&
               s.product_id === item.productId &&
               s.size === item.size &&
-              s.color === item.color &&
-              s.fit === item.fit,
+              s.color === item.color,
           );
           const productEntry = stockEntry?.product;
 
@@ -128,10 +125,9 @@ export function StoreSync() {
                   product_id: updated.productId,
                   size: updated.size,
                   color: updated.color,
-                  fit: updated.fit,
                   quantity: updated.quantity,
                 },
-                { onConflict: "user_id, product_id, size, color, fit" },
+                { onConflict: "user_id, product_id, size, color" },
               );
             }
           }
@@ -226,12 +222,12 @@ export function StoreSync() {
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "product_stock" },
         (payload) => {
-          const { product_id, size, color, fit, quantity } = payload.new as any;
+          const { product_id, size, color, quantity } = payload.new as any;
 
           // 1. Update Global Stock Store (UI will react immediately)
           useStockStore
             .getState()
-            .updateStock(product_id, size, color, fit, quantity);
+            .updateStock(product_id, size, color, quantity);
 
           // 2. Check Cart
           const currentItems = useCartStore.getState().items;
@@ -239,8 +235,7 @@ export function StoreSync() {
             (i) =>
               i.productId === product_id &&
               i.size === size &&
-              i.color === color &&
-              i.fit === fit,
+              i.color === color,
           );
 
           if (relevantItem) {
@@ -252,8 +247,7 @@ export function StoreSync() {
                   if (
                     i.productId === product_id &&
                     i.size === size &&
-                    i.color === color &&
-                    i.fit === fit
+                    i.color === color
                   ) {
                     return {
                       ...i,
@@ -271,8 +265,7 @@ export function StoreSync() {
                   if (
                     i.productId === product_id &&
                     i.size === size &&
-                    i.color === color &&
-                    i.fit === fit
+                    i.color === color
                   ) {
                     return { ...i, maxQuantity: quantity };
                   }

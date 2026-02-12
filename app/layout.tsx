@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     siteName: "fitByte",
     images: [
       {
-        url: "/flash-logo.jpg",
+        url: "/fitbyte-logo.jpg",
         width: 1200,
         height: 630,
         alt: "fitByte Bio-Nutrition",
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     title: "fitByte | Premium Health & Bio-Nutrition India",
     description:
       "fitByte - The ultimate destination for health supplements and bio-nutrition in India.",
-    images: ["/flash-logo.jpg"],
+    images: ["/fitbyte-logo.jpg"],
     creator: "@fitbyte",
   },
   category: "health",

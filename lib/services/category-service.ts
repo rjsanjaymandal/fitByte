@@ -24,7 +24,13 @@ async function fetchCategoriesTree(): Promise<Category[]> {
           .order('name')
         
         if (error) {
-            console.error('fetchCategoriesTree error:', error)
+            console.error('fetchCategoriesTree error detailed:', {
+                code: error.code,
+                message: error.message,
+                details: error.details,
+                hint: error.hint,
+                full: JSON.stringify(error)
+            })
             return []
         }
         if (!allCategories) return []
@@ -77,7 +83,13 @@ export async function getLinearCategories(activeOnly = false): Promise<Category[
                 }
                 const { data, error } = await query
                 if (error) {
-                    console.error('getLinearCategories error:', error)
+                    console.error('getLinearCategories error detailed:', {
+                        code: error.code,
+                        message: error.message,
+                        details: error.details,
+                        hint: error.hint,
+                        full: JSON.stringify(error)
+                    })
                     return []
                 }
                 

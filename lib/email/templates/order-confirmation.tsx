@@ -42,9 +42,9 @@ export const OrderConfirmationEmail = ({
   shippingAddress,
   orderDate = new Date().toDateString(),
 }: OrderConfirmationEmailProps) => {
-  const previewText = `Your Flash order #${orderId.slice(0, 8)} is confirmed.`;
+  const previewText = `Your fitByte order #${orderId.slice(0, 8)} is confirmed.`;
   const estimatedDelivery = new Date(
-    new Date(orderDate).getTime() + 7 * 24 * 60 * 60 * 1000
+    new Date(orderDate).getTime() + 7 * 24 * 60 * 60 * 1000,
   ).toDateString();
 
   return (
@@ -56,10 +56,10 @@ export const OrderConfirmationEmail = ({
           <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
             <Section className="mt-[32px]">
               <Img
-                src="https://flash-ecommerce.vercel.app/logo.png"
+                src="https://fitbyte.in/fitbyte-logo.jpg"
                 width="40"
                 height="40"
-                alt="Flash"
+                alt="fitByte"
                 className="my-0 mx-auto"
               />
             </Section>
@@ -154,7 +154,7 @@ export const OrderConfirmationEmail = ({
             <Text className="text-center text-[12px] text-gray-500 mt-8">
               Questions? Reply to this email or visit our{" "}
               <Link
-                href="https://flash-ecommerce.vercel.app/contact"
+                href="https://fitbyte.in/contact"
                 className="text-blue-600 underline"
               >
                 Help Center
@@ -162,7 +162,7 @@ export const OrderConfirmationEmail = ({
               .
             </Text>
             <Text className="text-black text-[14px] leading-[24px] mt-2 text-center font-bold">
-              FLASH Fashion - Embrace Your Pride
+              fitByte - Optimized Bio-Nutrition
             </Text>
           </Container>
         </Body>

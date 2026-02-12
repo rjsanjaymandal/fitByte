@@ -26,46 +26,47 @@
 }
 
 :root {
-  /* "The Phab" - Refined Exact Aesthetic (Vibrant Yellow, Lab Teal, Deep Black) */
-  --background: #ffffff;
-  --foreground: #000000;
+  /* "The Phab" - Exact Site Replication (Cream, Navy, Red) */
+  --background: #fdfcf0; /* Phab Cream */
+  --foreground: #1a2b47; /* Phab Navy */
 
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-serif: "Poppins", sans-serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
 
-  /* Primary: Vibrant Yellow (Phab's Signature Action Color) */
-  --primary: #ffde00;
-  --primary-foreground: #000000;
+  /* Primary: Phab Navy (Navigation & Text) */
+  --primary: #1a2b47;
+  --primary-foreground: #ffffff;
 
-  /* Secondary: Lab Teal (Category Accents) */
-  --secondary: #00b5a3;
+  /* Secondary: Phab Red (Hero & Accents) */
+  --secondary: #e31e24;
   --secondary-foreground: #ffffff;
 
-  /* Accent: Deep Navy/Black (High Contrast Headers) */
-  --accent: #000000;
+  /* Accent: Phab Coral (Marquee) */
+  --accent: #ff6b6b;
   --accent-foreground: #ffffff;
 
   /* Brand Palette */
-  --brand-yellow: #ffde00;
-  --brand-teal: #00b5a3;
-  --brand-black: #000000;
+  --brand-cream: #fdfcf0;
+  --brand-navy: #1a2b47;
+  --brand-red: #e31e24;
+  --brand-black: #2d2d2d;
 
   --card: #ffffff;
-  --card-foreground: #000000;
+  --card-foreground: #1a2b47;
   --popover: #ffffff;
-  --popover-foreground: #000000;
+  --popover-foreground: #1a2b47;
 
-  --muted: #f8f9fa;
-  --muted-foreground: #666666;
+  --muted: #f4f2e1; /* Slightly darker cream for wells */
+  --muted-foreground: #6b7280;
 
-  --destructive: #ff3b30;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
 
-  --border: #eeeeee;
-  --input: #eeeeee;
-  --ring: #ffde00;
-  --radius: 1.5rem; /* Modern professional curves */
+  --border: #e5e7eb;
+  --input: #ffffff;
+  --ring: #1a2b47;
+  --radius: 0.75rem; /* Professional standard */
 }
 
 .dark {

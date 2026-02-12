@@ -261,7 +261,6 @@ export default function CheckoutPage() {
         quantity: i.quantity,
         size: i.size,
         color: i.color,
-        fit: i.fit,
         image: i.image,
         maxQuantity: i.maxQuantity,
         slug: i.slug,
@@ -828,7 +827,7 @@ export default function CheckoutPage() {
               <div className="space-y-5 max-h-[300px] lg:max-h-[400px] overflow-auto pr-2 custom-scrollbar">
                 {items.map((item) => (
                   <div
-                    key={`${item.productId}-${item.size}`}
+                    key={`${item.productId}-${item.size}-${item.color}`}
                     className="flex gap-4 items-start group/item"
                   >
                     <div className="relative h-16 w-16 rounded-xl overflow-hidden bg-muted border border-border/50 shrink-0">
@@ -848,7 +847,7 @@ export default function CheckoutPage() {
                         {item.name}
                       </p>
                       <p className="text-muted-foreground text-xs font-medium mt-0.5">
-                        {item.size} / {item.color} / {item.fit}{" "}
+                        {item.size} / {item.color}{" "}
                         <span className="mx-1">x</span> {item.quantity}
                       </p>
                     </div>
@@ -858,12 +857,7 @@ export default function CheckoutPage() {
                       </span>
                       <button
                         onClick={() =>
-                          removeItem(
-                            item.productId,
-                            item.size,
-                            item.color,
-                            item.fit,
-                          )
+                          removeItem(item.productId, item.size, item.color)
                         }
                         className="text-xs text-muted-foreground hover:text-red-500 transition-colors flex items-center gap-1 group/remove"
                       >

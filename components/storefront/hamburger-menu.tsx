@@ -82,42 +82,33 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="w-full sm:w-[400px] p-0 border-r border-border/40 bg-background/95 backdrop-blur-3xl"
+        className="w-full sm:w-[450px] p-0 border-r border-border/10 bg-[#fdfcf0]/80 backdrop-blur-[40px]"
       >
         <SheetHeader className="sr-only">
           <SheetTitle>Navigation Menu</SheetTitle>
           <SheetDescription>
-            Premium navigation experience for Flash Fashion.
+            Premium navigation experience for FitBytes.
           </SheetDescription>
         </SheetHeader>
 
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="px-8 pt-12 pb-8 flex items-center justify-between">
+          <div className="px-10 pt-16 pb-10 flex items-center justify-between">
             <Link
               href="/"
               onClick={() => setOpen(false)}
               className="flex items-center gap-3 group"
             >
-              <div className="h-8 w-8 relative overflow-hidden rounded-full grayscale group-hover:grayscale-0 transition-all duration-500 ring-1 ring-border/50">
-                <FlashImage
-                  src="/flash-logo.jpg"
-                  alt="Flash Logo"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
-              <span className="text-2xl font-black tracking-[-0.05em] text-foreground italic font-mono uppercase">
-                Flash
+              <span className="text-3xl font-black tracking-tighter text-[#1a2b47] uppercase font-sans">
+                FITBYTES<span className="text-[#e31e24] ml-0.5">.</span>
               </span>
             </Link>
             <ModeToggle />
           </div>
 
           {/* Nav Links */}
-          <div className="flex-1 overflow-y-auto px-8 py-4 scrollbar-hide">
-            <div className="space-y-1">
+          <div className="flex-1 overflow-y-auto px-10 py-6 scrollbar-hide">
+            <div className="space-y-2">
               {/* Categories */}
               {categories.map((cat, i) => (
                 <motion.div
@@ -130,17 +121,17 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
                   <Link
                     href={`/shop?category=${cat.id}`}
                     onClick={() => setOpen(false)}
-                    className="flex items-center gap-4 py-3 group hover:pl-2 transition-all duration-300"
+                    className="flex items-center justify-between py-4 group hover:pl-2 transition-all duration-300"
                   >
-                    <Tag className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                    <span className="text-lg font-bold text-foreground/80 group-hover:text-foreground transition-colors">
+                    <span className="text-xl font-black text-[#1a2b47] uppercase tracking-widest group-hover:text-[#e31e24] transition-colors">
                       {cat.name}
                     </span>
+                    <ChevronRight className="h-5 w-5 text-[#1a2b47]/20 group-hover:text-[#e31e24] transition-all transform group-hover:translate-x-1" />
                   </Link>
                 </motion.div>
               ))}
 
-              <div className="my-4 border-t border-border/40" />
+              <div className="my-8 border-t border-[#1a2b47]/5" />
 
               {/* Main Links */}
               {mainLinks.map((link, i) => (
@@ -154,12 +145,12 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-center gap-4 py-3 group hover:pl-2 transition-all duration-300"
+                    className="flex items-center justify-between py-4 group hover:pl-2 transition-all duration-300"
                   >
-                    <link.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
-                    <span className="text-lg font-bold text-foreground/80 group-hover:text-foreground transition-colors">
+                    <span className="text-xl font-black text-[#1a2b47]/60 uppercase tracking-widest group-hover:text-[#1a2b47] transition-colors">
                       {link.label}
                     </span>
+                    <ArrowRight className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-x-1" />
                   </Link>
                 </motion.div>
               ))}
@@ -167,68 +158,60 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
           </div>
 
           {/* User & Footer (Fixed Bottom) */}
-          <div className="p-8 space-y-8 border-t border-border/40 pb-safe bg-background/50 backdrop-blur-md">
+          <div className="p-10 space-y-10 border-t border-[#1a2b47]/5 pb-safe bg-white/40 backdrop-blur-md">
             {/* Account Info */}
             <div>
               {user ? (
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <Link href="/account" onClick={() => setOpen(false)}>
-                    <div className="flex items-center gap-4 p-4 rounded-3xl bg-background border border-border/60 hover:border-primary/40 transition-all shadow-sm group">
-                      <div className="h-10 w-10 rounded-full gradient-primary flex items-center justify-center text-xs font-black text-white group-hover:scale-105 transition-transform">
+                    <div className="flex items-center gap-5 p-5 rounded-none bg-white border border-[#1a2b47]/10 hover:border-[#1a2b47] transition-all shadow-sm group">
+                      <div className="h-12 w-12 rounded-none bg-[#1a2b47] flex items-center justify-center text-sm font-black text-white group-hover:scale-105 transition-transform">
                         {user.email?.[0].toUpperCase()}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-bold text-foreground uppercase tracking-tight truncate">
+                        <p className="text-[13px] font-black text-[#1a2b47] uppercase tracking-tight truncate">
                           {profile?.name || "Member"}
                         </p>
-                        <p className="text-[10px] text-muted-foreground font-medium truncate uppercase tracking-widest">
-                          Secured Transmission
+                        <p className="text-[10px] text-[#1a2b47]/40 font-black uppercase tracking-[0.2em]">
+                          Profile Secure
                         </p>
                       </div>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground/30 group-hover:text-primary transition-colors" />
+                      <ChevronRight className="h-4 w-4 text-[#1a2b47]/30 group-hover:text-[#1a2b47] transition-colors" />
                     </div>
                   </Link>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3">
                     {isAdmin && (
                       <Link href="/admin" onClick={() => setOpen(false)}>
                         <Button
                           variant="outline"
-                          className="w-full rounded-2xl border-zinc-200 dark:border-zinc-800 font-black uppercase tracking-widest text-[9px] h-11"
+                          className="w-full rounded-none border-[#1a2b47]/20 font-black uppercase tracking-[0.2em] text-[10px] h-14 hover:bg-[#1a2b47] hover:text-white transition-all"
                         >
-                          Admin
+                          Admin Access
                         </Button>
                       </Link>
                     )}
                     <Button
-                      variant="outline"
+                      variant="ghost"
                       onClick={() => {
                         signOut();
                         setOpen(false);
                       }}
-                      className="w-full rounded-2xl border-red-500/10 bg-red-500/5 text-red-500 hover:bg-red-500/10 hover:border-red-500/20 font-black uppercase tracking-widest text-[9px] h-11 transition-all"
+                      className="w-full rounded-none text-[#e31e24] hover:bg-red-50 font-black uppercase tracking-[0.2em] text-[10px] h-14 transition-all"
                     >
                       Sign Out
                     </Button>
                   </div>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-3">
-                  <Link
-                    href="/login"
-                    onClick={() => setOpen(false)}
-                    className="flex-1"
-                  >
-                    <Button className="w-full rounded-2xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-foreground border-0 font-black uppercase tracking-widest text-[10px] h-12">
-                      Login
+                <div className="grid grid-cols-1 gap-4">
+                  <Link href="/login" onClick={() => setOpen(false)}>
+                    <Button className="w-full rounded-none bg-[#1a2b47] hover:bg-black text-white border-0 font-black uppercase tracking-[0.2em] text-[11px] h-14 transition-all">
+                      Member Login
                     </Button>
                   </Link>
-                  <Link
-                    href="/signup"
-                    onClick={() => setOpen(false)}
-                    className="flex-1"
-                  >
-                    <Button className="w-full rounded-2xl gradient-primary text-white border-0 font-black uppercase tracking-widest text-[10px] h-12 shadow-lg shadow-primary/20">
-                      Join
+                  <Link href="/signup" onClick={() => setOpen(false)}>
+                    <Button className="w-full rounded-none bg-[#e31e24] text-white border-0 font-black uppercase tracking-[0.2em] text-[11px] h-14 shadow-xl shadow-red-500/10 hover:bg-black transition-all">
+                      Join FitBytes
                     </Button>
                   </Link>
                 </div>
@@ -236,20 +219,20 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
             </div>
 
             {/* Socials */}
-            <div className="flex items-center justify-center gap-8">
+            <div className="flex items-center justify-center gap-10">
               {[Instagram, Twitter, Youtube, Facebook].map((Icon, i) => (
                 <a
                   key={i}
                   href="#"
-                  className="text-muted-foreground/40 hover:text-foreground transition-colors p-1"
+                  className="text-[#1a2b47]/40 hover:text-[#1a2b47] transition-colors p-1"
                 >
-                  <Icon className="h-5 w-5 stroke-[1.5px]" />
+                  <Icon className="h-5 w-5 stroke-[2px]" />
                 </a>
               ))}
             </div>
 
-            <p className="text-center text-[9px] text-muted-foreground/40 font-black uppercase tracking-[0.4em]">
-              Flash Fashion © 2026
+            <p className="text-center text-[9px] text-[#1a2b47]/30 font-black uppercase tracking-[0.5em]">
+              All Systems Operational © 2026
             </p>
           </div>
         </div>

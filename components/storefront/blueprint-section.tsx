@@ -40,16 +40,16 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl md:text-6xl font-serif text-foreground font-extrabold leading-tight"
+            className="text-3xl md:text-6xl font-black text-[#1a2b47] leading-tight uppercase tracking-tighter"
           >
-            The <span className="text-primary italic">Blueprint</span>
+            The <span className="text-[#e31e24]">Blueprint</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-muted-foreground font-bold text-[10px] mt-4 tracking-[0.4em] uppercase"
+            className="text-[#1a2b47]/40 font-black text-[10px] mt-4 tracking-[0.4em] uppercase"
           >
             {product?.name || "Premium Craftsmanship"}
           </motion.p>
@@ -58,17 +58,17 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
         {/* MAIN BLUEPRINT UI - NOW CLICKABLE */}
         <Link
           href={productUrl}
-          className="block group cursor-pointer relative max-w-5xl mx-auto md:aspect-[16/9] bg-primary/5 rounded-3xl border border-primary/10 backdrop-blur-sm overflow-hidden flex flex-col md:block hover:border-primary/20 transition-colors duration-500 shadow-2xl shadow-primary/5"
+          className="block group cursor-pointer relative max-w-5xl mx-auto md:aspect-video bg-[#fdfcf0] rounded-none border border-[#1a2b47]/10 backdrop-blur-sm overflow-hidden flex flex-col md:block hover:border-[#1a2b47]/20 transition-colors duration-500 shadow-2xl shadow-black/5"
         >
           {/* CROSSHAIRS (Desktop Only) */}
-          <div className="hidden md:block absolute top-8 left-8 w-8 h-8 border-l border-t border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
-          <div className="hidden md:block absolute top-8 right-8 w-8 h-8 border-r border-t border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
-          <div className="hidden md:block absolute bottom-8 left-8 w-8 h-8 border-l border-b border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
-          <div className="hidden md:block absolute bottom-8 right-8 w-8 h-8 border-r border-b border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
+          <div className="hidden md:block absolute top-8 left-8 w-8 h-8 border-l border-t border-[#1a2b47]/20 group-hover:border-[#e31e24] transition-colors duration-500" />
+          <div className="hidden md:block absolute top-8 right-8 w-8 h-8 border-r border-t border-[#1a2b47]/20 group-hover:border-[#e31e24] transition-colors duration-500" />
+          <div className="hidden md:block absolute bottom-8 left-8 w-8 h-8 border-l border-b border-[#1a2b47]/20 group-hover:border-[#e31e24] transition-colors duration-500" />
+          <div className="hidden md:block absolute bottom-8 right-8 w-8 h-8 border-r border-b border-[#1a2b47]/20 group-hover:border-[#e31e24] transition-colors duration-500" />
 
           {/* PRODUCT IMAGE CENTERING WRAPPER */}
           <div className="relative w-full h-[300px] md:h-auto md:aspect-square md:absolute md:inset-0 flex items-center justify-center p-4 md:p-0 z-20">
-            <div className="relative w-full h-full max-w-[250px] md:max-w-[400px] aspect-[3/4] group-hover:scale-105 transition-transform duration-700 ease-out">
+            <div className="relative w-full h-full max-w-[250px] md:max-w-[400px] aspect-3/4 group-hover:scale-105 transition-transform duration-700 ease-out">
               <FlashImage
                 src={imageSrc}
                 alt="Blueprint Product"
@@ -120,7 +120,7 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
               y1="0"
               x2="50%"
               y2="100%"
-              stroke="var(--primary)"
+              stroke="#1a2b47"
               strokeDasharray="4 4"
             />
             <line
@@ -128,14 +128,14 @@ export function BlueprintSection({ product }: BlueprintSectionProps) {
               y1="50%"
               x2="100%"
               y2="50%"
-              stroke="var(--primary)"
+              stroke="#1a2b47"
               strokeDasharray="4 4"
             />
             <circle
               cx="50%"
               cy="50%"
               r="200"
-              stroke="var(--primary)"
+              stroke="#1a2b47"
               fill="none"
               strokeWidth="0.5"
             />
@@ -177,17 +177,17 @@ function BlueprintPoint({
 
       <div
         className={cn(
-          "bg-white backdrop-blur-md border border-primary/10 p-3 md:p-4 rounded-2xl shadow-xl shadow-primary/5 w-full md:w-auto flex flex-col md:block items-center md:items-start text-center md:text-left justify-center md:justify-start",
+          "bg-white backdrop-blur-md border border-[#1a2b47]/10 p-3 md:p-4 rounded-none shadow-xl shadow-[#1a2b47]/5 w-full md:w-auto flex flex-col md:block items-center md:items-start text-center md:text-left justify-center md:justify-start",
           direction === "left" ? "md:order-2" : "md:order-1",
         )}
       >
-        <div className="flex items-center gap-2 mb-1 md:mb-2 text-primary">
+        <div className="flex items-center gap-2 mb-1 md:mb-2 text-[#e31e24]">
           <Icon className="w-3 h-3" />
-          <span className="text-[9px] uppercase tracking-[0.3em] font-bold">
+          <span className="text-[9px] uppercase tracking-[0.3em] font-black">
             {label}
           </span>
         </div>
-        <div className="text-lg md:text-xl font-serif text-foreground font-black leading-none">
+        <div className="text-lg md:text-xl font-black text-[#1a2b47] leading-none uppercase tracking-tighter">
           {value}
         </div>
       </div>

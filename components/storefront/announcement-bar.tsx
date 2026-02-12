@@ -10,13 +10,13 @@ interface AnnouncementSettings {
 
 export async function AnnouncementBar() {
   const settings = (await getGlobalSettings(
-    "announcement_bar"
+    "announcement_bar",
   )) as AnnouncementSettings | null;
 
   if (!settings || !settings.enabled) return null;
 
   return (
-    <div className="bg-foreground text-background text-[10px] md:text-sm font-bold tracking-widest uppercase py-3 px-4 text-center relative z-50 overflow-hidden group border-b border-white/10">
+    <div className="bg-[#1a2b47] text-white text-[10px] md:text-sm font-black tracking-[0.2em] uppercase py-3 px-4 text-center relative z-50 overflow-hidden group border-b border-white/10">
       <div className="flex w-full overflow-hidden select-none">
         {/* We need a container that is wide enough to scroll. 
             The 'animate-marquee' moves -50% translateX. 

@@ -17,17 +17,17 @@ import { cn } from "@/lib/utils";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-background pt-16 pb-8">
+    <footer className="border-t border-zinc-200 bg-[#fdfcf0] pt-16 pb-8">
       <div className="container mx-auto px-4 md:px-6">
         {/* TOP SECTION: BRAND & NEWSLETTER */}
         <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-16">
           <div className="space-y-4 max-w-sm">
             <Link href="/" className="inline-block">
-              <h3 className="text-2xl font-serif tracking-tighter text-black font-black flex items-center">
-                FIT<span className="text-secondary">BYTE</span>
+              <h3 className="text-3xl font-black tracking-tighter text-[#1a2b47] uppercase font-sans">
+                FITBYTES<span className="text-[#e31e24] ml-0.5">.</span>
               </h3>
             </Link>
-            <p className="text-zinc-500 text-sm leading-relaxed font-medium">
+            <p className="text-[#1a2b47]/70 text-[11px] leading-relaxed font-black uppercase tracking-[0.2em]">
               Join the movement. Premium nutrition for the modern human.
               Bio-engineered, taste-refined, and lab-tested for peak
               performance.
@@ -49,24 +49,21 @@ export function Footer() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="h-10 w-10 rounded-full border border-zinc-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-all duration-300 cursor-pointer group"
+                  className="h-10 w-10 rounded-none border border-[#1a2b47]/10 flex items-center justify-center hover:bg-[#1a2b47] hover:text-white hover:border-[#1a2b47] transition-all duration-300 cursor-pointer group"
                 >
-                  <Icon className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                  <Icon className="h-4 w-4 stroke-[2px] group-hover:scale-110 transition-transform" />
                 </a>
               ))}
             </div>
           </div>
 
-          <div className="w-full max-w-md bg-primary p-10 rounded-[2.5rem] border-none relative overflow-hidden group shadow-2xl shadow-primary/20">
-            {/* Brand Glow Background */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 blur-3xl group-hover:bg-white/30 transition-all duration-700" />
-
-            <h4 className="font-black text-2xl mb-2 flex items-center gap-2 text-black uppercase tracking-tighter">
+          <div className="w-full max-w-md bg-[#1a2b47] p-10 rounded-none border-none relative overflow-hidden group shadow-2xl shadow-black/20">
+            <h4 className="font-black text-2xl mb-2 flex items-center gap-2 text-white uppercase tracking-tighter">
               DROP ALERT
             </h4>
-            <p className="text-xs text-black/70 mb-6 font-bold uppercase tracking-widest">
+            <p className="text-xs text-white/70 mb-6 font-bold uppercase tracking-widest">
               Be the first to fuel up.{" "}
-              <span className="text-black font-black underline">10% OFF</span>{" "}
+              <span className="text-white font-black underline">10% OFF</span>{" "}
               your first lab order.
             </p>
             <form
@@ -75,9 +72,9 @@ export function Footer() {
             >
               <Input
                 placeholder="EMAIL ADDRESS"
-                className="bg-white/90 border-none h-14 focus-visible:ring-black rounded-full px-6 font-bold text-xs placeholder:text-zinc-400"
+                className="bg-white/90 border-none h-14 focus-visible:ring-white rounded-none px-6 font-bold text-xs placeholder:text-zinc-400"
               />
-              <Button className="h-14 w-full rounded-full bg-black hover:bg-zinc-900 text-white font-black uppercase tracking-widest text-[11px] shadow-xl shadow-black/20">
+              <Button className="h-14 w-full rounded-none bg-white hover:bg-zinc-100 text-[#1a2b47] font-black uppercase tracking-widest text-[11px] shadow-xl shadow-black/20">
                 JOIN THE LAB
               </Button>
             </form>
@@ -236,8 +233,8 @@ export function Footer() {
         </div>
 
         {/* BOTTOM SECTION */}
-        <div className="border-t border-zinc-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-zinc-400 font-black uppercase tracking-[0.2em]">
-          <p>&copy; 2026 FITBYTE LABS. ALL RIGHTS RESERVED.</p>
+        <div className="border-t border-[#1a2b47]/5 pt-12 flex flex-col md:flex-row justify-between items-center gap-6 text-[9px] text-[#1a2b47]/30 font-black uppercase tracking-[0.5em]">
+          <p>&copy; 2026 FITBYTE LABS. ALL SYSTEMS OPERATIONAL.</p>
           <div className="flex items-center gap-6">
             <span>India</span>
             <span className="hidden md:inline-block w-1 h-1 bg-border rounded-full" />
@@ -276,7 +273,9 @@ function FooterSection({
       </button>
 
       {/* Desktop Header (Static) */}
-      <h4 className="font-bold text-lg mb-6 hidden md:block">{title}</h4>
+      <h4 className="font-black text-[13px] uppercase tracking-[0.3em] text-[#1a2b47] mb-8 hidden md:block">
+        {title}
+      </h4>
 
       {/* Mobile Content (Collapsible) */}
       <AnimatePresence>

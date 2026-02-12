@@ -17,7 +17,17 @@ export async function getProductColors(): Promise<ProductColor[]> {
       .order("name", { ascending: true });
 
     if (error) {
-      console.error("Error fetching product colors:", error);
+      console.error("Error fetching product colors detailed:", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        type: typeof error,
+        keys: Object.keys(error),
+        full: JSON.stringify(error)
+      });
+      // If it's still {}, log the literal error
+      console.error("Error fetching product colors literal:", error);
       return [];
     }
 

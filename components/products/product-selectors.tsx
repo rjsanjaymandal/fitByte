@@ -134,83 +134,30 @@ export function ProductColorSelector({
   );
 }
 
-// Separate Fit Selector
-export function ProductFitSelector({
-  options,
-  selected,
-  onSelect,
-  isAvailable,
-}: SharedSelectorProps) {
-  return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-baseline border-b border-foreground/10 mb-4 pb-2">
-        <span className="text-[10px] uppercase tracking-[0.3em] font-medium text-foreground/80">
-          Fit
-        </span>
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {options.map((fit) => {
-          const available = isAvailable(fit);
-          const isSelected = selected === fit;
-
-          return (
-            <button
-              key={fit}
-              onClick={() => onSelect(fit)}
-              disabled={!available}
-              className={cn(
-                "h-10 px-4 text-[11px] uppercase tracking-widest transition-all duration-300 border relative group focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
-                isSelected
-                  ? "border-black text-black font-bold bg-black/5"
-                  : "border-transparent text-neutral-500 hover:text-black hover:bg-neutral-50",
-                !available &&
-                  "opacity-30 cursor-not-allowed text-neutral-300 decoration-neutral-300 line-through",
-              )}
-            >
-              {fit}
-              {/* Clear luxury removal of motion bar */}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 // Legacy export if needed, or composite for simple usage
 interface ProductSelectorsProps {
   sizeOptions: string[];
   colorOptions: string[];
-  fitOptions?: string[];
   selectedSize: string;
   selectedColor: string;
-  selectedFit?: string;
   onSelectSize: (size: string) => void;
   onSelectColor: (color: string) => void;
-  onSelectFit?: (fit: string) => void;
   onOpenSizeGuide: () => void;
-  isAvailable: (size: string, color: string, fit?: string) => boolean;
+  isAvailable: (size: string, color: string) => boolean;
   isSizeAvailable: (size: string) => boolean;
-  isFitAvailable?: (fit: string) => boolean;
-  getStock: (size: string, color: string, fit: string) => number;
   centered?: boolean;
 }
 
 export function ProductSelectors({
   sizeOptions,
   colorOptions,
-  fitOptions = [],
   selectedSize,
   selectedColor,
-  selectedFit,
   onSelectSize,
   onSelectColor,
-  onSelectFit,
   onOpenSizeGuide,
   isAvailable,
   isSizeAvailable,
-  isFitAvailable,
-  //   getStock,
   centered = false,
 }: ProductSelectorsProps) {
   // Composite wrapper if used elsewhere
@@ -224,17 +171,6 @@ export function ProductSelectors({
           isAvailable={(c) => true}
         />
       </div>
-
-      {fitOptions.length > 0 && onSelectFit && (
-        <div className={centered ? "flex justify-center" : ""}>
-          <ProductFitSelector
-            options={fitOptions}
-            selected={selectedFit || ""}
-            onSelect={onSelectFit}
-            isAvailable={isFitAvailable || ((f) => true)}
-          />
-        </div>
-      )}
 
       <div className={centered ? "flex justify-center" : ""}>
         <ProductSizeSelector

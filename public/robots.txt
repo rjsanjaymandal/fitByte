@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://flashhfashion.in
+Host: https://fitbyte.in
 
 # Sitemaps
-Sitemap: https://flashhfashion.in/sitemap.xml
+Sitemap: https://fitbyte.in/sitemap.xml

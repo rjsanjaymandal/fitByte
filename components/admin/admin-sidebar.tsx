@@ -62,7 +62,7 @@ export function AdminSidebar() {
         {/* Brand */}
         <div className="flex h-20 items-center px-8 border-b border-slate-800/50">
           <Link href="/admin" className="flex items-center gap-3 group">
-            <div className="h-10 w-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-900/20 group-hover:scale-105 transition-transform">
+            <div className="h-10 w-10 rounded-none bg-indigo-600 flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-900/20 group-hover:scale-105 transition-transform">
               F
             </div>
             <div className="flex flex-col">
@@ -90,7 +90,7 @@ export function AdminSidebar() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 group relative",
+                      "flex items-center gap-3 rounded-none px-4 py-3 text-sm font-medium transition-all duration-200 group relative",
                       isActive
                         ? "bg-indigo-600 text-white shadow-md shadow-indigo-900/20"
                         : "hover:bg-slate-800/50 hover:text-white",
@@ -124,7 +124,7 @@ export function AdminSidebar() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 group",
+                      "flex items-center gap-3 rounded-none px-4 py-3 text-sm font-medium transition-all duration-200 group",
                       isActive
                         ? "bg-indigo-600/10 text-indigo-400"
                         : "hover:bg-slate-800/50 hover:text-white",
@@ -149,7 +149,7 @@ export function AdminSidebar() {
           <div className="pt-6 mt-6 border-t border-slate-800/50">
             {mounted && (
               <div className="flex items-center gap-3 mb-4 px-2">
-                <div className="h-10 w-10 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-inner border-2 border-[#0f172a]">
+                <div className="h-10 w-10 rounded-none bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-inner border-2 border-[#0f172a]">
                   {user?.email?.[0].toUpperCase() || "A"}
                 </div>
                 <div className="overflow-hidden">
@@ -163,7 +163,7 @@ export function AdminSidebar() {
 
             <button
               onClick={() => signOut()}
-              className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2.5 text-sm font-medium text-slate-300 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-all"
+              className="flex w-full items-center justify-center gap-2 rounded-none border border-slate-700 bg-slate-800/50 px-4 py-2.5 text-sm font-medium text-slate-300 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20 transition-all"
             >
               <LogOut className="h-4 w-4" />
               Sign Out

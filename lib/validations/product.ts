@@ -4,7 +4,6 @@ import { z } from "zod"
 export const variantSchema = z.object({
   size: z.string().default("Standard"),
   color: z.string().default("Standard"),
-  fit: z.string().default("Regular"),
   quantity: z.number().min(0, "Quantity must be 0 or more"),
   sku: z.string().optional(),
   cost_price: z.number().min(0, "Cost must be 0 or more").default(0),
@@ -34,7 +33,6 @@ export const productSchema = z.object({
   is_carousel_featured: z.boolean().default(false),
   color_options: z.array(z.string()).optional(),
   size_options: z.array(z.string()).optional(),
-  fit_options: z.array(z.string()).default([]),
   variants: z.array(variantSchema),
   // SEO Fields
   seo_title: z.string().max(70, "Meta title should be under 70 chars").optional(),

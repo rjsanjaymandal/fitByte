@@ -17,7 +17,6 @@ import { ProductGallery } from "@/components/products/product-gallery";
 import {
   ProductColorSelector,
   ProductSizeSelector,
-  ProductFitSelector,
 } from "@/components/products/product-selectors";
 
 import dynamic from "next/dynamic";
@@ -63,7 +62,7 @@ type ProductDetailProps = {
     size_options: string[];
     color_options: string[];
     fit_options?: string[];
-    product_stock: (StockItem & { fit: string })[];
+    product_stock: StockItem[];
     category_id?: string;
     images?: {
       thumbnail: string;
@@ -97,7 +96,6 @@ export function ProductDetailClient({
 
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
-  const [selectedFit, setSelectedFit] = useState<string>("Regular");
   const [quantity, setQuantity] = useState(1);
 
   // Waitlist State
@@ -199,34 +197,6 @@ export function ProductDetailClient({
     return normalized;
   }, [product.color_options, realTimeStock]);
 
-  const fitOptions = useMemo(() => {
-    if (product.fit_options?.length) {
-      // If fits were explicitly defined, filter out "Regular" if it's the ONLY option
-      const explicitUnique = Array.from(new Set(product.fit_options));
-      if (
-        explicitUnique.length === 1 &&
-        explicitUnique[0].toLowerCase() === "regular"
-      ) {
-        return [];
-      }
-      return product.fit_options;
-    }
-
-    // Derived from stock
-    const fits = realTimeStock?.map((s: any) => s.fit).filter(Boolean) || [];
-    const uniqueFits = Array.from(new Set(fits));
-
-    // If the only available fit is "Regular" (and it wasn't explicit), hide it.
-    if (
-      uniqueFits.length === 0 ||
-      (uniqueFits.length === 1 && uniqueFits[0].toLowerCase() === "regular")
-    ) {
-      return [];
-    }
-
-    return uniqueFits;
-  }, [product.fit_options, realTimeStock]);
-
   // Auto-Select Logic: If there's only 1 option for any attribute, select it automatically.
   useEffect(() => {
     // 1. Auto-Select Size
@@ -238,17 +208,7 @@ export function ProductDetailClient({
       setSelectedColor(colorOptions[0]);
     }
     // 3. Auto-Select Fit (Only if options exist)
-    if (fitOptions.length === 1 && !selectedFit) {
-      setSelectedFit(fitOptions[0]);
-    }
-  }, [
-    sizeOptions,
-    colorOptions,
-    fitOptions,
-    selectedSize,
-    selectedColor,
-    selectedFit,
-  ]);
+  }, [sizeOptions, colorOptions, selectedSize, selectedColor]);
 
   // Stock Logic (Normalized)
   const stockMap = useMemo(() => {
@@ -256,7 +216,7 @@ export function ProductDetailClient({
     if (!realTimeStock) return map;
     realTimeStock.forEach((item: any) => {
       // Use normalized color for the key to merge duplicates
-      const key = `${item.size}-${normalizeColor(item.color || "")}-${item.fit || "Regular"}`;
+      const key = `${item.size}-${normalizeColor(item.color || "")}`;
       map[key] = (map[key] || 0) + item.quantity;
     });
     return map;
@@ -271,23 +231,16 @@ export function ProductDetailClient({
     );
   }, [realTimeStock]);
 
-  const getStock = (size: string, color: string, fit: string) =>
-    stockMap[`${size}-${normalizeColor(color)}-${fit}`] || 0;
+  const getStock = (size: string, color: string) =>
+    stockMap[`${size}-${normalizeColor(color)}`] || 0;
   //   const isAvailable = (size: string, color: string) =>
   //     (stockMap[`${size}-${color}`] || 0) > 0;
   const isSizeAvailable = (size: string) => {
-    if (!selectedColor || !selectedFit) return true;
-    return getStock(size, selectedColor, selectedFit) > 0;
+    if (!selectedColor) return true;
+    return getStock(size, selectedColor) > 0;
   };
 
-  const isFitAvailable = (fit: string) => {
-    if (!selectedSize || !selectedColor) return true;
-    return getStock(selectedSize, selectedColor, fit) > 0;
-  };
-
-  // If fit is hidden, use "Regular" for stock lookup as per default standard
-  const activeFit = selectedFit || "Regular";
-  const maxQty = getStock(selectedSize, selectedColor, activeFit);
+  const maxQty = getStock(selectedSize, selectedColor);
 
   // Logic: OOS if Global stock is 0 OR if specific selection is 0
   const isGlobalOutOfStock = totalStock === 0 && !loadingStock;
@@ -375,11 +328,7 @@ export function ProductDetailClient({
   const handleAddToCart = async (
     options = { openCart: true, showToast: true },
   ) => {
-    if (
-      !selectedSize ||
-      !selectedColor ||
-      (fitOptions.length > 0 && !selectedFit)
-    ) {
+    if (!selectedSize || !selectedColor) {
       toast.error("Please complete your selection");
       return false;
     }
@@ -397,7 +346,6 @@ export function ProductDetailClient({
           image: product.main_image_url,
           size: selectedSize,
           color: selectedColor,
-          fit: selectedFit || "Regular", // Fallback for backend if fit hidden
           quantity: quantity,
           maxQuantity: maxQty,
           slug: product.slug || "",
@@ -520,21 +468,10 @@ export function ProductDetailClient({
                   selected={selectedColor}
                   onSelect={setSelectedColor}
                   isAvailable={(color) => {
-                    if (!selectedSize || !selectedFit) return true;
-                    return getStock(selectedSize, color, selectedFit) > 0;
+                    if (!selectedSize) return true;
+                    return getStock(selectedSize, color) > 0;
                   }}
                   customColorMap={colorMap}
-                />
-              </div>
-            )}
-
-            {fitOptions.length > 0 && (
-              <div className="mt-6">
-                <ProductFitSelector
-                  options={fitOptions}
-                  selected={selectedFit}
-                  onSelect={setSelectedFit}
-                  isAvailable={isFitAvailable}
                 />
               </div>
             )}
@@ -589,7 +526,7 @@ export function ProductDetailClient({
                   ? isOnWaitlist
                     ? "Joined waitlist"
                     : "Join waitlist"
-                  : selectedSize && selectedColor && selectedFit
+                  : selectedSize && selectedColor
                     ? "Add to shopping bag"
                     : "Make your selection"}
               </Button>

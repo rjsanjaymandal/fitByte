@@ -2,9 +2,9 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'FLASH | Premium Anime Streetwear',
-    short_name: 'FLASH',
-    description: 'Cyberpunk aesthetics meets nano-fabric engineering. Premium anime streetwear and intelligent clothing.',
+    name: 'fitByte | Premium Health & Bio-Nutrition',
+    short_name: 'fitByte',
+    description: 'India\'s premier bio-nutrition label. Optimized health meeting high-performance bio-hacking. Discover our premium supplements and energy essentials.',
     start_url: '/',
     display: 'standalone',
     background_color: '#000000',
@@ -13,12 +13,12 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ['shopping', 'lifestyle', 'fashion'],
     icons: [
       {
-        src: '/flash-logo.jpg',
+        src: '/fitbyte-logo.jpg',
         sizes: '192x192',
         type: 'image/jpeg',
       },
       {
-        src: '/flash-logo.jpg',
+        src: '/fitbyte-logo.jpg',
         sizes: '512x512',
         type: 'image/jpeg',
       },
@@ -31,7 +31,7 @@ export default function manifest(): MetadataRoute.Manifest {
         label: 'Home Screen'
       },
       {
-         src: '/flash-logo.jpg',
+         src: '/fitbyte-logo.jpg',
          sizes: '512x512',
          type: 'image/jpeg',
          label: 'App Icon'
@@ -42,7 +42,7 @@ export default function manifest(): MetadataRoute.Manifest {
         name: 'New Drops',
         short_name: 'Drops',
         description: 'Check out the latest arrivals',
-        url: '/store?sort=newest',
+        url: '/shop?sort=newest',
         icons: [{ src: '/flash-logo.jpg', sizes: '192x192' }]
       },
       {

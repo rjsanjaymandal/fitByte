@@ -47,7 +47,7 @@ export class EmailWorker {
             })
             
             // 2. Send Admin Alert (Async, don't block)
-            const ADMIN_EMAIL = 'lgbtqfashionflash@gmail.com'; 
+            const ADMIN_EMAIL = 'business@maysanlabs.com'; 
             
             sendAdminOrderAlert({
                 email: ADMIN_EMAIL,

@@ -57,8 +57,7 @@ export function ProductVariants({ colorOptions }: ProductVariantsProps) {
       currentVariants.length > 1 ||
       (currentVariants.length === 1 &&
         (currentVariants[0].size !== "Standard" ||
-          currentVariants[0].color !== "Standard" ||
-          currentVariants[0].fit !== "Regular"));
+          currentVariants[0].color !== "Standard"));
     setHasVariants(isMulti);
   }, [getValues]);
 
@@ -73,7 +72,6 @@ export function ProductVariants({ colorOptions }: ProductVariantsProps) {
           {
             size: "Standard",
             color: "Standard",
-            fit: "Regular",
             quantity: 0,
             price_addon: 0,
             cost_price: 0,
@@ -91,18 +89,14 @@ export function ProductVariants({ colorOptions }: ProductVariantsProps) {
           )
         ) {
           const first = current[0];
-          replace([
-            { ...first, size: "Standard", color: "Standard", fit: "Regular" },
-          ]);
+          replace([{ ...first, size: "Standard", color: "Standard" }]);
         } else {
           setHasVariants(true); // revert
           return;
         }
       } else if (current.length === 1) {
         const first = current[0];
-        replace([
-          { ...first, size: "Standard", color: "Standard", fit: "Regular" },
-        ]);
+        replace([{ ...first, size: "Standard", color: "Standard" }]);
       }
     }
   };
@@ -168,7 +162,7 @@ export function ProductVariants({ colorOptions }: ProductVariantsProps) {
       <CardHeader>
         <CardTitle>Variants</CardTitle>
         <CardDescription>
-          Manage size, color, and fit variations for this product.
+          Manage size and color variations for this product.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -214,7 +208,9 @@ export function ProductVariants({ colorOptions }: ProductVariantsProps) {
                           fields.length > 0 &&
                           selectedIndices.length === fields.length
                         }
-                        onCheckedChange={(c) => handleSelectAll(!!c)}
+                        onCheckedChange={(c: boolean | "indeterminate") =>
+                          handleSelectAll(!!c)
+                        }
                       />
                     </TableHead>
                     <TableHead>Variant</TableHead>
@@ -228,11 +224,10 @@ export function ProductVariants({ colorOptions }: ProductVariantsProps) {
                   {fields.map((field, index) => {
                     // Dynamic Label
                     const v = variants[index] || {};
-                    // Construct label avoiding "Standard"/"Regular" noise
+                    // Construct label avoiding "Standard" noise
                     const parts = [];
                     if (v.size !== "Standard") parts.push(v.size);
                     if (v.color !== "Standard") parts.push(v.color);
-                    if (v.fit !== "Regular") parts.push(v.fit);
                     const label =
                       parts.length > 0 ? parts.join(" / ") : "Default Variant";
 
@@ -246,7 +241,9 @@ export function ProductVariants({ colorOptions }: ProductVariantsProps) {
                         <TableCell>
                           <Checkbox
                             checked={selectedIndices.includes(index)}
-                            onCheckedChange={(c) => handleSelectRow(index, !!c)}
+                            onCheckedChange={(c: boolean | "indeterminate") =>
+                              handleSelectRow(index, !!c)
+                            }
                           />
                         </TableCell>
                         <TableCell className="font-medium">
@@ -260,10 +257,6 @@ export function ProductVariants({ colorOptions }: ProductVariantsProps) {
                             <input
                               type="hidden"
                               {...register(`variants.${index}.color`)}
-                            />
-                            <input
-                              type="hidden"
-                              {...register(`variants.${index}.fit`)}
                             />
                           </div>
                         </TableCell>

@@ -47,24 +47,24 @@ const COLORS = [
 ];
 
 export function ShopFilters({ categories }: { categories: Category[] }) {
+  const [category, setCategory] = useQueryState("category", {
+    shallow: false,
+    history: "push",
+  });
+
   return (
     <>
       {/* Mobile: Floating Filter Action Button */}
       <div className="md:hidden fixed bottom-24 right-5 z-40 group">
         <Sheet>
           <SheetTrigger asChild>
-            <Button className="h-16 w-16 rounded-full shadow-[0_20px_50px_rgba(255,222,0,0.4)] flex items-center justify-center p-0 transition-all duration-500 hover:scale-110 active:scale-90 bg-primary border-none text-black">
-              <Filter className="h-6 w-6" />
-              <motion.div
-                animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="absolute inset-0 bg-white/40 blur-xl rounded-full"
-              />
+            <Button className="h-14 w-14 rounded-none shadow-2xl flex items-center justify-center p-0 transition-all duration-300 hover:scale-110 active:scale-90 bg-[#1a2b47] border-none text-white">
+              <Filter className="h-5 w-5" />
             </Button>
           </SheetTrigger>
           <SheetContent
             side="bottom"
-            className="h-[85vh] rounded-t-[3rem] border-zinc-100 bg-white overflow-y-auto px-8 pb-12 shadow-2xl"
+            className="h-[80vh] rounded-none border-[#1a2b47]/10 bg-white overflow-y-auto px-8 pb-12 shadow-2xl"
           >
             <div className="flex flex-col h-full">
               <SheetHeader className="mb-8 pt-6">
@@ -78,14 +78,18 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
                 </div>
               </SheetHeader>
               <div className="flex-1 overflow-y-auto pr-2 pb-24 scrollbar-hide">
-                <FilterContent categories={categories} />
+                <FilterContent
+                  categories={categories}
+                  category={category}
+                  setCategory={setCategory}
+                />
               </div>
 
               {/* Mobile Stick Apply */}
-              <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-background via-background/95 to-transparent pt-16 z-10">
+              <div className="absolute bottom-0 left-0 right-0 p-8 bg-linear-to-t from-white via-white/95 to-transparent pt-12 z-10">
                 <SheetTrigger asChild>
-                  <Button className="w-full h-16 rounded-2xl font-bold uppercase tracking-[0.2em] bg-primary shadow-[0_15px_40px_rgba(20,184,166,0.4)] border-none text-white text-base hover:bg-primary/90">
-                    View Results
+                  <Button className="w-full h-14 rounded-none font-black uppercase tracking-[0.3em] bg-[#1a2b47] border-none text-white text-[11px] hover:bg-black transition-all">
+                    Apply Filters
                   </Button>
                 </SheetTrigger>
               </div>
@@ -94,24 +98,49 @@ export function ShopFilters({ categories }: { categories: Category[] }) {
         </Sheet>
       </div>
 
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-72 shrink-0 animate-in sticky top-24 h-fit rounded-[2.5rem] border border-zinc-100 bg-white p-8 shadow-2xl shadow-black/5">
-        <div className="flex flex-col gap-1 mb-10">
-          <span className="text-secondary font-black tracking-[0.3em] uppercase text-[10px]">
-            Personalize
-          </span>
-          <h3 className="font-black text-4xl tracking-tighter uppercase font-serif text-black leading-none">
-            THE <span className="text-primary italic">LAB</span>
-          </h3>
+      <div className="w-full flex flex-col gap-6 mb-12">
+        {/* Horizontal Category Pills - Scrollable on Mobile */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory items-center gap-3 pb-4 scrollbar-hide px-4 md:px-0 md:justify-center md:flex-wrap md:pb-0">
+          <button
+            onClick={() => setCategory(null)}
+            className={cn(
+              "px-10 py-4 rounded-none text-[11px] font-black uppercase tracking-[0.2em] transition-all border-none whitespace-nowrap snap-center",
+              !category
+                ? "bg-[#1a2b47] text-white shadow-xl"
+                : "bg-white text-[#1a2b47] border border-[#1a2b47]/10 hover:border-[#1a2b47]",
+            )}
+          >
+            Everything
+          </button>
+          {categories.map((c) => (
+            <button
+              key={c.id}
+              onClick={() => setCategory(c.slug)}
+              className={cn(
+                "px-10 py-4 rounded-none text-[11px] font-black uppercase tracking-[0.2em] transition-all border-none whitespace-nowrap snap-center",
+                category === (c.slug || c.id)
+                  ? "bg-[#1a2b47] text-white shadow-xl"
+                  : "bg-white text-[#1a2b47] border border-[#1a2b47]/10 hover:border-[#1a2b47]",
+              )}
+            >
+              {c.name}
+            </button>
+          ))}
         </div>
-        <FilterContent categories={categories} />
-      </aside>
+      </div>
     </>
   );
 }
 
-function FilterContent({ categories }: { categories: Category[] }) {
-  // State
+function FilterContent({
+  categories,
+  category,
+  setCategory,
+}: {
+  categories: Category[];
+  category: string | null;
+  setCategory: (value: string | null) => void;
+}) {
   // State (Set shallow: false to trigger server-side re-render on URL change)
   const [minPrice, setMinPrice] = useQueryState(
     "min_price",
@@ -126,10 +155,6 @@ function FilterContent({ categories }: { categories: Category[] }) {
     history: "push",
   });
   const [color, setColor] = useQueryState("color", {
-    shallow: false,
-    history: "push",
-  });
-  const [category, setCategory] = useQueryState("category", {
     shallow: false,
     history: "push",
   });
@@ -176,9 +201,9 @@ function FilterContent({ categories }: { categories: Category[] }) {
           variant="outline"
           size="sm"
           onClick={clearFilters}
-          className="w-full h-12 rounded-full font-black uppercase tracking-widest text-[10px] transition-all bg-zinc-50 text-black border-zinc-200 hover:bg-black hover:text-white hover:border-black shadow-sm"
+          className="w-full h-12 rounded-none font-black uppercase tracking-[0.2em] text-[10px] transition-all bg-white text-[#1a2b47] border-[#1a2b47]/10 hover:bg-[#1a2b47] hover:text-white hover:border-[#1a2b47] shadow-sm"
         >
-          Clear All
+          Clear Selection
         </Button>
       )}
 
@@ -202,10 +227,10 @@ function FilterContent({ categories }: { categories: Category[] }) {
               <button
                 onClick={() => setCategory(null)}
                 className={cn(
-                  "text-left text-[11px] py-4 px-6 rounded-full transition-all font-black uppercase tracking-widest border",
+                  "text-left text-[11px] py-4 px-6 rounded-none transition-all font-black uppercase tracking-[0.2em] border",
                   !category
-                    ? "bg-primary text-black shadow-xl shadow-primary/20 scale-[1.02] border-primary"
-                    : "bg-zinc-50 border-transparent hover:border-zinc-200 text-zinc-400 hover:text-black",
+                    ? "bg-[#1a2b47] text-white shadow-xl scale-[1.02] border-[#1a2b47]"
+                    : "bg-white border-[#1a2b47]/5 text-[#1a2b47]/40 hover:border-[#1a2b47] hover:text-[#1a2b47]",
                 )}
               >
                 Everything
@@ -215,10 +240,10 @@ function FilterContent({ categories }: { categories: Category[] }) {
                   key={c.id}
                   onClick={() => setCategory(c.slug)}
                   className={cn(
-                    "text-left text-[11px] py-4 px-6 rounded-full transition-all font-black uppercase tracking-widest border",
+                    "text-left text-[11px] py-4 px-6 rounded-none transition-all font-black uppercase tracking-[0.2em] border",
                     category === (c.slug || c.id)
-                      ? "bg-primary text-black shadow-xl shadow-primary/20 scale-[1.02] border-primary"
-                      : "bg-zinc-50 border-transparent hover:border-zinc-200 text-zinc-400 hover:text-black",
+                      ? "bg-[#1a2b47] text-white shadow-xl scale-[1.02] border-[#1a2b47]"
+                      : "bg-white border-[#1a2b47]/5 text-[#1a2b47]/40 hover:border-[#1a2b47] hover:text-[#1a2b47]",
                   )}
                 >
                   {c.name}
@@ -255,10 +280,10 @@ function FilterContent({ categories }: { categories: Category[] }) {
                   mutedClass,
                 )}
               >
-                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20">
+                <span className="bg-[#1a2b47]/5 text-[#1a2b47] px-4 py-1.5 rounded-none border border-[#1a2b47]/10">
                   ₹{priceRange[0]}
                 </span>
-                <span className="bg-primary/10 text-primary px-3 py-1 rounded-full border border-primary/20">
+                <span className="bg-[#1a2b47]/5 text-[#1a2b47] px-4 py-1.5 rounded-none border border-[#1a2b47]/10">
                   ₹{priceRange[1]}+
                 </span>
               </div>
@@ -285,10 +310,10 @@ function FilterContent({ categories }: { categories: Category[] }) {
                   size="sm"
                   onClick={() => setSize(size === s ? null : s)}
                   className={cn(
-                    "h-12 w-full rounded-full text-[10px] font-black uppercase tracking-widest transition-all",
+                    "h-12 w-full rounded-none text-[10px] font-black uppercase tracking-[0.2em] transition-all",
                     size === s
-                      ? "bg-primary text-black shadow-xl shadow-primary/20 scale-105 border-primary"
-                      : "border-zinc-200 hover:border-black hover:bg-zinc-50 text-zinc-400 hover:text-black",
+                      ? "bg-[#1a2b47] text-white shadow-xl scale-105 border-[#1a2b47]"
+                      : "border-[#1a2b47]/10 hover:border-[#1a2b47] bg-white text-[#1a2b47]/40 hover:text-[#1a2b47]",
                   )}
                 >
                   {s}

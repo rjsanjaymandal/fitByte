@@ -1,108 +1,124 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
-import FlashImage from '@/components/ui/flash-image'
-import { BrandBadge } from './brand-badge'
-import { BrandGlow } from './brand-glow'
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import FlashImage from "@/components/ui/flash-image";
+import { BrandBadge } from "./brand-badge";
+import { BrandGlow } from "./brand-glow";
 
 export function Hero() {
   return (
-    <section className="relative w-full h-screen lg:h-[90vh] flex flex-col lg:flex-row bg-background overflow-hidden">
-      
-      {/* TEXT SECTION */}
-      <div className="relative z-20 w-full h-full lg:w-1/2 flex flex-col justify-center px-6 py-12 lg:px-16 xl:px-24">
-         <BrandGlow className="top-1/2 left-0 -translate-y-1/2" />
-        
-         <motion.div
+    <section className="relative w-full min-h-[85vh] lg:min-h-screen flex items-center justify-center bg-[#e31e24] overflow-hidden py-16 lg:py-24 px-4 sm:px-6">
+      <div className="relative z-20 max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+        {/* IMAGE SECTION - Floating Products */}
+        <div className="relative order-2 lg:order-1 flex justify-center items-center h-[320px] sm:h-[450px] lg:h-[650px]">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
+            animate={{ scale: 1, opacity: 1, rotate: 0 }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full h-full flex justify-center items-center"
+          >
+            <div className="relative w-[280px] h-[350px] sm:w-[380px] sm:h-[480px] lg:w-[480px] lg:h-[600px]">
+              <FlashImage
+                src="https://images.unsplash.com/photo-1622484210800-208208706bae?q=80&w=2070&auto=format&fit=crop"
+                alt="fitByte Protein Milkshake"
+                fill
+                priority
+                className="object-contain drop-shadow-[0_25px_60px_rgba(0,0,0,0.35)]"
+              />
+            </div>
+          </motion.div>
+
+          {/* Scalloped Badge - Mobile Adjusted */}
+          <motion.div
+            initial={{ scale: 0, rotate: -20 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{
+              delay: 0.6,
+              type: "spring",
+              stiffness: 200,
+              damping: 15,
+            }}
+            className="absolute top-4 left-2 sm:top-10 sm:left-0 lg:-left-20 w-28 h-28 sm:w-36 sm:h-36 lg:w-48 lg:h-48 bg-white shadow-3xl flex items-center justify-center text-center p-4 border-[3px] border-zinc-100"
+            style={{ borderRadius: "50% 50% 50% 50% / 15% 15% 15% 15%" }}
+          >
+            <div className="flex flex-col gap-0.5 pointer-events-none">
+              <span className="text-[8px] sm:text-[10px] lg:text-[12px] font-black uppercase tracking-[0.2em] text-zinc-400">
+                Buy 3 Packs
+              </span>
+              <span className="text-lg sm:text-2xl lg:text-4xl font-black text-[#1a2b47]">
+                ₹1,499/-
+              </span>
+              <span className="text-[8px] sm:text-[10px] lg:text-[12px] font-black uppercase tracking-[0.2em] text-[#e31e24]">
+                Special Deal
+              </span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* TEXT SECTION */}
+        <div className="relative z-20 order-1 lg:order-2 text-center lg:text-left pt-8 lg:pt-0">
+          <motion.div
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-8 lg:space-y-10 relative"
-        >
-            <div className="space-y-4">
-                <BrandBadge variant="primary" className="mb-4">
-                    Summer Drop 2025
-                </BrandBadge>
-                <div className="overflow-hidden">
-                    <motion.h1 
-                        initial={{ y: "100%" }}
-                        animate={{ y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }} 
-                        className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-[0.85] text-foreground uppercase italic"
+            className="space-y-8 lg:space-y-12"
+          >
+            <div className="space-y-4 sm:space-y-6">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight leading-[0.95] text-white uppercase italic">
+                Love makes
+                <br />
+                <span className="text-white/60">you strong.</span>
+                <br />
+                <span className="text-[#fdfcf0]">
+                  Protein makes
+                  <br />
+                  you stronger.
+                </span>
+              </h1>
+
+              {/* Taglines - Flowing Flex */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-4 pt-4">
+                {["High Protein", "No added sugar", "No preservatives"].map(
+                  (tag) => (
+                    <div
+                      key={tag}
+                      className="px-3 py-1.5 sm:px-4 sm:py-2 border border-white/25 text-white text-[9px] sm:text-[11px] lg:text-[13px] font-black uppercase tracking-[0.15em] bg-white/5 backdrop-blur-sm rounded-none"
                     >
-                        UNLEASH<br />THE<br /><span className="text-gradient drop-shadow-[0_0_40px_rgba(var(--primary),0.3)]">FLASH</span>
-                    </motion.h1>
-                </div>
+                      {tag}
+                    </div>
+                  ),
+                )}
+              </div>
             </div>
 
-            <motion.p 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-                className="text-lg lg:text-xl text-muted-foreground font-medium max-w-lg leading-relaxed"
-            >
-                Authentic, Bold, and Queermade. High-performance fashion for those who refuse to blend in.
-            </motion.p>
-
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1 }}
-                className="flex flex-col sm:flex-row items-center gap-4 pt-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="flex flex-col sm:flex-row items-center gap-4 pt-4 justify-center lg:justify-start"
             >
-                <Button size="lg" className="w-full sm:w-auto h-16 px-10 rounded-full text-lg font-black uppercase tracking-widest gradient-primary shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all duration-300" asChild>
-                    <Link href="/shop">
-                        Shop Now
-                    </Link>
-                </Button>
-                <Button size="lg" variant="outline" className="w-full sm:w-auto h-16 px-10 rounded-full text-lg font-black uppercase tracking-widest border-2 hover:bg-secondary transition-all" asChild>
-                    <Link href="/about" className="flex items-center gap-2">
-                        Discovery
-                    </Link>
-                </Button>
+              <Button
+                size="lg"
+                className="w-full sm:w-auto h-14 sm:h-16 px-8 sm:px-12 rounded-none text-[13px] sm:text-[15px] font-black uppercase tracking-[0.2em] bg-white text-[#e31e24] hover:bg-[#fdfcf0] transition-all shadow-2xl"
+                asChild
+              >
+                <Link href="/shop">Shop the Collection</Link>
+              </Button>
             </motion.div>
-        </motion.div>
-
-        {/* Floating Badges for visual depth */}
-        <motion.div 
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="hidden xl:flex absolute top-[10%] right-[3%] p-5 glass rounded-2xl flex-col gap-1 items-center shadow-3xl rotate-12 z-30"
-        >
-            <span className="text-3xl font-black">100%</span>
-            <span className="text-[11px] uppercase font-bold tracking-widest opacity-60">Authentic</span>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* IMAGE SECTION */}
-      <div className="relative w-full h-[60vh] lg:w-1/2 lg:h-full lg:order-2 overflow-hidden">
-          <motion.div
-              initial={{ scale: 1.2, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full h-full"
-          >
-              <FlashImage 
-                  src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2070&auto=format&fit=crop" 
-                  alt="Premium Fashion" 
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-transparent lg:bg-linear-to-r" />
-          </motion.div>
-          
-          <div className="absolute bottom-8 right-8 z-20 flex gap-4">
-               <div className="p-4 glass rounded-xl backdrop-blur-md">
-                   <p className="text-xs font-black uppercase tracking-widest mb-1 opacity-60">Featured Artist</p>
-                   <p className="text-sm font-bold">Alex Rivera • 2025</p>
-               </div>
-          </div>
+      {/* Background Decor - Refined for mobile visibility */}
+      <div className="absolute top-0 right-0 w-full lg:w-1/3 h-full bg-linear-to-l from-black/20 to-transparent pointer-events-none z-10" />
+      <div className="absolute -top-10 -right-10 lg:p-10 opacity-5 sm:opacity-10 pointer-events-none select-none">
+        <span className="text-[120px] sm:text-[180px] lg:text-[250px] font-black text-white leading-none">
+          FITBYTES.
+        </span>
       </div>
     </section>
-  )
+  );
 }

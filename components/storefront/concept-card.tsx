@@ -36,7 +36,7 @@ export function ConceptCard({
 }: ConceptCardProps) {
   const progress = Math.min(
     100,
-    (concept.vote_count / concept.vote_goal) * 100
+    (concept.vote_count / concept.vote_goal) * 100,
   );
   const isFunded = progress >= 100;
 
@@ -48,7 +48,7 @@ export function ConceptCard({
       className="group flex flex-col h-full space-y-4"
     >
       {/* Image Section - 3:4 Aspect Ratio */}
-      <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-secondary/10">
+      <div className="relative aspect-3/4 overflow-hidden rounded-none border-2 border-[#1a2b47]/10 bg-secondary/5">
         {concept.image_url ? (
           <FlashImage
             src={concept.image_url}
@@ -68,13 +68,13 @@ export function ConceptCard({
         {/* Status Badge */}
         <div className="absolute top-4 left-4 flex gap-2">
           {isFunded && (
-            <div className="px-3 py-1 rounded-full bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 flex items-center gap-1.5">
+            <div className="px-3 py-1 rounded-none bg-emerald-600 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-600/20 flex items-center gap-1.5">
               <Sparkles className="h-3 w-3" />
               Greenlit
             </div>
           )}
           {!isFunded && progress > 50 && (
-            <div className="px-3 py-1 rounded-full bg-amber-500 text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-amber-500/20 flex items-center gap-1.5">
+            <div className="px-3 py-1 rounded-none bg-[#e31e24] text-white text-[10px] font-black uppercase tracking-widest shadow-lg shadow-red-500/20 flex items-center gap-1.5">
               <Flame className="h-3 w-3" />
               Trending
             </div>
@@ -113,11 +113,11 @@ export function ConceptCard({
               </span>
             </div>
           </div>
-          <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+          <div className="h-2 w-full bg-[#1a2b47]/5 rounded-none overflow-hidden border border-[#1a2b47]/10">
             <motion.div
               className={cn(
-                "h-full rounded-full transition-all duration-1000",
-                isFunded ? "bg-emerald-500" : "bg-primary"
+                "h-full rounded-none transition-all duration-1000",
+                isFunded ? "bg-emerald-600" : "bg-[#e31e24]",
               )}
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
@@ -128,10 +128,10 @@ export function ConceptCard({
         <Button
           size="lg"
           className={cn(
-            "w-full h-12 rounded-xl text-sm font-black uppercase tracking-widest transition-all duration-300",
+            "w-full h-12 rounded-none text-sm font-black uppercase tracking-widest transition-all duration-300",
             isVoted
-              ? "bg-secondary text-foreground hover:bg-secondary/80 border-2 border-primary/20"
-              : "gradient-primary text-white shadow-lg shadow-primary/20 hover:scale-[1.02] hover:shadow-primary/30"
+              ? "bg-white text-[#1a2b47] hover:bg-zinc-50 border-2 border-[#e31e24]/20"
+              : "bg-[#e31e24] text-white shadow-lg shadow-[#e31e24]/20 hover:bg-[#c9181d] hover:scale-[1.02]",
           )}
           onClick={onVote}
           disabled={isLoading}

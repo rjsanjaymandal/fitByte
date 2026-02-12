@@ -188,7 +188,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
       ref={containerRef}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative w-full h-[65vh] lg:h-[80vh] bg-zinc-100 dark:bg-zinc-900 overflow-hidden"
+      className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[85vh] bg-[#fdfcf0] overflow-hidden"
     >
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
@@ -230,30 +230,31 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
               />
             )}
 
-            {/* Gradient Overlay for Text Readability */}
-            <div className="absolute inset-0 bg-black/30 z-10" />
+            {/* Gradient Overlay for Text Readability - subtle for premium feel */}
+            <div className="absolute inset-0 bg-[#1a2b47]/20 z-10" />
+            <div className="absolute inset-0 bg-linear-to-t from-[#1a2b47]/40 via-transparent to-transparent z-10" />
           </div>
 
           {/* CONTENT LAYER */}
-          <div className="relative z-20 h-full w-full container mx-auto px-6 lg:px-12 flex flex-col justify-center items-center text-center pb-16 lg:pb-0">
-            <div className="max-w-4xl text-white flex flex-col items-center">
+          <div className="relative z-20 h-full w-full container mx-auto px-6 lg:px-12 flex flex-col justify-end lg:justify-center items-center lg:items-start text-center lg:text-left pb-24 lg:pb-0">
+            <div className="max-w-5xl text-white flex flex-col items-center lg:items-start">
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
                 className="mb-6"
               >
-                <span className="inline-block bg-primary text-black px-6 py-2 rounded-full text-[11px] font-black uppercase tracking-widest shadow-xl shadow-primary/30">
+                <span className="inline-block bg-[#e31e24] text-white px-6 py-2 rounded-none text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl">
                   NEW LAUNCH
                 </span>
               </motion.div>
 
-              <div className="min-h-[100px] lg:min-h-[180px] flex flex-col justify-center mb-6">
+              <div className="min-h-[80px] sm:min-h-[120px] lg:min-h-[220px] flex flex-col justify-center mb-4 sm:mb-8">
                 <motion.h1
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="text-5xl sm:text-6xl lg:text-8xl xl:text-9xl font-serif text-white font-black leading-[0.9] tracking-tighter drop-shadow-2xl uppercase"
+                  className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] xl:text-[140px] font-black text-white leading-[0.85] tracking-[-0.04em] uppercase"
                 >
                   {currentProduct.name}
                 </motion.h1>
@@ -263,29 +264,29 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className="flex items-center justify-center gap-4 lg:gap-6 mb-10"
+                className="flex items-center justify-center lg:justify-start gap-4 mb-8 sm:mb-12"
               >
-                <div className="h-[2px] w-8 lg:w-20 bg-primary" />
-                <span className="text-[10px] lg:text-sm text-white font-bold tracking-[0.4em] uppercase whitespace-nowrap">
+                <div className="h-[2px] w-6 sm:w-12 bg-white" />
+                <span className="text-[10px] sm:text-[12px] lg:text-[14px] text-white font-black tracking-[0.4em] uppercase whitespace-nowrap">
                   {getTagline(currentProduct)}
                 </span>
-                <div className="h-[2px] w-8 lg:w-20 bg-primary" />
+                <div className="h-[2px] w-6 sm:w-12 bg-white block lg:hidden" />
               </motion.div>
 
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="flex flex-col lg:flex-row lg:items-center justify-center gap-8"
+                className="flex flex-col sm:flex-row items-center lg:items-end justify-center lg:justify-start gap-6 sm:gap-10"
               >
-                <div className="flex flex-col items-center lg:items-start">
-                  <div className="flex items-baseline justify-center gap-3">
-                    <span className="text-4xl sm:text-5xl lg:text-6xl font-serif font-black">
+                <div className="flex flex-col items-center lg:items-start order-2 sm:order-1">
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-4xl sm:text-5xl lg:text-7xl font-black">
                       {formatCurrency(currentProduct.price)}
                     </span>
                     {currentProduct.original_price &&
                       currentProduct.original_price > currentProduct.price && (
-                        <span className="text-white/40 line-through text-xl lg:text-2xl font-serif">
+                        <span className="text-white/40 line-through text-xl lg:text-2xl font-black">
                           {formatCurrency(currentProduct.original_price)}
                         </span>
                       )}
@@ -294,11 +295,11 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
 
                 <Button
                   size="lg"
-                  className="h-14 lg:h-20 px-12 lg:px-24 rounded-full text-xs sm:text-sm font-black uppercase tracking-widest bg-primary text-black hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-primary/30 mt-4 lg:mt-0 group border-none"
+                  className="h-14 sm:h-16 lg:h-20 px-10 sm:px-14 lg:px-20 rounded-none text-[11px] sm:text-[12px] font-black uppercase tracking-[0.3em] bg-white text-[#1a2b47] hover:bg-[#e31e24] hover:text-white active:scale-95 transition-all shadow-2xl mt-4 sm:mt-0 group border-none order-1 sm:order-2"
                   onClick={handleBuyNow}
                 >
-                  SHOP NOW
-                  <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+                  ACQUIRE NOW
+                  <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
             </div>

@@ -34,11 +34,11 @@ export async function generateMetadata({
 
   if (!product) return { title: "Product Not Found" };
 
-  const title = (product.seo_title || product.name) + " | Flash Fashion";
+  const title = (product.seo_title || product.name) + " | fitByte";
   const description = (
     product.seo_description ||
     product.description ||
-    `Cop the ${product.name}. High-quality anime streetwear, heavyweight cotton, and premium graphic design. Fast shipping available in India.`
+    `Experience the best of ${product.name}. Premium plant-based nutrition, healthy snacks, and daily energy essentials. High-quality ingredients and lab-tested formulas shipped across India.`
   ).slice(0, 150);
 
   return {
@@ -49,7 +49,7 @@ export async function generateMetadata({
       description,
       images: product.main_image_url ? [product.main_image_url] : [],
       type: "website",
-      siteName: "FLASH",
+      siteName: "fitByte",
     },
     twitter: {
       card: "summary_large_image",
@@ -58,7 +58,7 @@ export async function generateMetadata({
       images: product.main_image_url ? [product.main_image_url] : [],
     },
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://flashhfashion.in"}/product/${product.slug}`,
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://fitbyte.in"}/product/${product.slug}`,
     },
   };
 }

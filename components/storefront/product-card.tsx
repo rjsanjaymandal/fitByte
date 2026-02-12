@@ -195,7 +195,6 @@ export function ProductCard({
           image: product.main_image_url || "",
           size: firstStock.size || "Standard",
           color: firstStock.color || "Standard",
-          fit: firstStock.fit || "Regular",
           quantity: 1,
           maxQuantity: firstStock.quantity,
           slug: product.slug || "",
@@ -241,7 +240,6 @@ export function ProductCard({
         image: product.main_image_url || "",
         size: firstStock.size || "Standard",
         color: firstStock.color || "Standard",
-        fit: firstStock.fit || "Regular",
         quantity: 1,
         maxQuantity: firstStock.quantity,
         slug: product.slug || "",
@@ -452,23 +450,23 @@ export function ProductCard({
         {/* Image Container */}
         <Link
           href={`/product/${product.slug || product.id}`}
-          className="block relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white border border-zinc-100 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-black/5"
+          className="block relative aspect-[1/1] overflow-hidden rounded-none bg-white border border-[#1a2b47]/5 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-black/5"
         >
           {/* Badges */}
-          <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+          <div className="absolute top-2 left-2 z-10 flex flex-col gap-1.5">
             {isOutOfStock ? (
-              <Badge className="bg-slate-900/80 backdrop-blur-md text-white uppercase tracking-wider text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm">
+              <Badge className="bg-[#1a2b47] text-white uppercase tracking-[0.2em] text-[8px] font-black px-2 py-1 rounded-none border-none shadow-sm">
                 Sold Out
               </Badge>
             ) : (
               <>
                 {isNew && (
-                  <Badge className="bg-primary text-white uppercase tracking-wider text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm">
+                  <Badge className="bg-[#e31e24] text-white uppercase tracking-[0.2em] text-[8px] font-black px-2 py-1 rounded-none border-none shadow-sm">
                     New
                   </Badge>
                 )}
                 {calculateDiscount(product.price, product.original_price) && (
-                  <Badge className="bg-secondary text-white uppercase tracking-wider text-[9px] font-bold px-3 py-1 rounded-full border-none shadow-sm">
+                  <Badge className="bg-[#1a2b47] text-white uppercase tracking-[0.2em] text-[8px] font-black px-2 py-1 rounded-none border-none shadow-sm">
                     -{calculateDiscount(product.price, product.original_price)}%
                   </Badge>
                 )}
@@ -480,15 +478,15 @@ export function ProductCard({
           <button
             onClick={handleWishlistClick}
             className={cn(
-              "absolute top-3 right-3 z-10 h-8 w-8 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm transition-all duration-200 hover:scale-110 shadow-sm opacity-0 group-hover:opacity-100",
+              "absolute top-2 right-2 z-10 h-7 w-7 flex items-center justify-center rounded-none bg-white transition-all duration-200 hover:scale-110 shadow-sm opacity-0 md:group-hover:opacity-100",
               isWishlisted
-                ? "text-secondary opacity-100"
-                : "text-slate-400 hover:text-secondary",
+                ? "text-[#e31e24] opacity-100"
+                : "text-[#1a2b47]/20 hover:text-[#e31e24]",
             )}
           >
             <Heart
               className={cn(
-                "h-4 w-4 transition-colors",
+                "h-3.5 w-3.5 transition-colors",
                 isWishlisted ? "fill-current" : "",
               )}
             />
@@ -577,111 +575,70 @@ export function ProductCard({
         </Link>
 
         {/* Details */}
-        <div className="space-y-3 px-1 py-2">
-          <div className="flex flex-col gap-1.5">
-            <div className="flex justify-between items-start gap-2">
-              <Link
-                href={`/product/${product.slug || product.id}`}
-                className="hover:text-primary transition-colors flex-1 min-w-0"
-              >
-                <h3 className="font-bold text-[17px] leading-snug text-black tracking-tight line-clamp-2 min-h-[3rem]">
-                  {product.name}
-                </h3>
-              </Link>
-              <div className="flex flex-col items-end pt-1">
-                <p className="font-black text-[18px] text-black tracking-tighter tabular-nums">
-                  {formatCurrency(product.price)}
-                </p>
-                {product.original_price &&
-                  product.original_price > product.price && (
-                    <p className="text-[13px] text-muted-foreground line-through tracking-tight opacity-70">
-                      {formatCurrency(product.original_price)}
-                    </p>
-                  )}
+        <div className="space-y-4 px-1 py-4 text-left">
+          <div className="flex flex-col items-start gap-1">
+            <Link
+              href={`/product/${product.slug || product.id}`}
+              className="hover:opacity-70 transition-opacity"
+            >
+              <h3 className="font-black text-[13px] sm:text-[15px] leading-tight text-[#1a2b47] uppercase tracking-widest line-clamp-2">
+                {product.name}
+              </h3>
+            </Link>
+
+            {/* Pricing */}
+            <div className="flex items-center gap-2 font-black">
+              <span className="text-[16px] sm:text-[18px] text-[#1a2b47] font-black">
+                {formatCurrency(product.price)}
+              </span>
+              {product.original_price &&
+                product.original_price > product.price && (
+                  <span className="text-[12px] sm:text-[14px] text-zinc-400 line-through">
+                    {formatCurrency(product.original_price)}
+                  </span>
+                )}
+            </div>
+
+            {/* Ratings */}
+            <div className="flex items-center gap-1.5">
+              <div className="flex gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={cn(
+                      "h-3 w-3",
+                      i < Math.floor(rating)
+                        ? "fill-[#1a2b47] text-[#1a2b47]"
+                        : "text-zinc-200 fill-zinc-200",
+                    )}
+                  />
+                ))}
               </div>
-            </div>
-
-            {/* Macro Pills - Phab Signature */}
-            <div className="flex flex-wrap gap-1.5 mt-1">
-              {product.categories?.name?.toLowerCase().includes("protein") && (
-                <>
-                  <Badge className="bg-secondary/10 text-secondary border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
-                    25g Protein
-                  </Badge>
-                  <Badge className="bg-primary/10 text-black border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
-                    0g Sugar
-                  </Badge>
-                </>
-              )}
-              {product.categories?.name?.toLowerCase().includes("energy") && (
-                <>
-                  <Badge className="bg-accent/10 text-accent border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
-                    No Crash
-                  </Badge>
-                  <Badge className="bg-primary/10 text-black border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
-                    Plant Based
-                  </Badge>
-                </>
-              )}
-              {!product.categories?.name && (
-                <Badge className="bg-zinc-100 text-zinc-500 border-none px-2 py-0.5 text-[10px] font-bold rounded-full">
-                  Bio-Optimized
-                </Badge>
-              )}
-            </div>
-
-            <div className="flex items-center justify-between text-[11px] text-muted-foreground/60 uppercase tracking-widest font-semibold pt-2 border-t border-zinc-50">
-              <span>{product.categories?.name || "Collection"}</span>
-              {hasMultipleOptions && (
-                <span className="text-secondary font-bold">
-                  Variations Available
-                </span>
-              )}
+              <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+                ({reviewCount})
+              </span>
             </div>
           </div>
-        </div>
 
-        {/* Mobile Actions */}
-        <div className="lg:hidden mt-2 grid grid-cols-2 gap-2">
-          {!isOutOfStock ? (
-            <>
+          {/* Add to Cart Button */}
+          <div className="pt-1">
+            {!isOutOfStock ? (
               <Button
-                variant="outline"
-                size="sm"
-                className="h-10 rounded-full text-[10px] font-black uppercase tracking-widest border-zinc-200 hover:bg-zinc-50"
+                className="w-full bg-[#1a2b47] text-white hover:bg-black h-12 sm:h-14 rounded-none font-black text-[11px] sm:text-[12px] uppercase tracking-[0.2em] transition-all border-none"
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
               >
-                {isAddingToCart ? "..." : "Add"}
+                {isAddingToCart ? "Adding..." : "Add to Cart"}
               </Button>
+            ) : (
               <Button
-                size="sm"
-                className="h-10 rounded-full text-[10px] font-black uppercase tracking-widest bg-primary text-black hover:opacity-90 shadow-md shadow-primary/10"
-                onClick={handleBuyNow}
-                disabled={isAddingToCart}
+                className="w-full bg-[#1a2b47]/5 text-[#1a2b47]/20 h-12 sm:h-14 rounded-none font-black text-[11px] sm:text-[12px] uppercase tracking-[0.2em] border-none cursor-not-allowed"
+                disabled
               >
-                {isAddingToCart ? "..." : "Buy Now"}
+                Sold Out
               </Button>
-            </>
-          ) : (
-            <Button
-              size="sm"
-              className={cn(
-                "col-span-2 h-10 rounded-full text-[10px] font-black uppercase tracking-widest",
-                isOnWaitlist
-                  ? "bg-zinc-100 text-zinc-400"
-                  : "bg-black text-white hover:opacity-90",
-              )}
-              onClick={handlePreOrder}
-              disabled={isLoadingWaitlist}
-            >
-              {isLoadingWaitlist
-                ? "..."
-                : isOnWaitlist
-                  ? "Joined"
-                  : "Notify Me"}
-            </Button>
-          )}
+            )}
+          </div>
         </div>
       </motion.div>
 
@@ -709,11 +666,13 @@ export function ProductCard({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
+            <AlertDialogCancel
+              onClick={(e: React.MouseEvent) => e.stopPropagation()}
+            >
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
                 handleConfirmUnjoin();
               }}

@@ -45,8 +45,8 @@ export async function sendOrderConfirmation({
     try {
         // Enforce 15s Timeout
         const emailPromise = resend.emails.send({
-            from: 'FLASH Orders <orders@flashhfashion.in>',
-            replyTo: 'orders@flashhfashion.in',
+            from: 'fitByte Orders <orders@fitbyte.in>',
+            replyTo: 'business@maysanlabs.com',
             to: email, // Sending ONLY to customer
             subject: `Order Confirmed! 🚀 #${orderId.slice(0, 8).toUpperCase()}`,
             react: OrderConfirmationEmail({
@@ -97,7 +97,7 @@ export async function sendAdminOrderAlert({
 
     try {
         const emailPromise = resend.emails.send({
-            from: 'FLASH System <system@flashhfashion.in>',
+            from: 'fitByte System <system@fitbyte.in>',
             to: email,
             subject: `💰 New Order: ${customerName} (₹${total})`,
             react: AdminNewOrderEmail({

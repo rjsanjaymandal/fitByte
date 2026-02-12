@@ -13,7 +13,6 @@ export type Product = Tables<'products'> & {
     original_price?: number | null
     categories?: { name: string } | null
     product_stock?: Tables<'product_stock'>[]
-    fit_options?: string[] | null
     average_rating?: number
     review_count?: number
     images?: {
@@ -188,7 +187,17 @@ async function fetchProducts(filter: ProductFilter, supabaseClient?: SupabaseCli
         const { data, count, error } = await query
 
         if (error) {
-            console.error('fetchProducts error:', error)
+            console.error('fetchProducts error detailed:', {
+                code: error.code,
+                message: error.message,
+                details: error.details,
+                hint: error.hint,
+                type: typeof error,
+                keys: Object.keys(error),
+                full: JSON.stringify(error)
+            })
+            // If it's still {}, log the literal error to see if the browser/node console handles it better
+            console.error('fetchProducts error literal:', error)
             return {
                 data: [],
                 meta: {
@@ -340,7 +349,6 @@ function prepareProductData(data: ProductFormValues) {
     const variants = data.variants
     cleanData.size_options = Array.from(new Set(variants.map((v) => v.size).filter(Boolean)))
     cleanData.color_options = Array.from(new Set(variants.map((v) => v.color).filter(Boolean)))
-    cleanData.fit_options = Array.from(new Set(variants.map((v) => v.fit).filter(Boolean)))
   }
   
   return cleanData
@@ -386,7 +394,6 @@ export async function createProduct(productData: unknown) {
                 product_id: productId,
                 size: v.size,
                 color: v.color,
-                fit: v.fit || "Regular",
                 quantity: Number(v.quantity) || 0
             }))
 
@@ -470,7 +477,6 @@ export async function updateProduct(id: string, productData: unknown) {
                     product_id: id,
                     size: v.size,
                     color: v.color,
-                    fit: v.fit || "Regular",
                     quantity: Number(v.quantity) || 0
                 }))
                 const { error: stockErr } = await supabase.from('product_stock').insert(stockData)

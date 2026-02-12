@@ -4,7 +4,7 @@ import { getStaticBlogPosts } from '@/lib/services/blog-service'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const supabase = createAdminClient()
-  const baseUrl = 'https://flashhfashion.in'
+  const baseUrl = 'https://fitbyte.in'
 
   // Fetch all active products
   let productUrls: MetadataRoute.Sitemap = []

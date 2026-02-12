@@ -44,7 +44,16 @@ export async function getOrders(filter: OrderFilter = {}): Promise<PaginatedResu
   query = query.range(from, to)
 
   const { data, error, count } = await query
-  if (error) throw error
+  if (error) {
+    console.error('getOrders error detailed:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        full: JSON.stringify(error)
+    })
+    throw error
+  }
 
   return { 
       data: data || [], 
@@ -67,15 +76,15 @@ export async function getStats() {
 
   // 1. Fetch current totals
   const totalOrdersPromise = supabase.from('orders').select('*', { count: 'exact', head: true })
-  const totalRevenuePromise = supabase.from('orders').select('total').in('status', ['paid', 'confirmed_partial'])
+  const totalRevenuePromise = supabase.from('orders').select('total').in('status', ['paid'])
   const totalProductsPromise = supabase.from('products').select('*', { count: 'exact', head: true }).eq('is_active', true)
   const totalCustomersPromise = supabase.from('profiles').select('*', { count: 'exact', head: true })
 
   // 2. Fetch last month's comparisons
   const lastMonthOrdersPromise = supabase.from('orders').select('id', { count: 'exact', head: true }).gte('created_at', firstDayLastMonth).lte('created_at', lastDayLastMonth)
-  const lastMonthRevenuePromise = supabase.from('orders').select('total').in('status', ['paid', 'confirmed_partial']).gte('created_at', firstDayLastMonth).lte('created_at', lastDayLastMonth)
+  const lastMonthRevenuePromise = supabase.from('orders').select('total').in('status', ['paid']).gte('created_at', firstDayLastMonth).lte('created_at', lastDayLastMonth)
 
-  const [ordersRes, revenueRes, productsRes, customersRes, lastOrdersRes, lastRevRes] = await Promise.allSettled([
+  const results = await Promise.allSettled([
       totalOrdersPromise,
       totalRevenuePromise,
       totalProductsPromise,
@@ -84,12 +93,20 @@ export async function getStats() {
       lastMonthRevenuePromise
   ])
 
+  // Results Mapping
+  const ordersRes = results[0] as any
+  const revenueRes = results[1] as any
+  const productsRes = results[2] as any
+  const customersRes = results[3] as any
+  const lastOrdersRes = results[4] as any
+  const lastRevRes = results[5] as any
+
   const totalRevenue = revenueRes.status === 'fulfilled' && revenueRes.value.data 
-      ? revenueRes.value.data.reduce((acc, curr) => acc + Number(curr.total), 0) 
+      ? revenueRes.value.data.reduce((acc: number, curr: { total: any }) => acc + Number(curr.total), 0) 
       : 0
 
   const lastMonthRevenue = lastRevRes.status === 'fulfilled' && lastRevRes.value.data
-      ? lastRevRes.value.data.reduce((acc, curr) => acc + Number(curr.total), 0)
+      ? lastRevRes.value.data.reduce((acc: number, curr: { total: any }) => acc + Number(curr.total), 0)
       : 0
 
   const stats = {
@@ -100,9 +117,9 @@ export async function getStats() {
       
       revenueGrowth: lastMonthRevenue > 0 ? ((totalRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 : 0,
       orderGrowth: lastOrdersRes.status === 'fulfilled' && (lastOrdersRes.value.count || 0) > 0 
-          ? (((ordersRes.status === 'fulfilled' ? (ordersRes.value.count || 0) : 0) - (lastOrdersRes.value.count || 0)) / (lastOrdersRes.value.count || 1)) * 100 
+          ? (((ordersRes.status === 'fulfilled' ? ordersRes.value.count || 0 : 0) - (lastOrdersRes.value.count || 0)) / (lastOrdersRes.value.count || 1)) * 100 
           : 0,
-      averageOrderValue: (ordersRes.status === 'fulfilled' && ordersRes.value.count! > 0) ? (totalRevenue / ordersRes.value.count!) : 0,
+      averageOrderValue: (ordersRes.status === 'fulfilled' && (ordersRes.value.count || 0) > 0) ? (totalRevenue / ordersRes.value.count!) : 0,
       recentOrders: [] 
   }
 
@@ -111,14 +128,56 @@ export async function getStats() {
 
 export async function getTopProducts(limit: number = 5) {
     const supabase = await createClient()
-    const { data, error } = await supabase
+    
+    // Aggregate from order_items
+    const { data: items, error: itemsError } = await supabase
+        .from('order_items')
+        .select(`
+            product_id,
+            quantity,
+            order:orders!inner(status)
+        `)
+        .filter('orders.status', 'eq', 'paid')
+
+    if (itemsError) {
+        console.error('getTopProducts items fetch failed:', itemsError)
+        return []
+    }
+
+    // Sum quantities per product
+    const counts: Record<string, number> = {}
+    items?.forEach((item: any) => {
+        counts[item.product_id] = (counts[item.product_id] || 0) + (item.quantity || 0)
+    })
+
+    // Sort IDs by count
+    const sortedEntries = Object.entries(counts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, limit)
+    
+    const topIds = sortedEntries.map(([id]) => id)
+
+    if (topIds.length === 0) {
+        // Fallback to newest products if no sales yet
+        const { data: products } = await supabase
+            .from('products')
+            .select('*, categories(name)')
+            .order('created_at', { ascending: false })
+            .limit(limit)
+        return (products || []).map(p => ({ ...p, sale_count: 0 }))
+    }
+
+    const { data: products, error: pError } = await supabase
         .from('products')
         .select('*, categories(name)')
-        .order('sale_count', { ascending: false })
-        .limit(limit)
+        .in('id', topIds)
 
-    if (error) throw error
-    return data || []
+    if (pError) throw pError
+
+    return products.map(p => ({
+        ...p,
+        sale_count: counts[p.id] || 0
+    })).sort((a, b) => b.sale_count - a.sale_count)
 }
 
 export async function getRecentActivity(limit = 10) {
@@ -141,7 +200,7 @@ export async function getRecentActivity(limit = 10) {
         const events: ActivityEvent[] = []
 
         if (ordersRes.data) {
-            ordersRes.data.forEach(o => events.push({
+            ordersRes.data.forEach((o: any) => events.push({
                 id: o.id,
                 type: 'order',
                 title: `New Order for ₹${o.total}`,
@@ -151,7 +210,7 @@ export async function getRecentActivity(limit = 10) {
         }
 
         if (reviewsRes.data) {
-            reviewsRes.data.forEach(r => events.push({
+            reviewsRes.data.forEach((r: any) => events.push({
                 id: r.id,
                 type: 'review',
                 title: `New ${r.rating}-Star Review`,
@@ -161,7 +220,7 @@ export async function getRecentActivity(limit = 10) {
         }
 
         if (subscribersRes.data) {
-            subscribersRes.data.forEach(s => events.push({
+            subscribersRes.data.forEach((s: any) => events.push({
                 id: s.id,
                 type: 'newsletter',
                 title: `New Subscriber`,
@@ -182,7 +241,7 @@ export async function getMonthlyRevenue() {
     const { data, error } = await supabase
       .from('orders')
       .select('total, created_at')
-      .in('status', ['paid', 'confirmed_partial'])
+      .in('status', ['paid'])
       .order('created_at', { ascending: true })
 
     if (error) throw error
@@ -190,7 +249,7 @@ export async function getMonthlyRevenue() {
 
     const monthlyRevenue: Record<string, number> = {}
     
-    data.forEach((order) => {
+    data.forEach((order: any) => {
         const date = new Date(order.created_at || new Date().toISOString())
         const month = date.toLocaleString('default', { month: 'short' }) // e.g., "Dec"
         monthlyRevenue[month] = (monthlyRevenue[month] || 0) + Number(order.total)
@@ -224,16 +283,22 @@ export async function getSalesByCategory() {
             order:orders!inner(status),
             product:products!inner(category:categories!inner(name))
         `)
-        .in('order.status', ['paid', 'confirmed_partial'])
+        .filter('orders.status', 'eq', 'paid')
 
     if (error) {
-        console.error('Error fetching category sales:', error)
+        console.error('Error fetching category sales:', {
+            code: error.code,
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            query: 'getSalesByCategory'
+        })
         return []
     }
 
     const categoryRevenue: Record<string, number> = {}
 
-    data.forEach((item) => {
+    data.forEach((item: any) => {
         const categoryName = item.product?.category?.name || 'Uncategorized'
         const revenue = (item.quantity || 0) * (item.unit_price || 0)
         categoryRevenue[categoryName] = (categoryRevenue[categoryName] || 0) + revenue

@@ -18,18 +18,16 @@ interface VariantGeneratorProps {
     variants: {
       size: string;
       color: string;
-      fit: string;
       quantity: number;
       cost_price: number;
     }[],
   ) => void;
-  existingVariants: { size: string; color: string; fit: string }[];
+  existingVariants: { size: string; color: string }[];
   colorOptions: string[];
   colorMap?: Record<string, string>;
 }
 
 const SIZE_OPTIONS = ["XS", "S", "M", "L", "XL", "XXL", "Oversized"];
-const FIT_OPTIONS = ["Regular", "Oversized", "Fitted"];
 
 export function VariantGenerator({
   onGenerate,
@@ -39,11 +37,9 @@ export function VariantGenerator({
 }: VariantGeneratorProps) {
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedFits, setSelectedFits] = useState<string[]>([]);
 
   const [useSize, setUseSize] = useState(false);
   const [useColor, setUseColor] = useState(false);
-  const [useFit, setUseFit] = useState(false);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,20 +59,12 @@ export function VariantGenerator({
     );
   };
 
-  const toggleFit = (fit: string) => {
-    setSelectedFits((prev) =>
-      prev.includes(fit) ? prev.filter((f) => f !== fit) : [...prev, fit],
-    );
-  };
-
   const handleGenerate = () => {
     // Determine dimensions to use
     const finalSizes =
       useSize && selectedSizes.length > 0 ? selectedSizes : ["Standard"];
     const finalColors =
       useColor && selectedColors.length > 0 ? selectedColors : ["Standard"];
-    const finalFits =
-      useFit && selectedFits.length > 0 ? selectedFits : ["Regular"];
 
     if (useSize && selectedSizes.length === 0) {
       toast.error("Please select at least one size or disable Size option");
@@ -86,12 +74,8 @@ export function VariantGenerator({
       toast.error("Please select at least one color or disable Color option");
       return;
     }
-    if (useFit && selectedFits.length === 0) {
-      toast.error("Please select at least one fit or disable Fit option");
-      return;
-    }
 
-    if (!useSize && !useColor && !useFit) {
+    if (!useSize && !useColor) {
       toast.error("Please enable at least one option to generate variants");
       return;
     }
@@ -99,21 +83,18 @@ export function VariantGenerator({
     const newVariants: any[] = [];
     finalSizes.forEach((size) => {
       finalColors.forEach((color) => {
-        finalFits.forEach((fit) => {
-          // Only add if it doesn't already exist
-          const alreadyExists = existingVariants.some(
-            (v) => v.size === size && v.color === color && v.fit === fit,
-          );
-          if (!alreadyExists) {
-            newVariants.push({
-              size,
-              color,
-              fit,
-              quantity: defQty,
-              cost_price: defCost,
-            });
-          }
-        });
+        // Only add if it doesn't already exist
+        const alreadyExists = existingVariants.some(
+          (v) => v.size === size && v.color === color,
+        );
+        if (!alreadyExists) {
+          newVariants.push({
+            size,
+            color,
+            quantity: defQty,
+            cost_price: defCost,
+          });
+        }
       });
     });
 
@@ -124,7 +105,6 @@ export function VariantGenerator({
       toast.success(`Generated ${newVariants.length} new variants`);
       setSelectedSizes([]);
       setSelectedColors([]);
-      setSelectedFits([]);
       setDefCost(0);
       setDefQty(0);
       setIsOpen(false);
@@ -160,7 +140,9 @@ export function VariantGenerator({
                 <Checkbox
                   id="use-size"
                   checked={useSize}
-                  onCheckedChange={(c) => setUseSize(!!c)}
+                  onCheckedChange={(c: boolean | "indeterminate") =>
+                    setUseSize(!!c)
+                  }
                 />
                 <Label
                   htmlFor="use-size"
@@ -173,26 +155,15 @@ export function VariantGenerator({
                 <Checkbox
                   id="use-color"
                   checked={useColor}
-                  onCheckedChange={(c) => setUseColor(!!c)}
+                  onCheckedChange={(c: boolean | "indeterminate") =>
+                    setUseColor(!!c)
+                  }
                 />
                 <Label
                   htmlFor="use-color"
                   className="text-xs font-bold uppercase tracking-wider cursor-pointer"
                 >
                   Color
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="use-fit"
-                  checked={useFit}
-                  onCheckedChange={(c) => setUseFit(!!c)}
-                />
-                <Label
-                  htmlFor="use-fit"
-                  className="text-xs font-bold uppercase tracking-wider cursor-pointer"
-                >
-                  Fit
                 </Label>
               </div>
             </div>
@@ -257,29 +228,7 @@ export function VariantGenerator({
               </div>
             )}
 
-            {useFit && (
-              <div className="space-y-2 animate-in slide-in-from-left-2 duration-200">
-                <Label className="text-[10px] uppercase tracking-widest font-black text-muted-foreground">
-                  Select Fits
-                </Label>
-                <div className="flex flex-wrap gap-2">
-                  {FIT_OPTIONS.map((fit) => (
-                    <button
-                      key={fit}
-                      type="button"
-                      onClick={() => toggleFit(fit)}
-                      className={`px-3 py-1.5 text-[10px] font-mono font-black uppercase rounded-none border-2 transition-all ${
-                        selectedFits.includes(fit)
-                          ? "bg-black text-white border-black"
-                          : "bg-background border-foreground/10 hover:border-black"
-                      }`}
-                    >
-                      {fit}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Fit section removed */}
 
             <div className="pt-4 border-t-2 border-black space-y-4">
               <Label className="text-[10px] font-mono uppercase tracking-widest font-black text-black">
@@ -322,8 +271,7 @@ export function VariantGenerator({
             <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest">
               Total:{" "}
               {(useSize ? selectedSizes.length || 1 : 1) *
-                (useColor ? selectedColors.length || 1 : 1) *
-                (useFit ? selectedFits.length || 1 : 1)}{" "}
+                (useColor ? selectedColors.length || 1 : 1)}{" "}
               variants
             </p>
             <div className="flex gap-2">

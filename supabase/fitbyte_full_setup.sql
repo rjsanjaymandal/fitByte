@@ -79,7 +79,8 @@ create table if not exists public.product_stock (
   quantity int default 0,
   sku text,
   cost_price numeric,
-  unique (product_id, size, color)
+  fit text not null default 'Regular',
+  unique (product_id, size, color, fit)
 );
 
 -- Orders
@@ -136,7 +137,7 @@ create table if not exists public.cart_items (
     quantity integer not null default 1,
     created_at timestamptz default now(),
     updated_at timestamptz default now(),
-    unique(user_id, product_id, size, color)
+    unique(user_id, product_id, size, color, fit)
 );
 
 create table if not exists public.wishlist_items (

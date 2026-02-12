@@ -20,7 +20,10 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "types": ["node", "react", "react-dom", "web-push"],
+    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": "."
   },
   "include": [
     "next-env.d.ts",

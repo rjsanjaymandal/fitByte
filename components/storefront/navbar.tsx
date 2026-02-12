@@ -29,7 +29,6 @@ const HamburgerMenu = dynamic(
 import { SearchOverlay } from "@/components/storefront/search-overlay";
 import { NotificationBell } from "./notification-bell";
 import { motion, AnimatePresence } from "framer-motion";
-import { useScrollDirection } from "@/hooks/use-scroll-direction";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 
@@ -64,13 +63,7 @@ export function StorefrontNavbar() {
   const pathname = usePathname();
   const supabase = createClient();
 
-  // ... (keep defined vars)
-
-  // Fetch Categories logic ... (omitted for brevity in replacement if unchanged, but I need to include it or rely on existing)
-  // Re-including fetch to be safe as I am replacing the whole function body essentially or need to be careful with chunks.
-  // Actually, I'll just target the `return` block mostly, but need to insert the state hook.
-
-  // Fetch Categories (Re-declaring to ensure context is safe)
+  // Fetch Categories
   const { data: categories = [] } = useQuery({
     queryKey: ["nav-categories-v2"],
     queryFn: async () => {
@@ -94,183 +87,98 @@ export function StorefrontNavbar() {
 
   return (
     <>
-      <header className="relative w-full bg-background pt-[env(safe-area-inset-top)] z-50">
-        <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Main Content - Fades out when search is open  */}
+      <header className="relative w-full bg-[#fdfcf0] border-b border-zinc-200/50 pt-[env(safe-area-inset-top)] z-50">
+        <div className="relative mx-auto flex h-16 lg:h-20 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+          {/* Fades out when search is open */}
           <div
             className={cn(
-              "w-full flex items-center justify-between transition-opacity duration-200",
+              "w-full grid grid-cols-3 items-center transition-opacity duration-200",
               isSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100",
             )}
           >
-            {/* Mobile Menu & Logo */}
-            <div className="flex items-center gap-2">
+            {/* Left: Navigation Links */}
+            <nav className="hidden lg:flex items-center gap-4 xl:gap-8">
               <Link
-                href="/"
-                className="flex items-center gap-2 group"
-                title="Home"
+                href="/shop"
+                className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
               >
-                <div className="relative h-9 w-9 overflow-hidden rounded-full border-2 border-primary group-hover:scale-105 transition-all duration-300 shadow-md">
-                  <FlashImage
-                    src="/flash-logo.jpg"
-                    alt="Flash Logo"
-                    width={40}
-                    height={40}
-                    unoptimized
-                    className="bg-background"
-                  />
-                </div>
-                <span className="hidden lg:flex text-xl font-serif tracking-tighter text-black font-black items-center">
-                  FIT<span className="text-secondary">BYTE</span>
+                Shop fitByte
+              </Link>
+              <Link
+                href="/about"
+                className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
+              >
+                Our Story
+              </Link>
+              <Link
+                href="/bulk-gifting"
+                className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
+              >
+                Bulk Gifting
+              </Link>
+            </nav>
+
+            {/* Middle: Centered Logo */}
+            <div className="flex justify-center">
+              <Link href="/" className="flex items-center gap-2 group">
+                <span className="text-[20px] sm:text-[28px] lg:text-[34px] xl:text-[40px] font-black tracking-tighter text-[#1a2b47] uppercase font-sans leading-none">
+                  FITBYTES<span className="text-[#e31e24] ml-0.5">.</span>
                 </span>
               </Link>
             </div>
 
-            {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center gap-1">
-              <div className="group relative">
-                <Link
-                  href="/shop"
-                  className="flex items-center gap-1.5 text-xs font-semibold tracking-tight text-muted-foreground hover:text-primary transition-all px-4 py-2 rounded-full hover:bg-primary/5"
-                >
-                  Shop
-                  <ChevronDown className="h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" />
-                </Link>
-                <CategoryDropdown categories={categories} />
-              </div>
-              <Link
-                href="/lab"
-                className={cn(
-                  "text-[11px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-full",
-                  pathname === "/lab"
-                    ? "text-black bg-primary"
-                    : "text-zinc-500 hover:text-black hover:bg-zinc-100",
-                )}
-              >
-                The Lab
-              </Link>
-              <Link
-                href="/blog"
-                className={cn(
-                  "text-[11px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-full",
-                  pathname?.startsWith("/blog")
-                    ? "text-black bg-primary"
-                    : "text-zinc-500 hover:text-black hover:bg-zinc-100",
-                )}
-              >
-                Log
-              </Link>
-              <Link
-                href="/contact"
-                className={cn(
-                  "text-[11px] font-black uppercase tracking-widest transition-all px-4 py-2 rounded-full",
-                  pathname === "/contact"
-                    ? "text-black bg-primary"
-                    : "text-zinc-500 hover:text-black hover:bg-zinc-100",
-                )}
-              >
-                Reach Out
-              </Link>
-            </nav>
-
-            {/* Actions */}
-            <div className="flex items-center gap-1 sm:gap-2">
-              {/* Search Trigger */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsSearchOpen(true)}
-                className="rounded-full hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors h-11 w-11"
-              >
-                <Search className="h-5 w-5" />
-              </Button>
-
-              <Link href="/wishlist">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="relative rounded-full hover:bg-secondary/10 text-muted-foreground hover:text-secondary transition-colors h-11 w-11"
-                >
-                  <Heart className="h-5 w-5" />
-                  {mounted && wishlistCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-secondary text-[10px] font-bold text-white shadow-sm">
-                      {wishlistCount}
-                    </span>
-                  )}
-                </Button>
-              </Link>
-
-              {mounted && user ? (
-                <NotificationBell />
-              ) : (
-                <Skeleton className="h-11 w-11 rounded-full bg-muted/50 hidden sm:block" />
-              )}
-
-              <div className="hidden sm:block">
-                <ModeToggle />
-              </div>
-
-              <Button
-                variant="ghost"
-                size="icon"
+            {/* Right: Actions */}
+            <div className="flex items-center justify-end gap-4">
+              <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative rounded-full hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors h-11 w-11"
+                className="relative text-[#1a2b47] hover:opacity-70 transition-all"
               >
-                <ShoppingBag className="h-5 w-5" />
+                <ShoppingBag className="h-6 w-6" />
                 {mounted && cartCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white shadow-sm">
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#e31e24] text-[10px] font-bold text-white shadow-sm">
                     {cartCount}
                   </span>
                 )}
-              </Button>
+              </button>
 
-              <div className="h-6 w-px bg-border/50 mx-1 hidden sm:block" />
+              <Link
+                href="/account"
+                className="text-[#1a2b47] hover:opacity-70 transition-all"
+              >
+                <div className="h-6 w-6 flex items-center justify-center">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-6 w-6"
+                  >
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+              </Link>
 
-              {mounted && (
-                <>
-                  {user ? (
-                    <div className="flex items-center gap-2">
-                      <Link href="/account" className="hidden sm:block">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="rounded-full gap-2 px-3 font-semibold border border-primary/10 hover:border-primary/30 hover:bg-primary/5 transition-all"
-                        >
-                          <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center text-[10px] text-white font-bold shadow-sm">
-                            {user.email?.[0]?.toUpperCase()}
-                          </div>
-                          <span className="max-w-[100px] truncate text-xs">
-                            {profile?.name || user.email?.split("@")[0]}
-                          </span>
-                        </Button>
-                      </Link>
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="text-[#1a2b47] hover:opacity-70 transition-all"
+              >
+                <Search className="h-6 w-6" />
+              </button>
 
-                      {isAdmin && (
-                        <Link href="/admin" className="hidden md:block">
-                          <Button
-                            size="sm"
-                            className="rounded-full bg-primary text-white shadow-lg hover:shadow-primary/20 transition-all text-[10px] font-bold uppercase tracking-wider h-8"
-                          >
-                            Admin
-                          </Button>
-                        </Link>
-                      )}
-                    </div>
-                  ) : (
-                    <Link href="/login" className="hidden sm:block">
-                      <Button
-                        size="sm"
-                        className="rounded-full px-6 font-black uppercase tracking-widest text-[10px] bg-primary text-black shadow-lg shadow-primary/20 hover:scale-105 transition-all duration-300 h-10"
-                      >
-                        Join the Movement
-                      </Button>
-                    </Link>
-                  )}
-                </>
+              {/* Admin Access Button (Desktop) */}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className="hidden md:flex items-center gap-2 px-4 py-2 border border-[#1a2b47]/20 rounded-none text-[10px] font-black uppercase tracking-widest text-[#1a2b47] hover:bg-[#1a2b47] hover:text-white transition-all ml-2"
+                >
+                  Admin
+                </Link>
               )}
 
-              {/* Hamburger Menu - Moved to Right */}
-              <div className="ml-1">
+              <div className="lg:hidden ml-2">
                 <HamburgerMenu categories={categories} />
               </div>
             </div>
