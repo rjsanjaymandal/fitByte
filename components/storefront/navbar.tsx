@@ -96,27 +96,33 @@ export function StorefrontNavbar() {
               isSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100",
             )}
           >
-            {/* Left: Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-4 xl:gap-8">
-              <Link
-                href="/shop"
-                className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
-              >
-                Shop fitByte
-              </Link>
-              <Link
-                href="/about"
-                className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
-              >
-                Our Story
-              </Link>
-              <Link
-                href="/bulk-gifting"
-                className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
-              >
-                Bulk Gifting
-              </Link>
-            </nav>
+            {/* Left: Navigation and Hamburger */}
+            <div className="flex items-center justify-start gap-4">
+              <div className="lg:hidden">
+                <HamburgerMenu categories={categories} />
+              </div>
+
+              <nav className="hidden lg:flex items-center gap-4 xl:gap-8">
+                <Link
+                  href="/shop"
+                  className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
+                >
+                  Shop fitByte
+                </Link>
+                <Link
+                  href="/about"
+                  className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
+                >
+                  Our Story
+                </Link>
+                <Link
+                  href="/bulk-gifting"
+                  className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
+                >
+                  Bulk Gifting
+                </Link>
+              </nav>
+            </div>
 
             {/* Middle: Centered Logo */}
             <div className="flex justify-center">
@@ -177,10 +183,6 @@ export function StorefrontNavbar() {
                   Admin
                 </Link>
               )}
-
-              <div className="lg:hidden ml-2">
-                <HamburgerMenu categories={categories} />
-              </div>
             </div>
           </div>
         </div>
