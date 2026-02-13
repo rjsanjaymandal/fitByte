@@ -87,7 +87,7 @@ export function StorefrontNavbar() {
 
   return (
     <>
-      <header className="relative w-full bg-[#fdfcf0] border-b border-zinc-200/50 pt-[env(safe-area-inset-top)] z-50">
+      <header className="relative w-full bg-white border-b border-slate-100 pt-[env(safe-area-inset-top)] z-50">
         <div className="relative mx-auto flex h-16 lg:h-20 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           {/* Fades out when search is open */}
           <div
@@ -105,19 +105,19 @@ export function StorefrontNavbar() {
               <nav className="hidden lg:flex items-center gap-4 xl:gap-8">
                 <Link
                   href="/shop"
-                  className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
+                  className="text-sm font-medium text-slate-700 hover:text-green-600 transition-colors"
                 >
                   Shop fitByte
                 </Link>
                 <Link
                   href="/about"
-                  className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
+                  className="text-sm font-medium text-slate-700 hover:text-green-600 transition-colors"
                 >
                   Our Story
                 </Link>
                 <Link
                   href="/bulk-gifting"
-                  className="text-[13px] font-black uppercase tracking-[0.15em] text-[#1a2b47] hover:opacity-70 transition-all"
+                  className="text-sm font-medium text-slate-700 hover:text-green-600 transition-colors"
                 >
                   Bulk Gifting
                 </Link>
@@ -127,8 +127,8 @@ export function StorefrontNavbar() {
             {/* Middle: Centered Logo */}
             <div className="flex justify-center">
               <Link href="/" className="flex items-center gap-2 group">
-                <span className="text-[20px] sm:text-[28px] lg:text-[34px] xl:text-[40px] font-black tracking-tighter text-[#1a2b47] uppercase font-sans leading-none">
-                  FITBYTES<span className="text-[#e31e24] ml-0.5">.</span>
+                <span className="text-[20px] sm:text-[28px] lg:text-[34px] xl:text-[40px] font-extrabold tracking-tight text-slate-900 font-sans leading-none">
+                  fitByte<span className="text-green-600 ml-0.5">.</span>
                 </span>
               </Link>
             </div>
@@ -137,11 +137,11 @@ export function StorefrontNavbar() {
             <div className="flex items-center justify-end gap-4">
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative text-[#1a2b47] hover:opacity-70 transition-all"
+                className="relative text-slate-700 hover:text-green-600 transition-colors"
               >
-                <ShoppingBag className="h-6 w-6" />
+                <ShoppingBag className="h-5 w-5" />
                 {mounted && cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#e31e24] text-[10px] font-bold text-white shadow-sm">
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-green-600 text-[10px] font-bold text-white shadow-sm">
                     {cartCount}
                   </span>
                 )}
@@ -149,9 +149,9 @@ export function StorefrontNavbar() {
 
               <Link
                 href="/account"
-                className="text-[#1a2b47] hover:opacity-70 transition-all"
+                className="text-slate-700 hover:text-green-600 transition-colors"
               >
-                <div className="h-6 w-6 flex items-center justify-center">
+                <div className="h-5 w-5 flex items-center justify-center">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -159,7 +159,7 @@ export function StorefrontNavbar() {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="h-6 w-6"
+                    className="h-5 w-5"
                   >
                     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
@@ -169,9 +169,9 @@ export function StorefrontNavbar() {
 
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="text-[#1a2b47] hover:opacity-70 transition-all"
+                className="text-slate-700 hover:text-green-600 transition-colors"
               >
-                <Search className="h-6 w-6" />
+                <Search className="h-5 w-5" />
               </button>
 
               {/* Admin Access Button (Desktop) */}

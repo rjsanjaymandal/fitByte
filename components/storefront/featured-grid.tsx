@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 
 export function FeaturedGrid({
   products,
-  title = "BESTSELLERS",
+  title = "Bestsellers",
   subtitle = "Our most loved products, tried and tested by thousands.",
   badge = "Bestsellers",
 }: {
@@ -26,28 +26,28 @@ export function FeaturedGrid({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs font-black uppercase tracking-[0.3em] text-[#e31e24] mb-3">
+            <p className="text-xs font-semibold uppercase tracking-wider text-green-600 mb-2">
               {badge}
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1a2b47] uppercase tracking-tighter leading-none">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
               {title}
             </h2>
-            <p className="mt-3 text-sm text-[#1a2b47]/50 font-medium max-w-md">
+            <p className="mt-3 text-sm text-slate-500 font-medium max-w-md">
               {subtitle}
             </p>
           </motion.div>
 
           <Link
             href="/shop"
-            className="group flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#1a2b47] hover:text-[#e31e24] transition-colors pb-1 border-b-2 border-[#1a2b47]/10 hover:border-[#e31e24]"
+            className="group flex items-center gap-2 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
           >
             View All Products
             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
-        {/* Product Row - Horizontal Scroll on mobile, grid on desktop */}
-        <div className="flex overflow-x-auto snap-x snap-mandatory lg:grid lg:grid-cols-4 gap-6 pb-4 scrollbar-hide -mx-4 px-4 lg:mx-0 lg:px-0">
+        {/* Product Row */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory lg:grid lg:grid-cols-4 gap-5 pb-4 scrollbar-hide -mx-4 px-4 lg:mx-0 lg:px-0">
           {products.map((product, index) => (
             <motion.div
               key={product.id}

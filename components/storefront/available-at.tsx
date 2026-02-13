@@ -1,27 +1,28 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck, Truck, CreditCard, Banknote } from "lucide-react";
+import { CreditCard, Smartphone, Landmark, QrCode, Wallet } from "lucide-react";
 
 const RETAILERS = [
   { name: "Amazon", initial: "A" },
   { name: "Flipkart", initial: "F" },
   { name: "BigBasket", initial: "B" },
-  { name: "Blinkit", initial: "Bl" },
+  { name: "Swiggy Instamart", initial: "S" },
   { name: "Zepto", initial: "Z" },
-  { name: "Swiggy Instamart", initial: "SI" },
+  { name: "Blinkit", initial: "B" },
 ];
 
 const PAYMENT_METHODS = [
-  { name: "UPI", icon: CreditCard },
+  { name: "UPI", icon: QrCode },
   { name: "Cards", icon: CreditCard },
-  { name: "Net Banking", icon: Banknote },
-  { name: "COD", icon: Truck },
+  { name: "Net Banking", icon: Landmark },
+  { name: "Wallets", icon: Wallet },
+  { name: "Google Pay", icon: Smartphone },
 ];
 
 export function AvailableAt() {
   return (
-    <section className="py-16 md:py-20 bg-white border-y border-[#1a2b47]/10 overflow-hidden">
+    <section className="py-16 md:py-20 bg-white overflow-hidden">
       <div className="container mx-auto px-4 md:px-6">
         {/* Section Title */}
         <motion.div
@@ -30,48 +31,52 @@ export function AvailableAt() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-black text-[#1a2b47] uppercase tracking-tighter">
-            ALSO AVAILABLE AT
+          <p className="text-xs font-semibold uppercase tracking-wider text-green-600 mb-2">
+            Shop Everywhere
+          </p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Also Available At
           </h2>
-          <div className="w-16 h-1 bg-[#e31e24] mx-auto mt-4" />
         </motion.div>
 
         {/* Retailer Logos Grid */}
-        <div className="flex flex-wrap justify-center gap-6 md:gap-10 mb-16">
-          {RETAILERS.map((retailer, index) => (
+        <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-14">
+          {RETAILERS.map((retailer, i) => (
             <motion.div
-              key={retailer.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              key={i}
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.08 }}
-              className="w-28 h-20 md:w-36 md:h-24 border-2 border-[#1a2b47]/10 bg-[#fdfcf0] flex items-center justify-center hover:border-[#1a2b47] hover:shadow-[4px_4px_0px_0px_rgba(26,43,71,1)] transition-all cursor-default group"
+              transition={{ delay: i * 0.06 }}
+              className="w-28 h-28 md:w-32 md:h-32 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md hover:border-green-200 transition-all duration-300 cursor-default"
             >
-              <span className="text-lg md:text-xl font-black text-[#1a2b47]/40 uppercase tracking-tight group-hover:text-[#1a2b47] transition-colors">
+              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
+                <span className="text-lg font-bold text-slate-700">
+                  {retailer.initial}
+                </span>
+              </div>
+              <p className="text-[11px] font-semibold text-slate-500">
                 {retailer.name}
-              </span>
+              </p>
             </motion.div>
           ))}
         </div>
 
-        {/* Payment & Security Strip */}
-        <div className="border-t border-[#1a2b47]/10 pt-10">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-            <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-[#1a2b47]/50">
-              <ShieldCheck className="h-5 w-5 text-[#e31e24]" />
-              Securely Pay Using
-            </div>
-            <div className="flex items-center gap-6">
-              {PAYMENT_METHODS.map((method) => (
-                <div
-                  key={method.name}
-                  className="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-[#1a2b47]/40"
-                >
-                  <method.icon className="h-4 w-4" />
-                  {method.name}
-                </div>
-              ))}
-            </div>
+        {/* Payment Methods Strip */}
+        <div className="max-w-2xl mx-auto bg-slate-50 rounded-2xl p-6 text-center">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-4">
+            Secure Payment Options
+          </p>
+          <div className="flex justify-center flex-wrap gap-6">
+            {PAYMENT_METHODS.map((method, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center gap-1.5 text-slate-500"
+              >
+                <method.icon className="h-5 w-5 text-slate-400 stroke-[1.5]" />
+                <span className="text-[10px] font-medium">{method.name}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

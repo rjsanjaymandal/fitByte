@@ -188,7 +188,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
       ref={containerRef}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[85vh] bg-[#fdfcf0] overflow-hidden"
+      className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[85vh] bg-slate-50 overflow-hidden"
     >
       <AnimatePresence initial={false} custom={direction}>
         <motion.div
@@ -231,8 +231,8 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
             )}
 
             {/* Gradient Overlay for Text Readability - subtle for premium feel */}
-            <div className="absolute inset-0 bg-[#1a2b47]/20 z-10" />
-            <div className="absolute inset-0 bg-linear-to-t from-[#1a2b47]/40 via-transparent to-transparent z-10" />
+            <div className="absolute inset-0 bg-slate-900/15 z-10" />
+            <div className="absolute inset-0 bg-linear-to-t from-slate-900/40 via-transparent to-transparent z-10" />
           </div>
 
           {/* CONTENT LAYER */}
@@ -244,8 +244,8 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                 transition={{ delay: 0.3 }}
                 className="mb-6"
               >
-                <span className="inline-block bg-[#e31e24] text-white px-6 py-2 rounded-none text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl">
-                  NEW LAUNCH
+                <span className="inline-block bg-green-600 text-white px-5 py-2 rounded-full text-xs font-semibold tracking-wide shadow-lg">
+                  New Launch
                 </span>
               </motion.div>
 
@@ -254,7 +254,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] xl:text-[140px] font-black text-white leading-[0.85] tracking-[-0.04em] uppercase"
+                  className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] xl:text-[140px] font-extrabold text-white leading-[0.85] tracking-tight"
                 >
                   {currentProduct.name}
                 </motion.h1>
@@ -267,7 +267,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                 className="flex items-center justify-center lg:justify-start gap-4 mb-8 sm:mb-12"
               >
                 <div className="h-[2px] w-6 sm:w-12 bg-white" />
-                <span className="text-[10px] sm:text-[12px] lg:text-[14px] text-white font-black tracking-[0.4em] uppercase whitespace-nowrap">
+                <span className="text-xs sm:text-sm text-white/80 font-medium tracking-wide whitespace-nowrap">
                   {getTagline(currentProduct)}
                 </span>
                 <div className="h-[2px] w-6 sm:w-12 bg-white block lg:hidden" />
@@ -281,12 +281,12 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
               >
                 <div className="flex flex-col items-center lg:items-start order-2 sm:order-1">
                   <div className="flex items-baseline gap-3">
-                    <span className="text-4xl sm:text-5xl lg:text-7xl font-black">
+                    <span className="text-4xl sm:text-5xl lg:text-7xl font-extrabold">
                       {formatCurrency(currentProduct.price)}
                     </span>
                     {currentProduct.original_price &&
                       currentProduct.original_price > currentProduct.price && (
-                        <span className="text-white/40 line-through text-xl lg:text-2xl font-black">
+                        <span className="text-white/40 line-through text-xl lg:text-2xl font-bold">
                           {formatCurrency(currentProduct.original_price)}
                         </span>
                       )}
@@ -295,10 +295,10 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
 
                 <Button
                   size="lg"
-                  className="h-14 sm:h-16 lg:h-20 px-10 sm:px-14 lg:px-20 rounded-none text-[11px] sm:text-[12px] font-black uppercase tracking-[0.3em] bg-white text-[#1a2b47] hover:bg-[#e31e24] hover:text-white active:scale-95 transition-all shadow-2xl mt-4 sm:mt-0 group border-none order-1 sm:order-2"
+                  className="h-14 sm:h-16 lg:h-18 px-10 sm:px-14 lg:px-16 rounded-full text-sm font-semibold bg-white text-slate-900 hover:bg-green-600 hover:text-white active:scale-95 transition-all shadow-xl mt-4 sm:mt-0 group border-none order-1 sm:order-2"
                   onClick={handleBuyNow}
                 >
-                  ACQUIRE NOW
+                  Shop Now
                   <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
@@ -327,7 +327,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
           size="icon"
           variant="ghost"
           onClick={handlePrev}
-          className="h-12 w-12 rounded-none bg-white/5 hover:bg-white/10 backdrop-blur-md text-white pointer-events-auto border border-white/5"
+          className="h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white pointer-events-auto border border-white/10"
         >
           <ChevronLeft className="h-5 w-5" />
         </Button>
@@ -335,7 +335,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
           size="icon"
           variant="ghost"
           onClick={handleNext}
-          className="h-12 w-12 rounded-none bg-white/5 hover:bg-white/10 backdrop-blur-md text-white pointer-events-auto border border-white/5"
+          className="h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white pointer-events-auto border border-white/10"
         >
           <ChevronRight className="h-5 w-5" />
         </Button>

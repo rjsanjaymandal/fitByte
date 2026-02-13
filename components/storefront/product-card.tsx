@@ -443,30 +443,30 @@ export function ProductCard({
     <>
       <motion.div
         whileHover={{ y: -4 }}
-        className="group relative flex flex-col h-full bg-white border border-zinc-200 hover:border-[#e31e24] hover:shadow-xl hover:shadow-[#e31e24]/5 transition-all duration-300 rounded-none overflow-hidden"
+        className="group relative flex flex-col h-full bg-white border border-slate-100 rounded-2xl hover:shadow-lg transition-all duration-300 overflow-hidden"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Image Container */}
         <Link
           href={`/product/${product.slug || product.id}`}
-          className="block relative aspect-[1/1] overflow-hidden bg-[#fdfcf0]"
+          className="block relative aspect-[1/1] overflow-hidden bg-slate-50 rounded-t-2xl"
         >
           {/* Static Badges - Top Left */}
           <div className="absolute top-3 left-3 z-10 flex flex-col gap-2 pointer-events-none">
             {isOutOfStock ? (
-              <Badge className="bg-black text-white uppercase tracking-widest text-[10px] font-black px-3 py-1.5 rounded-none border-none">
+              <Badge className="bg-slate-900 text-white text-[10px] font-semibold px-3 py-1 rounded-full border-none">
                 Sold Out
               </Badge>
             ) : (
               <>
                 {isNew && (
-                  <Badge className="bg-[#e31e24] text-white uppercase tracking-widest text-[10px] font-black px-3 py-1.5 rounded-none border-none shadow-md rotate-[-2deg]">
-                    New Drop
+                  <Badge className="bg-green-600 text-white text-[10px] font-semibold px-3 py-1 rounded-full border-none shadow-sm">
+                    New
                   </Badge>
                 )}
                 {calculateDiscount(product.price, product.original_price) && (
-                  <Badge className="bg-[#1a2b47] text-white uppercase tracking-widest text-[10px] font-black px-3 py-1.5 rounded-none border-none shadow-md">
+                  <Badge className="bg-red-500 text-white text-[10px] font-semibold px-3 py-1 rounded-full border-none shadow-sm">
                     Sale
                   </Badge>
                 )}
@@ -477,12 +477,12 @@ export function ProductCard({
           {/* Wishlist Button - Top Right */}
           <button
             onClick={handleWishlistClick}
-            className="absolute top-3 right-3 z-20 h-9 w-9 flex items-center justify-center bg-white/80 backdrop-blur-sm hover:bg-white transition-all text-[#1a2b47] hover:text-[#e31e24] shadow-sm"
+            className="absolute top-3 right-3 z-20 h-9 w-9 flex items-center justify-center bg-white/90 backdrop-blur-sm hover:bg-white rounded-full transition-all text-slate-500 hover:text-red-500 shadow-sm"
           >
             <Heart
               className={cn(
                 "h-5 w-5",
-                isWishlisted && "fill-current text-[#e31e24]",
+                isWishlisted && "fill-current text-red-500",
               )}
             />
           </button>
@@ -521,8 +521,8 @@ export function ProductCard({
                     className={cn(
                       "h-1.5 w-1.5 rounded-full transition-all duration-300 shadow-sm",
                       idx === imgIndex
-                        ? "bg-[#1a2b47] scale-125"
-                        : "bg-zinc-300",
+                        ? "bg-green-600 scale-125"
+                        : "bg-slate-300",
                     )}
                   />
                 ))}
@@ -537,16 +537,16 @@ export function ProductCard({
           <div className="flex flex-col gap-1">
             <Link
               href={`/product/${product.slug || product.id}`}
-              className="group-hover:text-[#e31e24] transition-colors"
+              className="group-hover:text-green-600 transition-colors"
             >
-              <h3 className="font-black text-[16px] leading-[1.1] text-[#1a2b47] uppercase tracking-wide line-clamp-2 min-h-[2.2em]">
+              <h3 className="font-semibold text-[15px] leading-snug text-slate-800 line-clamp-2 min-h-[2.2em]">
                 {product.name}
               </h3>
             </Link>
 
             {/* Rating */}
             <div className="flex items-center gap-1.5">
-              <div className="flex text-[#e31e24]">
+              <div className="flex text-amber-400">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
@@ -554,39 +554,39 @@ export function ProductCard({
                       "h-3.5 w-3.5",
                       i < Math.floor(rating)
                         ? "fill-current"
-                        : "text-zinc-200 fill-zinc-200",
+                        : "text-slate-200 fill-slate-200",
                     )}
                   />
                 ))}
               </div>
-              <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">
+              <span className="text-[11px] font-medium text-slate-400">
                 {reviewCount} Reviews
               </span>
             </div>
           </div>
 
           {/* Attributes / Macro Badge (Simulated) */}
-          <div className="flex flex-wrap gap-2">
-            <div className="bg-zinc-100 text-zinc-600 px-2 py-1 text-[10px] font-black uppercase tracking-wider">
+          <div className="flex flex-wrap gap-1.5">
+            <div className="bg-green-50 text-green-700 px-2.5 py-0.5 text-[10px] font-semibold rounded-full">
               20g Protein
             </div>
-            <div className="bg-zinc-100 text-zinc-600 px-2 py-1 text-[10px] font-black uppercase tracking-wider">
+            <div className="bg-green-50 text-green-700 px-2.5 py-0.5 text-[10px] font-semibold rounded-full">
               No Sugar
             </div>
           </div>
 
           <div className="mt-auto pt-2 flex items-center justify-between gap-4">
             <div className="flex flex-col">
-              <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+              <span className="text-[10px] text-slate-400 font-medium">
                 From
               </span>
               <div className="flex items-baseline gap-2">
-                <span className="text-xl font-black text-[#1a2b47]">
+                <span className="text-xl font-bold text-slate-900">
                   {formatCurrency(product.price)}
                 </span>
                 {product.original_price &&
                   product.original_price > product.price && (
-                    <span className="text-xs text-zinc-400 line-through font-bold">
+                    <span className="text-xs text-slate-400 line-through font-medium">
                       {formatCurrency(product.original_price)}
                     </span>
                   )}
@@ -597,7 +597,7 @@ export function ProductCard({
             {!isOutOfStock ? (
               <Button
                 size="icon"
-                className="h-12 w-12 rounded-none bg-[#1a2b47] hover:bg-[#e31e24] text-white shadow-lg transition-all active:scale-95"
+                className="h-11 w-11 rounded-full bg-green-600 hover:bg-green-700 text-white shadow-md transition-all active:scale-95"
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
               >
@@ -615,7 +615,7 @@ export function ProductCard({
             ) : (
               <Button
                 size="sm"
-                className="h-10 px-4 rounded-none bg-zinc-100 text-zinc-400 font-black uppercase tracking-tight text-[10px] hover:bg-zinc-200"
+                className="h-10 px-4 rounded-full bg-slate-100 text-slate-500 font-semibold text-xs hover:bg-slate-200"
                 onClick={handlePreOrder}
                 disabled={isLoadingWaitlist}
               >

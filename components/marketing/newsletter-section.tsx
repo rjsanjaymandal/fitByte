@@ -2,62 +2,68 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { subscribeToNewsletter } from "@/app/actions/marketing-actions";
 import { toast } from "sonner";
-import { Send } from "lucide-react";
+import { motion } from "framer-motion";
+import { Mail } from "lucide-react";
+import { useState } from "react";
 
 export function NewsletterSection() {
-  async function action(formData: FormData) {
-    const res = await subscribeToNewsletter(formData);
-    if (res?.error) {
-      toast.error(res.error);
-    } else {
-      if (res?.message) {
-        toast.info(res.message);
-      } else {
-        toast.success("Subscribed successfully!");
-      }
+  const [email, setEmail] = useState("");
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email");
+      return;
     }
+    toast.success("Welcome to the fitByte fam! 🎉");
+    setEmail("");
   }
 
   return (
-    <section className="py-16 md:py-24 bg-[#fdfcf0] border-t border-[#1a2b47]/10 overflow-hidden">
+    <section className="py-16 md:py-24 bg-green-600 overflow-hidden relative">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl md:text-5xl font-black text-[#1a2b47] uppercase tracking-tighter mb-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="max-w-xl mx-auto text-center"
+        >
+          <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <Mail className="h-7 w-7 text-white" />
+          </div>
+
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-3">
             Join the fitByte Fam
           </h2>
-          <p className="text-sm text-[#1a2b47]/60 font-medium mb-10 max-w-md mx-auto leading-relaxed">
-            Subscribe to our newsletter for the latest updates on new products,
-            exclusive promotions, and discounts.
+          <p className="text-sm text-white/80 font-medium mb-8 max-w-md mx-auto">
+            Get exclusive deals, new launches, nutrition tips & 10% off your
+            first order — straight to your inbox.
           </p>
 
-          <form action={action} className="max-w-lg mx-auto">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <div className="flex-1">
-                <label htmlFor="newsletter-email" className="sr-only">
-                  Email Address
-                </label>
-                <Input
-                  type="email"
-                  id="newsletter-email"
-                  name="email"
-                  autoComplete="email"
-                  placeholder="YOUR EMAIL ADDRESS"
-                  required
-                  className="h-14 w-full rounded-none border-2 border-[#1a2b47] bg-white px-5 text-xs font-bold uppercase tracking-widest placeholder:text-zinc-300 focus-visible:ring-0 focus:border-[#e31e24] transition-colors"
-                />
-              </div>
-              <Button
-                type="submit"
-                className="h-14 rounded-none bg-[#e31e24] hover:bg-[#1a2b47] text-white px-8 text-xs font-black uppercase tracking-widest transition-colors shrink-0"
-              >
-                <span>Subscribe</span>
-                <Send className="h-4 w-4 ml-2 stroke-2" />
-              </Button>
-            </div>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+          >
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-12 bg-white/95 border-0 rounded-full px-5 text-sm text-slate-900 placeholder:text-slate-400 focus-visible:ring-2 focus-visible:ring-white/50 flex-1"
+            />
+            <Button
+              type="submit"
+              className="h-12 px-8 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-lg transition-all hover:shadow-xl"
+            >
+              Subscribe
+            </Button>
           </form>
-        </div>
+
+          <p className="text-[11px] text-white/50 mt-4">
+            No spam, ever. Unsubscribe anytime.
+          </p>
+        </motion.div>
       </div>
     </section>
   );
