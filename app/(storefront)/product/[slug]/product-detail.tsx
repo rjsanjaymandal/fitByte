@@ -8,7 +8,15 @@ import {
   selectIsInWishlist,
 } from "@/store/use-wishlist-store";
 import { cn, formatCurrency, calculateDiscount } from "@/lib/utils";
-import { Phone, Plus, Share2, Star, Check } from "lucide-react"; // Icons for services
+import {
+  Phone,
+  Plus,
+  Share2,
+  Star,
+  Check,
+  ShoppingBag,
+  ArrowRight,
+} from "lucide-react";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -104,14 +112,12 @@ export function ProductDetailClient({
   const [isWaitlistDialogOpen, setIsWaitlistDialogOpen] = useState(false);
   const [isUnjoinDialogOpen, setIsUnjoinDialogOpen] = useState(false);
 
-  // Helper: Normalize color strings (fix typos, standard formatting)
+  // Helper: Normalize color strings
   const normalizeColor = (c: string) => {
     if (!c) return "";
     let clean = c.trim().toLowerCase().replace(/\s+/g, " ");
-    // Specific fixes based on user feedback
     if (clean === "offf white") clean = "off white";
     if (clean === "off-white") clean = "off white";
-    // Title Case for display
     return clean
       .split(" ")
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -138,9 +144,7 @@ export function ProductDetailClient({
   };
 
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
-  const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
-
-  // Auto-Select Logic: If there's only 1 option for any attribute, select it automatically.
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(true);
 
   const { user } = useAuth();
 
@@ -161,13 +165,21 @@ export function ProductDetailClient({
     return id;
   }, []);
 
-  // Logic to determine what options to show
+  // Options normalization
   const sizeOptions = useMemo(() => {
-    const sizes = product.size_options?.length
+    let sizes = product.size_options?.length
       ? [...product.size_options]
       : realTimeStock?.length
         ? Array.from(new Set(realTimeStock.map((s) => s.size)))
-        : ["One Size"];
+        : ["Standard"];
+
+    // Filter out "One Size" / "Standard" if they are the only option
+    if (
+      sizes.length === 1 &&
+      (sizes[0] === "Standard" || sizes[0] === "One Size")
+    ) {
+      // Keep it for logic but we might hide it in UI
+    }
 
     return sizes.sort((a, b) => {
       const indexA = STANDARD_SIZES.indexOf(a);
@@ -184,38 +196,27 @@ export function ProductDetailClient({
       ? product.color_options
       : realTimeStock?.map((s) => s.color).filter(Boolean) || ["Standard"];
 
-    // Deduplicate based on normalized values
     const normalized = Array.from(
       new Set(rawOptions.map(normalizeColor)),
     ).sort();
 
-    // Hide if only 1 option and it's "Standard"
-    if (normalized.length === 1 && normalized[0] === "Standard") {
-      return [];
-    }
-
     return normalized;
   }, [product.color_options, realTimeStock]);
 
-  // Auto-Select Logic: If there's only 1 option for any attribute, select it automatically.
+  // Auto-Select Logic
   useEffect(() => {
-    // 1. Auto-Select Size
     if (sizeOptions.length === 1 && !selectedSize) {
       setSelectedSize(sizeOptions[0]);
     }
-    // 2. Auto-Select Color
     if (colorOptions.length === 1 && !selectedColor) {
       setSelectedColor(colorOptions[0]);
     }
-    // 3. Auto-Select Fit (Only if options exist)
   }, [sizeOptions, colorOptions, selectedSize, selectedColor]);
 
-  // Stock Logic (Normalized)
   const stockMap = useMemo(() => {
     const map: Record<string, number> = {};
     if (!realTimeStock) return map;
     realTimeStock.forEach((item: any) => {
-      // Use normalized color for the key to merge duplicates
       const key = `${item.size}-${normalizeColor(item.color || "")}`;
       map[key] = (map[key] || 0) + item.quantity;
     });
@@ -233,8 +234,7 @@ export function ProductDetailClient({
 
   const getStock = (size: string, color: string) =>
     stockMap[`${size}-${normalizeColor(color)}`] || 0;
-  //   const isAvailable = (size: string, color: string) =>
-  //     (stockMap[`${size}-${color}`] || 0) > 0;
+
   const isSizeAvailable = (size: string) => {
     if (!selectedColor) return true;
     return getStock(size, selectedColor) > 0;
@@ -242,64 +242,10 @@ export function ProductDetailClient({
 
   const maxQty = getStock(selectedSize, selectedColor);
 
-  // Logic: OOS if Global stock is 0 OR if specific selection is 0
   const isGlobalOutOfStock = totalStock === 0 && !loadingStock;
-  const isSelectionOutOfStock = maxQty === 0 && selectedSize && selectedColor;
+  const isSelectionOutOfStock =
+    maxQty === 0 && !!(selectedSize && selectedColor);
   const isOutOfStock = isGlobalOutOfStock || isSelectionOutOfStock;
-
-  // Handlers
-  const handlePreOrder = async () => {
-    if (isOnWaitlist) {
-      if (!user) {
-        toast.info("You are already on the waitlist! (Guest)");
-        return;
-      }
-      setIsUnjoinDialogOpen(true);
-      return;
-    }
-    setIsLoadingWaitlist(true);
-    try {
-      const result = await togglePreorder(product.id);
-      if (
-        result.error &&
-        (result.error.includes("sign in") ||
-          result.error.includes("identifying"))
-      ) {
-        setIsWaitlistDialogOpen(true);
-      } else if (result.error) {
-        toast.error(result.error);
-      } else {
-        setIsOnWaitlist(true);
-        toast.success("Added to waitlist!");
-        if (result.status === "added")
-          localStorage.setItem(`waitlist_${product.id}`, "true");
-      }
-    } catch (error) {
-      toast.error("Something went wrong.");
-    } finally {
-      setIsLoadingWaitlist(false);
-    }
-  };
-
-  const handleConfirmUnjoin = async () => {
-    const previousState = true;
-    setIsOnWaitlist(false);
-    toast.success("Removed from waitlist.");
-    try {
-      const result = await togglePreorder(product.id);
-      if (result.error) {
-        setIsOnWaitlist(previousState);
-        toast.dismiss();
-        toast.error(result.error);
-      } else {
-        localStorage.removeItem(`waitlist_${product.id}`);
-      }
-    } catch (error) {
-      setIsOnWaitlist(previousState);
-      toast.dismiss();
-      toast.error("Something went wrong.");
-    }
-  };
 
   const handleWaitlistSubmit = async (email: string) => {
     setIsLoadingWaitlist(true);
@@ -308,14 +254,9 @@ export function ProductDetailClient({
       const result = await togglePreorder(product.id, email, guestId);
       if (result.error) {
         toast.error(result.error);
-      } else if (result.status === "already_joined") {
-        setIsOnWaitlist(true);
-        toast.info(result.message);
-        localStorage.setItem(`waitlist_${product.id}`, "true");
-        if (email) localStorage.setItem("user_email_preference", email);
       } else {
         setIsOnWaitlist(true);
-        toast.success("You've been added to the waitlist!");
+        toast.success("Added to waitlist!");
         localStorage.setItem(`waitlist_${product.id}`, "true");
         if (email) localStorage.setItem("user_email_preference", email);
       }
@@ -325,17 +266,28 @@ export function ProductDetailClient({
       setIsLoadingWaitlist(false);
     }
   };
+
   const handleAddToCart = async (
     options = { openCart: true, showToast: true },
   ) => {
-    if (!selectedSize || !selectedColor) {
+    // If no size or color, and there's only one option, try to auto-pick it
+    let size = selectedSize;
+    let color = selectedColor;
+
+    if (!size && sizeOptions.length === 1) size = sizeOptions[0];
+    if (!color && colorOptions.length === 1) color = colorOptions[0];
+
+    if (!size || !color) {
       toast.error("Please complete your selection");
       return false;
     }
-    if (maxQty <= 0) {
-      toast.error("Out of stock");
+
+    const currentStock = getStock(size, color);
+    if (currentStock <= 0) {
+      toast.error("Selected option is out of stock");
       return false;
     }
+
     try {
       await addToCart(
         {
@@ -344,44 +296,48 @@ export function ProductDetailClient({
           name: product.name,
           price: adjustedPrice,
           image: product.main_image_url,
-          size: selectedSize,
-          color: selectedColor,
+          size,
+          color,
           quantity: quantity,
-          maxQuantity: maxQty,
+          maxQuantity: currentStock,
           slug: product.slug || "",
         },
         options,
       );
       return true;
     } catch (error) {
-      toast.error("Failed to add");
+      toast.error("Failed to add to cart");
       return false;
     }
   };
 
-  // Prefetch checkout for speed
+  const handleBuyNow = async () => {
+    const success = await handleAddToCart({
+      openCart: false,
+      showToast: false,
+    });
+    if (success) {
+      router.push("/checkout");
+    }
+  };
+
   useEffect(() => {
     router.prefetch("/checkout");
   }, [router]);
 
-  // FAQ Data
-  const faqData = [
-    {
-      question: "Material",
-      answer: "Premium Fabric Blend designed for comfort and durability.",
-    },
-    {
-      question: "Fit",
-      answer: "Relaxed, gender-neutral fit. True to size.",
-    },
-  ];
+  const hasVariants =
+    colorOptions.length > 1 ||
+    sizeOptions.length > 1 ||
+    (sizeOptions.length === 1 &&
+      sizeOptions[0] !== "Standard" &&
+      sizeOptions[0] !== "One Size");
 
   return (
-    <div className="min-h-screen bg-background">
-      <FAQJsonLd questions={faqData} />
+    <div className="min-h-screen bg-slate-50/50">
+      <FAQJsonLd questions={[]} />
 
-      {/* GALLERY SECTION (Full Width) */}
-      <div className="w-full">
+      {/* GALLERY SECTION */}
+      <div className="w-full bg-white">
         <ProductGallery
           images={product.gallery_image_urls || []}
           name={product.name}
@@ -389,51 +345,39 @@ export function ProductDetailClient({
         />
       </div>
 
-      {/* SPLIT INFO SECTION (Grid) */}
-      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-8 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-6 lg:gap-x-24">
-          {/* LEFT COLUMN: Identity & Visuals (Col-7) */}
-          <div className="col-span-1 lg:col-span-7 flex flex-col gap-6">
-            <div className="space-y-6">
-              {/* Breadcrumb-ish / Collection Name & Share */}
+      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 pt-12 pb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+          {/* LEFT COLUMN: Identity */}
+          <div className="col-span-1 lg:col-span-7 flex flex-col gap-8">
+            <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-[8px] uppercase tracking-[0.4em] text-muted-foreground font-medium">
-                  Collection 2026
+                <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                  New Arrival
                 </span>
                 <button
                   onClick={handleShare}
-                  className="p-1 hover:opacity-50 transition-all outline-none focus:outline-none"
-                  aria-label="Share product"
+                  className="p-2 hover:bg-slate-100 rounded-full transition-all"
                 >
-                  <Share2 className="w-3.5 h-3.5 text-foreground stroke-[1.5]" />
+                  <Share2 className="w-4 h-4 text-slate-500" />
                 </button>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-foreground leading-tight tracking-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-[1.1] tracking-tight">
                 {product.name}
               </h1>
 
-              <div className="flex items-center gap-6">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={adjustedPrice}
-                    initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                    animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-xl font-serif tracking-tight text-foreground/80"
-                  >
-                    {formatCurrency(adjustedPrice)}
-                  </motion.div>
-                </AnimatePresence>
+              <div className="flex items-center gap-4">
+                <p className="text-3xl font-bold text-slate-900">
+                  {formatCurrency(adjustedPrice)}
+                </p>
                 {product.original_price &&
                   product.original_price > product.price && (
-                    <div className="flex items-center gap-3">
-                      <span className="text-sm text-muted-foreground line-through">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg text-slate-400 line-through">
                         {formatCurrency(product.original_price)}
                       </span>
-                      <span className="text-[10px] uppercase tracking-[0.2em] text-foreground border border-foreground/20 px-2 py-0.5 rounded-none">
-                        -
+                      <span className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-lg text-xs font-bold">
+                        SAVE{" "}
                         {calculateDiscount(
                           adjustedPrice,
                           product.original_price,
@@ -444,25 +388,34 @@ export function ProductDetailClient({
                   )}
               </div>
 
-              {/* Rating Summary */}
               {initialReviews.count > 0 && (
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center text-foreground">
-                    <Star className="w-2.5 h-2.5 fill-current" />
-                    <span className="ml-1 text-[10px] font-medium tracking-widest uppercase">
-                      {initialReviews.average}
-                    </span>
+                  <div className="flex items-center text-amber-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={cn(
+                          "w-4 h-4",
+                          i < Math.floor(Number(initialReviews.average))
+                            ? "fill-current"
+                            : "fill-slate-200 text-slate-200",
+                        )}
+                      />
+                    ))}
                   </div>
-                  <span className="text-[8px] text-muted-foreground uppercase tracking-[0.3em]">
+                  <span className="text-sm font-bold text-slate-900">
+                    {initialReviews.average}
+                  </span>
+                  <span className="text-sm text-slate-400 font-medium">
                     ({initialReviews.count} Reviews)
                   </span>
                 </div>
               )}
             </div>
 
-            {/* Visual Color Variations */}
-            {colorOptions.length > 0 && colorOptions[0] !== "Standard" && (
-              <div>
+            {/* Selectors */}
+            <div className="space-y-10 py-4">
+              {colorOptions.length > 0 && colorOptions[0] !== "Standard" && (
                 <ProductColorSelector
                   options={colorOptions}
                   selected={selectedColor}
@@ -473,32 +426,13 @@ export function ProductDetailClient({
                   }}
                   customColorMap={colorMap}
                 />
-              </div>
-            )}
+              )}
 
-            <div className="w-full h-px bg-border my-4" />
-
-            {/* Description Block (Desktop Only) */}
-            <div className="space-y-4 hidden lg:block">
-              <h3 className="text-[10px] uppercase tracking-[0.3em] font-medium text-foreground">
-                Description
-              </h3>
-              <div className="text-[13px] leading-relaxed text-muted-foreground max-w-xl font-medium">
-                <div
-                  className="prose prose-neutral dark:prose-invert max-w-none text-muted-foreground font-serif tracking-wide [&>p]:mb-4"
-                  dangerouslySetInnerHTML={{ __html: product.description }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT COLUMN: Action & Service (Col-5) */}
-          <div className="col-span-1 lg:col-span-5 flex flex-col gap-5 lg:pt-8">
-            {/* Size & Add to Cart */}
-            <div className="space-y-8 p-0 lg:p-0">
               {sizeOptions.length > 0 &&
                 !(
-                  sizeOptions.length === 1 && sizeOptions[0] === "Standard"
+                  sizeOptions.length === 1 &&
+                  (sizeOptions[0] === "Standard" ||
+                    sizeOptions[0] === "One Size")
                 ) && (
                   <ProductSizeSelector
                     options={sizeOptions}
@@ -508,94 +442,133 @@ export function ProductDetailClient({
                     onOpenSizeGuide={() => setIsSizeGuideOpen(true)}
                   />
                 )}
-
-              <Button
-                size="lg"
-                className={cn(
-                  "w-full h-14 text-[10px] font-medium uppercase tracking-[0.3em] rounded-none transition-all duration-300 active:scale-[0.98] outline-none focus:outline-none",
-                  isOutOfStock
-                    ? "bg-muted text-muted-foreground hover:bg-muted/80"
-                    : "bg-foreground text-background hover:opacity-90",
-                )}
-                disabled={isOutOfStock ? isLoadingWaitlist : false}
-                onClick={() =>
-                  isOutOfStock ? handlePreOrder() : handleAddToCart()
-                }
-              >
-                {isOutOfStock
-                  ? isOnWaitlist
-                    ? "Joined waitlist"
-                    : "Join waitlist"
-                  : selectedSize && selectedColor
-                    ? "Add to shopping bag"
-                    : "Make your selection"}
-              </Button>
             </div>
+          </div>
 
-            {/* Description Block (Mobile Only - Collapsible) */}
-            <div className="pt-4 block lg:hidden border-t border-border">
-              <button
-                onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
-                className="w-full flex items-center justify-between group outline-none focus:outline-none"
-              >
-                <h3 className="text-xs uppercase tracking-widest font-bold text-foreground group-hover:opacity-70 transition-opacity">
-                  Product Description
-                </h3>
-                <span className="text-sm font-light text-muted-foreground">
-                  {isDescriptionOpen ? "−" : "+"}
-                </span>
-              </button>
+          {/* RIGHT COLUMN: Actions */}
+          <div className="col-span-1 lg:col-span-5">
+            <div className="lg:sticky lg:top-32 space-y-6">
+              <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-md space-y-8">
+                {/* Quantity */}
+                <div className="space-y-4">
+                  <span className="text-xs font-bold text-slate-900 uppercase">
+                    Quantity
+                  </span>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center border-2 border-slate-100 rounded-2xl p-1 bg-slate-50/50">
+                      <button
+                        onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                        className="w-10 h-10 flex items-center justify-center font-bold text-lg hover:bg-white hover:shadow-sm rounded-xl transition-all"
+                      >
+                        −
+                      </button>
+                      <span className="w-12 text-center font-bold text-slate-900">
+                        {quantity}
+                      </span>
+                      <button
+                        onClick={() =>
+                          setQuantity((q) => Math.min(maxQty || 99, q + 1))
+                        }
+                        className="w-10 h-10 flex items-center justify-center font-bold text-lg hover:bg-white hover:shadow-sm rounded-xl transition-all"
+                      >
+                        +
+                      </button>
+                    </div>
+                    {maxQty > 0 && maxQty < 5 && (
+                      <span className="text-xs font-bold text-amber-600 uppercase">
+                        Only {maxQty} left!
+                      </span>
+                    )}
+                  </div>
+                </div>
 
-              <div
-                className={cn(
-                  "grid transition-all duration-300 ease-in-out overflow-hidden",
-                  isDescriptionOpen
-                    ? "grid-rows-[1fr] opacity-100 mt-4"
-                    : "grid-rows-[0fr] opacity-0 mt-0",
-                )}
-              >
-                <div className="min-h-0">
-                  <div className="text-sm leading-relaxed text-muted-foreground max-w-xl font-medium">
-                    <div
-                      className="prose prose-sm prose-neutral dark:prose-invert max-w-none text-muted-foreground font-medium [&>p]:mb-4 [&>ul]:list-disc [&>ul]:pl-5"
-                      dangerouslySetInnerHTML={{ __html: product.description }}
-                    />
+                <div className="grid grid-cols-1 gap-4">
+                  <Button
+                    size="lg"
+                    className={cn(
+                      "w-full h-16 rounded-2xl text-base font-bold transition-all active:scale-95 shadow-lg",
+                      isOutOfStock
+                        ? "bg-slate-100 text-slate-400"
+                        : "bg-green-600 text-white hover:bg-green-700 shadow-green-200",
+                    )}
+                    disabled={
+                      isOutOfStock && !isOnWaitlist && isLoadingWaitlist
+                    }
+                    onClick={
+                      isOutOfStock
+                        ? isOnWaitlist
+                          ? () => setIsUnjoinDialogOpen(true)
+                          : () => handleWaitlistSubmit("")
+                        : handleBuyNow
+                    }
+                  >
+                    {isOutOfStock
+                      ? isOnWaitlist
+                        ? "Joined Waitlist"
+                        : "Join Waitlist"
+                      : "Buy Now"}
+                  </Button>
+
+                  {!isOutOfStock && (
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="w-full h-16 rounded-2xl text-base font-bold border-2 border-slate-100 hover:bg-slate-50 active:scale-95 transition-all text-slate-800"
+                      onClick={() => handleAddToCart()}
+                    >
+                      <ShoppingBag className="w-5 h-5 mr-3" />
+                      Add to Bag
+                    </Button>
+                  )}
+                </div>
+
+                {/* Trust Signals */}
+                <div className="pt-6 border-t border-slate-100 space-y-4">
+                  <div className="flex items-center gap-3 text-sm font-semibold text-slate-600">
+                    <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+                      <Check className="w-4 h-4" />
+                    </div>
+                    Free Shipping on orders above ₹1000
+                  </div>
+                  <div className="flex items-center gap-3 text-sm font-semibold text-slate-600">
+                    <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+                      <Check className="w-4 h-4" />
+                    </div>
+                    7-day flavor substitution guarantee
                   </div>
                 </div>
               </div>
-            </div>
 
-            {/* Service Links */}
-            <div className="space-y-6 pt-4 border-t border-border">
-              <div className="flex items-start gap-3">
-                <Phone
-                  className="w-4 h-4 mt-0.5 text-foreground"
-                  strokeWidth={1.5}
+              {/* Description */}
+              <div className="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm space-y-4">
+                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400">
+                  The Science & Flavor
+                </h3>
+                <div
+                  className="prose prose-slate max-w-none text-slate-600 font-medium [&>p]:mb-4"
+                  dangerouslySetInnerHTML={{ __html: product.description }}
                 />
-                <div className="space-y-1">
+              </div>
+
+              {/* Service Accordion (Optional but Clean) */}
+              <div className="bg-slate-100/50 rounded-2xl p-6 space-y-4">
+                <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">
+                  Questions?
+                </p>
+                <div className="flex items-center gap-4">
                   <Link
                     href="/contact"
-                    className="text-[11px] font-serif hover:underline underline-offset-4 decoration-foreground/30 block text-foreground tracking-wide"
+                    className="text-sm font-bold text-slate-900 border-b-2 border-green-600 pb-0.5"
                   >
                     Contact Us
                   </Link>
-                  <p className="text-[11px] text-muted-foreground leading-normal font-serif opacity-70">
-                    Our Client Advisors are available to answer your questions.
-                  </p>
+                  <Link
+                    href="/shipping"
+                    className="text-sm font-bold text-slate-900 border-b-2 border-green-600 pb-0.5"
+                  >
+                    Shipping Policy
+                  </Link>
                 </div>
-              </div>
-            </div>
-
-            {/* Accordion / Services */}
-            <div className="pt-4">
-              <div className="group">
-                <button className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-medium mb-2 text-foreground outline-none focus:outline-none">
-                  <Plus className="w-3 h-3" /> Services
-                </button>
-                <p className="text-[11px] text-muted-foreground pl-5">
-                  Complimentary Shipping, Complimentary Exchanges & Returns,
-                  Secure Payments.
-                </p>
               </div>
             </div>
           </div>
@@ -604,12 +577,9 @@ export function ProductDetailClient({
 
       <WaitlistDialog
         open={isWaitlistDialogOpen}
-        onOpenChange={(open) => {
-          if (!isLoadingWaitlist) setIsWaitlistDialogOpen(open);
-        }}
+        onOpenChange={setIsWaitlistDialogOpen}
         onSubmit={handleWaitlistSubmit}
         isSubmitting={isLoadingWaitlist}
-        initialEmail=""
       />
 
       <SizeGuideModal
@@ -621,38 +591,31 @@ export function ProductDetailClient({
         open={isUnjoinDialogOpen}
         onOpenChange={setIsUnjoinDialogOpen}
       >
-        <AlertDialogContent>
+        <AlertDialogContent className="rounded-3xl">
           <AlertDialogHeader>
-            <AlertDialogTitle>Remove from Waitlist?</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl font-bold">
+              Remove from Waitlist?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              you can always join again later.
+              No worries, you can always join back whenever you're ready.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
+            <AlertDialogCancel className="rounded-xl font-bold">
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={(e) => {
-                e.stopPropagation();
-                handleConfirmUnjoin();
-              }}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-            >
+            <AlertDialogAction className="bg-red-500 hover:bg-red-600 text-white rounded-xl font-bold">
               Remove
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Recommended (Full Width Below) */}
       <RecommendedProducts
         categoryId={product.category_id || ""}
         currentProductId={product.id}
-        title="Picked Just For You"
+        title="You May Also Like"
       />
-
-      {/* Import missing icon */}
     </div>
   );
 }

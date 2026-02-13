@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import { getColorHex } from "@/lib/colors";
@@ -28,18 +30,16 @@ export function ProductSizeSelector({
 }: SizeSelectorProps) {
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-baseline border-b border-foreground/10 mb-4 pb-2">
-        <span className="text-[10px] uppercase tracking-[0.3em] font-medium text-foreground/80">
-          Size
-        </span>
+      <div className="flex justify-between items-baseline mb-3">
+        <span className="text-xs font-bold text-slate-900">SELECT SIZE</span>
         <button
           onClick={onOpenSizeGuide}
-          className="text-[8px] uppercase tracking-[0.3em] text-muted-foreground hover:text-foreground transition-colors outline-none focus:outline-none"
+          className="text-[10px] font-semibold text-green-600 hover:text-green-700 transition-colors uppercase tracking-wider"
         >
-          Guide
+          Size Guide
         </button>
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2.5">
         {options.map((size) => {
           const available = isAvailable(size);
           const isSelected = selected === size;
@@ -50,16 +50,18 @@ export function ProductSizeSelector({
               onClick={() => onSelect(size)}
               disabled={!available}
               className={cn(
-                "h-10 px-4 text-[11px] uppercase tracking-widest transition-all duration-300 border relative group focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
+                "h-12 min-w-[3.5rem] px-4 rounded-xl text-sm font-bold transition-all duration-200 border-2 relative active:scale-95",
                 isSelected
-                  ? "border-black text-black font-bold bg-black/5"
-                  : "border-transparent text-neutral-500 hover:text-black hover:bg-neutral-50",
+                  ? "border-green-600 bg-green-50 text-green-700 shadow-sm"
+                  : "border-slate-100 bg-white text-slate-600 hover:border-slate-200 hover:bg-slate-50",
                 !available &&
-                  "opacity-30 cursor-not-allowed text-neutral-300 decoration-neutral-300 line-through",
+                  "opacity-30 cursor-not-allowed bg-slate-50 border-transparent grayscale",
               )}
             >
               {size}
-              {/* No explicit motion line, using solid fill for cleaner luxury look */}
+              {!available && (
+                <div className="absolute inset-x-2 top-1/2 h-0.5 bg-slate-300 -rotate-12" />
+              )}
             </button>
           );
         })}
@@ -78,13 +80,13 @@ export function ProductColorSelector({
 }: ColorSelectorProps) {
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-baseline border-b border-border mb-4 pb-2">
-        <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-black/60">
-          Color: <span className="text-black">{selected || "Select"}</span>
+      <div className="mb-3">
+        <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+          COLOR: <span className="text-green-600">{selected || "SELECT"}</span>
         </span>
       </div>
 
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-3.5">
         {options.map((color) => {
           const available = isAvailable(color);
           const isSelected = selected === color;
@@ -95,16 +97,16 @@ export function ProductColorSelector({
                 disabled={!available}
                 onClick={() => onSelect(color)}
                 className={cn(
-                  "h-10 w-10 rounded-none border transition-all duration-500 ease-out flex items-center justify-center relative overflow-hidden focus-visible:ring-0 focus-visible:ring-offset-0 outline-none",
+                  "h-12 w-12 rounded-full border-2 transition-all duration-300 flex items-center justify-center relative active:scale-90",
                   isSelected
-                    ? "border-foreground scale-110"
-                    : "border-foreground/10 hover:border-foreground/30",
+                    ? "border-green-600 p-0.5 scale-110 shadow-md"
+                    : "border-slate-100 p-0 hover:border-slate-200",
                   !available && "opacity-30 cursor-not-allowed grayscale",
                 )}
                 title={color}
               >
                 <div
-                  className="w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full rounded-full"
                   style={{
                     backgroundColor: hex,
                     boxShadow:
@@ -114,12 +116,12 @@ export function ProductColorSelector({
                   }}
                 />
                 {isSelected && (
-                  <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <div
                       className={cn(
-                        "w-1.5 h-1.5 rounded-none",
+                        "w-2 h-2 rounded-full",
                         hex.toLowerCase() === "#ffffff"
-                          ? "bg-black"
+                          ? "bg-slate-900"
                           : "bg-white",
                       )}
                     />

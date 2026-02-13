@@ -8,7 +8,8 @@ import FlashImage from "@/components/ui/flash-image"; // Optimized image compone
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { cn, formatCurrency } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-
+import { useCartStore } from "@/store/use-cart-store";
+import { toast } from "sonner";
 import { QuickAddDialog } from "@/components/products/quick-add-dialog";
 
 export interface HeroProduct {
@@ -167,12 +168,46 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
   const currentProduct = products[currentIndex];
   if (!currentProduct) return null;
 
-  const handleBuyNow = (e: React.MouseEvent) => {
+  const addItem = useCartStore((state) => state.addItem);
+
+  const handleBuyNow = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setQuickAddProduct(currentProduct);
-    setIsQuickAddOpen(true);
-    setIsPaused(true);
+
+    if (!currentProduct) return;
+
+    // Check for variations in stock data
+    const stockItems = currentProduct.product_stock || [];
+    const hasMultipleOptions = stockItems.length > 1;
+
+    if (hasMultipleOptions) {
+      setQuickAddProduct(currentProduct);
+      setIsQuickAddOpen(true);
+      setIsPaused(true);
+      return;
+    }
+
+    // Direct Buy logic for products without variations
+    const firstStock =
+      stockItems.find((s: any) => s.quantity > 0) || stockItems[0];
+
+    addItem(
+      {
+        productId: currentProduct.id,
+        name: currentProduct.name,
+        price: currentProduct.price,
+        image: currentProduct.main_image_url || "",
+        size: firstStock?.size || "Standard",
+        color: firstStock?.color || "Standard",
+        quantity: 1,
+        maxQuantity: firstStock?.quantity || 99,
+        slug: currentProduct.slug || "",
+        categoryId: "",
+      },
+      { openCart: false, showToast: false },
+    );
+
+    router.push("/checkout");
   };
 
   const cleanDescription = (html: string) => {
@@ -298,7 +333,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                   className="h-14 sm:h-16 lg:h-18 px-10 sm:px-14 lg:px-16 rounded-full text-sm font-semibold bg-white text-slate-900 hover:bg-green-600 hover:text-white active:scale-95 transition-all shadow-xl mt-4 sm:mt-0 group border-none order-1 sm:order-2"
                   onClick={handleBuyNow}
                 >
-                  Shop Now
+                  Buy Now
                   <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>

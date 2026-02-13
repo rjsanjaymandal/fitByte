@@ -41,7 +41,12 @@ export function ProductPricing() {
                     type="number"
                     placeholder="0.00"
                     {...field}
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    value={field.value ?? ""}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value === "" ? 0 : parseFloat(e.target.value),
+                      )
+                    }
                     className="rounded-none border-foreground/20 focus-visible:ring-0 focus-visible:border-foreground font-mono"
                   />
                 </FormControl>
@@ -88,7 +93,12 @@ export function ProductPricing() {
                     type="number"
                     placeholder="0.00"
                     {...field}
-                    onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                    value={field.value ?? ""}
+                    onChange={(e) =>
+                      field.onChange(
+                        e.target.value === "" ? 0 : parseFloat(e.target.value),
+                      )
+                    }
                     className="rounded-none border-foreground/20 focus-visible:ring-0 focus-visible:border-foreground font-mono"
                   />
                 </FormControl>

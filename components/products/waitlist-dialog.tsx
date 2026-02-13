@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Bell } from "lucide-react";
 
 interface WaitlistDialogProps {
   open: boolean;
@@ -30,48 +31,46 @@ export function WaitlistDialog({
 }: WaitlistDialogProps) {
   const [email, setEmail] = useState(initialEmail);
 
-  // Update email state if initialEmail changes (e.g. loaded from localStorage later)
+  // Update email state if initialEmail changes
   useEffect(() => {
     if (initialEmail) setEmail(initialEmail);
   }, [initialEmail]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Allow empty email (Anonymous join)
     await onSubmit(email);
-    // Don't clear email if they provided it, so they remember. If empty, keep empty.
     if (!email) setEmail("");
     onOpenChange(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md rounded-none border-foreground/10 bg-background">
+      <DialogContent className="sm:max-w-md rounded-3xl border-slate-100 bg-white p-8">
         <DialogHeader className="space-y-4">
-          <DialogTitle className="text-2xl font-serif text-center">
-            Join the list
+          <div className="mx-auto w-16 h-16 bg-green-50 rounded-full flex items-center justify-center text-green-600 mb-2">
+            <Bell className="w-8 h-8" />
+          </div>
+          <DialogTitle className="text-2xl font-extrabold text-slate-900 text-center tracking-tight">
+            Get Notified
           </DialogTitle>
-          <DialogDescription className="text-[10px] uppercase tracking-[0.3em] text-center text-muted-foreground">
-            Enter your email to be notified when this item is available.
-            <br />
-            <span className="opacity-70 mt-2 block">
-              You can also join anonymously.
-            </span>
+          <DialogDescription className="text-sm font-medium text-center text-slate-500 max-w-[280px] mx-auto">
+            We&apos;ll ping you the second this item is back in stock. No spam,
+            just the good stuff.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-8 py-6">
-          <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6 pt-6">
+          <div className="space-y-3">
             <Label
               htmlFor="email"
-              className="text-[10px] uppercase tracking-[0.2em] font-medium text-foreground/60"
+              className="text-[11px] uppercase tracking-wider font-bold text-slate-400"
             >
-              Email (Optional)
+              Email Address (Optional)
             </Label>
             <Input
               id="email"
               type="email"
-              placeholder="EMAIL ADDRESS"
-              className="rounded-none border-foreground/10 bg-transparent focus:border-foreground/30 transition-colors text-[11px] tracking-widest h-12"
+              placeholder="hello@example.com"
+              className="rounded-2xl border-slate-100 bg-slate-50 focus:border-green-600 focus:ring-green-600/10 transition-all h-14 font-medium"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -80,7 +79,7 @@ export function WaitlistDialog({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-12 bg-foreground text-background rounded-none text-[10px] uppercase tracking-[0.3em] font-medium hover:opacity-90 transition-opacity"
+              className="w-full h-14 bg-green-600 text-white rounded-2xl text-base font-bold hover:bg-green-700 transition-all shadow-lg shadow-green-100 active:scale-[0.98]"
             >
               {isSubmitting ? "Joining..." : "Notify Me"}
             </Button>

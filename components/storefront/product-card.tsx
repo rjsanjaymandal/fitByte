@@ -104,14 +104,7 @@ export function ProductCard({
   const stock = realTimeStock || [];
 
   // Determine if product has multiple options.
-  // We check metadata AND actual stock variations to be safe.
-  const hasMultipleOptions =
-    (product.size_options && product.size_options.length > 0) ||
-    (product.color_options && product.color_options.length > 0) ||
-    stock.length > 1 ||
-    (stock.length === 1 &&
-      stock[0].size !== "Standard" &&
-      stock[0].size !== "One Size");
+  const hasMultipleOptions = stock.length > 1;
 
   // Calculate total stock
   const totalStock = stock.reduce(

@@ -241,7 +241,7 @@ export function QuickAddDialog({
                 availableColorsForSize.length > 1)
             }
           >
-            {buyNowMode ? "Proceed to Checkout" : "Add to Cart"}
+            {buyNowMode ? "Buy Now" : "Add to Cart"}
           </Button>
         </div>
       </DialogContent>
