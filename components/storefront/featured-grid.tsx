@@ -3,13 +3,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ProductCard } from "./product-card";
-import { BrandGlow } from "./brand-glow";
-import { BrandBadge } from "./brand-badge";
+import { ArrowRight } from "lucide-react";
 
 export function FeaturedGrid({
   products,
-  title = "TOP PACKS",
-  subtitle = "The most nutritious bundles from our latest lab drop.",
+  title = "BESTSELLERS",
+  subtitle = "Our most loved products, tried and tested by thousands.",
   badge = "Bestsellers",
 }: {
   products: any[];
@@ -18,62 +17,54 @@ export function FeaturedGrid({
   badge?: string;
 }) {
   return (
-    <section className="py-8 md:py-16 px-4 sm:px-6 lg:px-8 max-w-[1600px] mx-auto relative overflow-hidden">
-      {/* Background Gradients */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none mix-blend-screen" />
+    <section className="py-16 md:py-24 bg-white overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-[#e31e24] mb-3">
+              {badge}
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1a2b47] uppercase tracking-tighter leading-none">
+              {title}
+            </h2>
+            <p className="mt-3 text-sm text-[#1a2b47]/50 font-medium max-w-md">
+              {subtitle}
+            </p>
+          </motion.div>
 
-      <div className="flex flex-col items-center text-center gap-6 mb-8 md:mb-12 relative z-10">
-        <BrandBadge variant="outline">{badge}</BrandBadge>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative"
-        >
-          <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-serif font-black tracking-tighter text-foreground leading-[0.9] uppercase bg-clip-text">
-            {title}
-          </h2>
-          {/* Decorative stroke/shadow text if desired, or keep clean */}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col items-center gap-6"
-        >
-          <p className="text-muted-foreground text-sm md:text-base font-medium tracking-wide max-w-lg mx-auto">
-            {subtitle}
-          </p>
           <Link
             href="/shop"
-            className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest border-b border-foreground/20 pb-1 hover:border-foreground transition-all"
+            className="group flex items-center gap-2 text-xs font-black uppercase tracking-widest text-[#1a2b47] hover:text-[#e31e24] transition-colors pb-1 border-b-2 border-[#1a2b47]/10 hover:border-[#e31e24]"
           >
             View All Products
-            <span className="group-hover:translate-x-1 transition-transform">
-              →
-            </span>
+            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-        </motion.div>
-      </div>
+        </div>
 
-      {/* Mobile: Horizontal Scroll | Desktop: Grid */}
-      <div className="flex overflow-x-auto snap-x snap-mandatory lg:grid lg:grid-cols-4 gap-6 md:gap-8 pb-8 lg:pb-0 px-4 md:px-0 -mx-4 md:mx-0 scrollbar-hide">
-        {products.map((product, index) => (
-          <motion.div
-            key={product.id}
-            className="min-w-[260px] w-[75vw] sm:w-[300px] lg:w-auto shrink-0 snap-center"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-          >
-            <ProductCard product={product} priority={index < 2} />
-          </motion.div>
-        ))}
+        {/* Product Row - Horizontal Scroll on mobile, grid on desktop */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory lg:grid lg:grid-cols-4 gap-6 pb-4 scrollbar-hide -mx-4 px-4 lg:mx-0 lg:px-0">
+          {products.map((product, index) => (
+            <motion.div
+              key={product.id}
+              className="min-w-[260px] w-[72vw] sm:w-[280px] lg:w-auto shrink-0 snap-center"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.08,
+                ease: "easeOut",
+              }}
+            >
+              <ProductCard product={product} priority={index < 2} />
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );

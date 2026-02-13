@@ -443,57 +443,52 @@ export function ProductCard({
     <>
       <motion.div
         whileHover={{ y: -4 }}
-        className="group relative flex flex-col gap-2"
+        className="group relative flex flex-col h-full bg-white border border-zinc-200 hover:border-[#e31e24] hover:shadow-xl hover:shadow-[#e31e24]/5 transition-all duration-300 rounded-none overflow-hidden"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Image Container */}
         <Link
           href={`/product/${product.slug || product.id}`}
-          className="block relative aspect-[1/1] overflow-hidden rounded-none bg-white border border-[#1a2b47]/5 transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-black/5"
+          className="block relative aspect-[1/1] overflow-hidden bg-[#fdfcf0]"
         >
-          {/* Badges */}
-          <div className="absolute top-2 left-2 z-10 flex flex-col gap-1.5">
+          {/* Static Badges - Top Left */}
+          <div className="absolute top-3 left-3 z-10 flex flex-col gap-2 pointer-events-none">
             {isOutOfStock ? (
-              <Badge className="bg-[#1a2b47] text-white uppercase tracking-[0.2em] text-[8px] font-black px-2 py-1 rounded-none border-none shadow-sm">
+              <Badge className="bg-black text-white uppercase tracking-widest text-[10px] font-black px-3 py-1.5 rounded-none border-none">
                 Sold Out
               </Badge>
             ) : (
               <>
                 {isNew && (
-                  <Badge className="bg-[#e31e24] text-white uppercase tracking-[0.2em] text-[8px] font-black px-2 py-1 rounded-none border-none shadow-sm">
-                    New
+                  <Badge className="bg-[#e31e24] text-white uppercase tracking-widest text-[10px] font-black px-3 py-1.5 rounded-none border-none shadow-md rotate-[-2deg]">
+                    New Drop
                   </Badge>
                 )}
                 {calculateDiscount(product.price, product.original_price) && (
-                  <Badge className="bg-[#1a2b47] text-white uppercase tracking-[0.2em] text-[8px] font-black px-2 py-1 rounded-none border-none shadow-sm">
-                    -{calculateDiscount(product.price, product.original_price)}%
+                  <Badge className="bg-[#1a2b47] text-white uppercase tracking-widest text-[10px] font-black px-3 py-1.5 rounded-none border-none shadow-md">
+                    Sale
                   </Badge>
                 )}
               </>
             )}
           </div>
 
-          {/* Wishlist Button */}
+          {/* Wishlist Button - Top Right */}
           <button
             onClick={handleWishlistClick}
-            className={cn(
-              "absolute top-2 right-2 z-10 h-7 w-7 flex items-center justify-center rounded-none bg-white transition-all duration-200 hover:scale-110 shadow-sm opacity-0 md:group-hover:opacity-100",
-              isWishlisted
-                ? "text-[#e31e24] opacity-100"
-                : "text-[#1a2b47]/20 hover:text-[#e31e24]",
-            )}
+            className="absolute top-3 right-3 z-20 h-9 w-9 flex items-center justify-center bg-white/80 backdrop-blur-sm hover:bg-white transition-all text-[#1a2b47] hover:text-[#e31e24] shadow-sm"
           >
             <Heart
               className={cn(
-                "h-3.5 w-3.5 transition-colors",
-                isWishlisted ? "fill-current" : "",
+                "h-5 w-5",
+                isWishlisted && "fill-current text-[#e31e24]",
               )}
             />
           </button>
 
           {/* Gallery Layer */}
-          <div className="relative h-full w-full bg-zinc-100 overflow-hidden">
+          <div className="relative h-full w-full">
             <motion.div
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
@@ -504,14 +499,13 @@ export function ProductCard({
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               {allImages.map((src, idx) => (
-                <div key={idx} className="relative h-full w-full shrink-0">
+                <div key={idx} className="relative h-full w-full shrink-0 p-4">
                   <FlashImage
                     src={src}
                     alt={`${product.name} - ${idx + 1}`}
                     fill
-                    resizeMode="cover"
-                    className="object-cover"
-                    sizes="(max-width: 768px) 50vw, (max-width: 1210px) 33vw, 25vw"
+                    resizeMode="contain"
+                    className="object-contain hover:scale-105 transition-transform duration-500 ease-out"
                     priority={priority && idx === 0}
                   />
                 </div>
@@ -520,125 +514,122 @@ export function ProductCard({
 
             {/* Pagination Dots */}
             {allImages.length > 1 && (
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5 px-2 py-1 rounded-full bg-black/5 backdrop-blur-sm">
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-1.5">
                 {allImages.map((_, idx) => (
                   <div
                     key={idx}
                     className={cn(
-                      "h-1 transition-all duration-300 rounded-none",
+                      "h-1.5 w-1.5 rounded-full transition-all duration-300 shadow-sm",
                       idx === imgIndex
-                        ? "w-4 bg-foreground"
-                        : "w-1 bg-foreground/20",
+                        ? "bg-[#1a2b47] scale-125"
+                        : "bg-zinc-300",
                     )}
                   />
                 ))}
               </div>
             )}
           </div>
-
-          {/* Desktop Action Overlay */}
-          <div className="hidden lg:flex absolute inset-x-2 bottom-3 gap-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 ease-out z-20">
-            {!isOutOfStock ? (
-              <>
-                <Button
-                  size="sm"
-                  className="flex-1 bg-primary text-black hover:scale-105 shadow-xl shadow-primary/20 font-black h-11 rounded-full transition-all duration-300 uppercase text-[11px] tracking-widest border-none"
-                  onClick={handleAddToCart}
-                  disabled={isAddingToCart}
-                >
-                  {isAddingToCart ? "Adding..." : "Add to Cart"}
-                </Button>
-                <div onClick={(e) => e.preventDefault()} className="shrink-0">
-                  <QuickView product={product} />
-                </div>
-              </>
-            ) : (
-              <Button
-                size="sm"
-                className={cn(
-                  "flex-1 shadow-lg font-black h-11 rounded-full transition-all duration-300 uppercase text-[11px] tracking-widest",
-                  isOnWaitlist
-                    ? "bg-zinc-100 text-zinc-400"
-                    : "bg-black text-white hover:opacity-90 shadow-black/10",
-                )}
-                onClick={handlePreOrder}
-                disabled={isLoadingWaitlist}
-              >
-                {isLoadingWaitlist
-                  ? "..."
-                  : isOnWaitlist
-                    ? "Joined"
-                    : "Notify Me"}
-              </Button>
-            )}
-          </div>
         </Link>
 
-        {/* Details */}
-        <div className="space-y-4 px-1 py-4 text-left">
-          <div className="flex flex-col items-start gap-1">
+        {/* Card Content */}
+        <div className="flex flex-col flex-1 p-5 gap-4">
+          {/* Title & Rating */}
+          <div className="flex flex-col gap-1">
             <Link
               href={`/product/${product.slug || product.id}`}
-              className="hover:opacity-70 transition-opacity"
+              className="group-hover:text-[#e31e24] transition-colors"
             >
-              <h3 className="font-black text-[13px] sm:text-[15px] leading-tight text-[#1a2b47] uppercase tracking-widest line-clamp-2">
+              <h3 className="font-black text-[16px] leading-[1.1] text-[#1a2b47] uppercase tracking-wide line-clamp-2 min-h-[2.2em]">
                 {product.name}
               </h3>
             </Link>
 
-            {/* Pricing */}
-            <div className="flex items-center gap-2 font-black">
-              <span className="text-[16px] sm:text-[18px] text-[#1a2b47] font-black">
-                {formatCurrency(product.price)}
-              </span>
-              {product.original_price &&
-                product.original_price > product.price && (
-                  <span className="text-[12px] sm:text-[14px] text-zinc-400 line-through">
-                    {formatCurrency(product.original_price)}
-                  </span>
-                )}
-            </div>
-
-            {/* Ratings */}
+            {/* Rating */}
             <div className="flex items-center gap-1.5">
-              <div className="flex gap-0.5">
+              <div className="flex text-[#e31e24]">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     className={cn(
-                      "h-3 w-3",
+                      "h-3.5 w-3.5",
                       i < Math.floor(rating)
-                        ? "fill-[#1a2b47] text-[#1a2b47]"
+                        ? "fill-current"
                         : "text-zinc-200 fill-zinc-200",
                     )}
                   />
                 ))}
               </div>
-              <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
-                ({reviewCount})
+              <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">
+                {reviewCount} Reviews
               </span>
             </div>
           </div>
 
-          {/* Add to Cart Button */}
-          <div className="pt-1">
+          {/* Attributes / Macro Badge (Simulated) */}
+          <div className="flex flex-wrap gap-2">
+            <div className="bg-zinc-100 text-zinc-600 px-2 py-1 text-[10px] font-black uppercase tracking-wider">
+              20g Protein
+            </div>
+            <div className="bg-zinc-100 text-zinc-600 px-2 py-1 text-[10px] font-black uppercase tracking-wider">
+              No Sugar
+            </div>
+          </div>
+
+          <div className="mt-auto pt-2 flex items-center justify-between gap-4">
+            <div className="flex flex-col">
+              <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-widest">
+                From
+              </span>
+              <div className="flex items-baseline gap-2">
+                <span className="text-xl font-black text-[#1a2b47]">
+                  {formatCurrency(product.price)}
+                </span>
+                {product.original_price &&
+                  product.original_price > product.price && (
+                    <span className="text-xs text-zinc-400 line-through font-bold">
+                      {formatCurrency(product.original_price)}
+                    </span>
+                  )}
+              </div>
+            </div>
+
+            {/* Action Button - Always Visible & Bold */}
             {!isOutOfStock ? (
               <Button
-                className="w-full bg-[#1a2b47] text-white hover:bg-black h-12 sm:h-14 rounded-none font-black text-[11px] sm:text-[12px] uppercase tracking-[0.2em] transition-all border-none"
+                size="icon"
+                className="h-12 w-12 rounded-none bg-[#1a2b47] hover:bg-[#e31e24] text-white shadow-lg transition-all active:scale-95"
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
               >
-                {isAddingToCart ? "Adding..." : "Add to Cart"}
+                {isAddingToCart ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1 }}
+                  >
+                    <span className="text-xs">↻</span>
+                  </motion.div>
+                ) : (
+                  <span className="text-xl font-black">+</span>
+                )}
               </Button>
             ) : (
               <Button
-                className="w-full bg-[#1a2b47]/5 text-[#1a2b47]/20 h-12 sm:h-14 rounded-none font-black text-[11px] sm:text-[12px] uppercase tracking-[0.2em] border-none cursor-not-allowed"
-                disabled
+                size="sm"
+                className="h-10 px-4 rounded-none bg-zinc-100 text-zinc-400 font-black uppercase tracking-tight text-[10px] hover:bg-zinc-200"
+                onClick={handlePreOrder}
+                disabled={isLoadingWaitlist}
               >
-                Sold Out
+                {isOnWaitlist ? "Joined" : "Notify"}
               </Button>
             )}
           </div>
+        </div>
+
+        <div
+          onClick={(e) => e.preventDefault()}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-30 pointer-events-none"
+        >
+          {/* Optional: Floating "Quick View" text or icon if needed, but keeping it clean for now */}
         </div>
       </motion.div>
 

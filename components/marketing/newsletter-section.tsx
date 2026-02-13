@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { subscribeToNewsletter } from "@/app/actions/marketing-actions";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
-import FlashImage from "@/components/ui/flash-image";
 
 export function NewsletterSection() {
   async function action(formData: FormData) {
@@ -22,61 +21,42 @@ export function NewsletterSection() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-primary/5 py-16 sm:py-24 border-t border-primary/10">
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="bg-background border border-primary/10 rounded-[2.5rem] shadow-xl shadow-primary/5 overflow-hidden md:grid md:grid-cols-2 md:items-center relative group">
-          <div className="p-8 sm:p-12 lg:p-16 relative z-10">
-            <div className="max-w-xl text-center md:text-left">
-              <h2 className="text-3xl sm:text-5xl font-serif text-foreground font-extrabold leading-tight">
-                Fuel Your <br />
-                <span className="text-primary italic">Inbox</span>
-              </h2>
+    <section className="py-16 md:py-24 bg-[#fdfcf0] border-t border-[#1a2b47]/10 overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="text-3xl md:text-5xl font-black text-[#1a2b47] uppercase tracking-tighter mb-4">
+            Join the fitByte Fam
+          </h2>
+          <p className="text-sm text-[#1a2b47]/60 font-medium mb-10 max-w-md mx-auto leading-relaxed">
+            Subscribe to our newsletter for the latest updates on new products,
+            exclusive promotions, and discounts.
+          </p>
 
-              <p className="mt-4 text-muted-foreground leading-relaxed font-sans text-base">
-                Join the fitByte community for exclusive health tips, product
-                drops, and
-                <span className="text-primary font-bold"> 10% OFF </span> on
-                your first order.
-              </p>
-
-              <form action={action} className="mt-8">
-                <div className="relative flex flex-col sm:flex-row gap-3">
-                  <div className="relative flex-1">
-                    <label htmlFor="email" className="sr-only">
-                      {" "}
-                      Email Address{" "}
-                    </label>
-                    <Input
-                      type="email"
-                      id="email"
-                      name="email"
-                      autoComplete="email"
-                      placeholder="Enter your email"
-                      required
-                      className="h-14 w-full rounded-2xl border-primary/10 bg-white px-6 text-sm transition-colors focus:border-primary/30 focus:ring-primary/20"
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    className="h-14 group rounded-2xl bg-primary text-white px-10 text-sm font-bold uppercase tracking-wider transition hover:bg-primary/90 shadow-lg shadow-primary/20"
-                  >
-                    <span>Get 10% Off</span>
-                    <Send className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              </form>
+          <form action={action} className="max-w-lg mx-auto">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-1">
+                <label htmlFor="newsletter-email" className="sr-only">
+                  Email Address
+                </label>
+                <Input
+                  type="email"
+                  id="newsletter-email"
+                  name="email"
+                  autoComplete="email"
+                  placeholder="YOUR EMAIL ADDRESS"
+                  required
+                  className="h-14 w-full rounded-none border-2 border-[#1a2b47] bg-white px-5 text-xs font-bold uppercase tracking-widest placeholder:text-zinc-300 focus-visible:ring-0 focus:border-[#e31e24] transition-colors"
+                />
+              </div>
+              <Button
+                type="submit"
+                className="h-14 rounded-none bg-[#e31e24] hover:bg-[#1a2b47] text-white px-8 text-xs font-black uppercase tracking-widest transition-colors shrink-0"
+              >
+                <span>Subscribe</span>
+                <Send className="h-4 w-4 ml-2 stroke-2" />
+              </Button>
             </div>
-          </div>
-
-          <div className="hidden md:block absolute right-0 top-0 bottom-0 w-1/2 bg-muted overflow-hidden">
-            <FlashImage
-              src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=1453&auto=format&fit=crop"
-              alt="Healthy lifestyle nutrition"
-              fill
-              className="object-cover opacity-90 transition hover:opacity-100 duration-700 mix-blend-overlay group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-card via-card/20 to-transparent" />
-          </div>
+          </form>
         </div>
       </div>
     </section>

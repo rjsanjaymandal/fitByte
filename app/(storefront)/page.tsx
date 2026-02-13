@@ -4,9 +4,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import dynamic from "next/dynamic";
 
 // Lazy load non-ATF (Above The Fold) components
-const CategoryVibes = dynamic(() =>
-  import("@/components/storefront/category-vibes").then(
-    (mod) => mod.CategoryVibes,
+const CategoryTabs = dynamic(() =>
+  import("@/components/storefront/category-tabs").then(
+    (mod) => mod.CategoryTabs,
   ),
 );
 const NewsletterSection = dynamic(() =>
@@ -19,31 +19,42 @@ const AsyncFeaturedGrid = dynamic(() =>
     (mod) => mod.AsyncFeaturedGrid,
   ),
 );
-const AsyncPersonalizedPicks = dynamic(() =>
-  import("@/components/storefront/async-personalized-picks").then(
-    (mod) => mod.AsyncPersonalizedPicks,
+const TrustBar = dynamic(() =>
+  import("@/components/storefront/trust-bar").then((mod) => mod.TrustBar),
+);
+const TestimonialCarousel = dynamic(() =>
+  import("@/components/storefront/testimonial-carousel").then(
+    (mod) => mod.TestimonialCarousel,
   ),
 );
-const SeoContent = dynamic(() =>
-  import("@/components/storefront/seo-content").then((mod) => mod.SeoContent),
+const FeaturedCollection = dynamic(() =>
+  import("@/components/storefront/featured-collection").then(
+    (mod) => mod.FeaturedCollection,
+  ),
 );
-
-// Force rebuild
+const FoundersSection = dynamic(() =>
+  import("@/components/storefront/founders-section").then(
+    (mod) => mod.FoundersSection,
+  ),
+);
+const AvailableAt = dynamic(() =>
+  import("@/components/storefront/available-at").then((mod) => mod.AvailableAt),
+);
 
 function GridSkeleton() {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="flex flex-col items-center text-center mb-12 space-y-4">
-        <Skeleton className="h-6 w-24 rounded-full" />
-        <Skeleton className="h-10 w-64 rounded-xl" />
-        <Skeleton className="h-4 w-96 rounded-lg" />
+        <Skeleton className="h-6 w-24" />
+        <Skeleton className="h-10 w-64" />
+        <Skeleton className="h-4 w-96" />
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
           <div key={i} className="flex flex-col gap-3">
-            <Skeleton className="aspect-3/4 rounded-2xl" />
-            <Skeleton className="h-4 w-3/4 rounded-lg" />
-            <Skeleton className="h-4 w-1/4 rounded-lg" />
+            <Skeleton className="aspect-3/4" />
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-4 w-1/4" />
           </div>
         ))}
       </div>
@@ -62,30 +73,32 @@ import {
   type HeroProduct,
 } from "@/components/storefront/hero-carousel";
 
-// Cache for 15 minutes (900 seconds) as requested
+// Cache for 15 minutes (900 seconds)
 export const revalidate = 900;
 
 export default async function Home() {
   let categories: any[] = [];
   try {
-    // Fetch more categories to ensure we find the target ones
     const allCategories = await getRootCategories(10);
-
-    // Sort FMCG categories to the front (e.g., Protein, Snacks)
-    categories = allCategories
-      .sort((a, b) => {
-        const aIsTarget =
-          a.slug.includes("protein") || a.name.toLowerCase().includes("snack");
-        const bIsTarget =
-          b.slug.includes("protein") || b.name.toLowerCase().includes("snack");
-
-        if (aIsTarget && !bIsTarget) return -1;
-        if (!aIsTarget && bIsTarget) return 1;
-        return 0;
-      })
-      .slice(0, 4);
+    categories = allCategories.slice(0, 6); // Show more categories for range grid
   } catch (error) {
     console.error("[Home] Failed to fetch categories:", error);
+  }
+
+  // Fetch products for CategoryTabs (product count display)
+  const categoryProductsMap: Record<string, Product[]> = {};
+  if (categories.length > 0) {
+    await Promise.all(
+      categories.map(async (cat) => {
+        try {
+          const { data } = await getProducts({ category_id: cat.id, limit: 4 });
+          categoryProductsMap[cat.id] = data;
+        } catch (e) {
+          console.error(`Failed to fetch products for category ${cat.name}`, e);
+          categoryProductsMap[cat.id] = [];
+        }
+      }),
+    );
   }
 
   let heroProducts: HeroProduct[] = [];
@@ -95,33 +108,74 @@ export default async function Home() {
     console.error("[Home] Failed to fetch carousel data:", error);
   }
 
+  // Fetch products for featured collections
+  let featuredProducts: Product[] = [];
+  try {
+    featuredProducts = await getFeaturedProducts();
+  } catch (error) {
+    console.error("[Home] Failed to fetch featured products:", error);
+  }
+
+  // Split products into two groups for two featured collection sections
+  const collection1Products = featuredProducts.slice(0, 4);
+  const collection2Products = featuredProducts.slice(4, 8);
+
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground pb-12">
-      {/* SEO H1: FMCG Primary Keyword */}
+    <div className="min-h-screen bg-white text-foreground selection:bg-primary selection:text-primary-foreground">
+      {/* SEO H1 */}
       <h1 className="sr-only">
-        fitByte | Premium FMCG Products, Health Supplements & Daily Nutrition
+        fitByte | Premium Protein Bars, Supplements & Health Snacks Online India
       </h1>
 
-      {/* 1. HERO CAROUSEL (Dynamic) */}
+      {/* 1. HERO CAROUSEL */}
       <HeroCarousel products={heroProducts} />
 
-      {/* 2. SHOP BY CATEGORY (Fast/Cached) */}
-      <CategoryVibes categories={categories || []} />
-
-      {/* 4. FEATURED PRODUCTS (New Arrivals) - Streamed */}
+      {/* 2. BESTSELLERS (Product Carousel) */}
       <Suspense fallback={<GridSkeleton />}>
         <AsyncFeaturedGrid />
       </Suspense>
 
-      {/* 5. PERSONALIZED PICKS - Streamed */}
-      <Suspense fallback={<GridSkeleton />}>
-        <AsyncPersonalizedPicks />
-      </Suspense>
+      {/* 3. THE FITBYTE RANGE (Collection Category Grid) */}
+      <CategoryTabs
+        categories={categories || []}
+        productsMap={categoryProductsMap}
+      />
 
-      {/* 6. SEO CONTENT (Why Choose Us) */}
-      <SeoContent />
+      {/* 4. TRUST BADGES ("Our Products Are") */}
+      <TrustBar />
 
-      {/* 7. NEWSLETTER */}
+      {/* 5. FEATURED COLLECTION #1 */}
+      {collection1Products.length > 0 && (
+        <FeaturedCollection
+          title="SHAKES GOT MUSCLE"
+          subtitle="Lab-tested, taste-refined protein shakes for peak performance."
+          collectionSlug="protein"
+          products={collection1Products}
+        />
+      )}
+
+      {/* 6. TESTIMONIALS ("Don't Take Our Word") */}
+      <TestimonialCarousel />
+
+      {/* 7. FEATURED COLLECTION #2 */}
+      {collection2Products.length > 0 && (
+        <FeaturedCollection
+          title="BAR BAR DEKHO"
+          subtitle="Protein-packed bars that taste like a treat, not a chore."
+          collectionSlug="snacks"
+          products={collection2Products}
+          accentColor="#1a2b47"
+          reversed
+        />
+      )}
+
+      {/* 8. FOUNDERS / OUR STORY */}
+      <FoundersSection />
+
+      {/* 9. AVAILABLE AT (Retail Partners) */}
+      <AvailableAt />
+
+      {/* 10. NEWSLETTER ("Join the Fam") */}
       <NewsletterSection />
     </div>
   );
