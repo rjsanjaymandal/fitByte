@@ -240,7 +240,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
       ref={containerRef}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative w-full h-[85vh] lg:h-[95vh] overflow-hidden transition-colors duration-1000 ease-in-out"
+      className="relative w-full h-[45vh] sm:h-[55vh] lg:h-screen overflow-hidden transition-colors duration-1000 ease-in-out"
       style={{ backgroundColor }}
     >
       {/* Dynamic Background Pulse/Grain */}
@@ -259,8 +259,8 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
           onDragEnd={handleDragEnd}
           className="absolute inset-0 w-full h-full flex items-center"
         >
-          {/* PRODUCT IMAGE LAYER - Contained & Floating */}
-          <div className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-[10%] pointer-events-none">
+          {/* PRODUCT IMAGE LAYER - Centered Cinematic Presence */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
             <motion.div
               initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
               animate={{
@@ -279,7 +279,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                   ease: "easeInOut",
                 },
               }}
-              className="relative w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] lg:w-[600px] lg:h-[600px] drop-shadow-[0_35px_35px_rgba(0,0,0,0.3)]"
+              className="relative w-[200px] h-[200px] sm:w-[400px] sm:h-[400px] lg:w-[650px] lg:h-[650px] drop-shadow-[0_25px_25px_rgba(0,0,0,0.3)] lg:drop-shadow-[0_45px_45px_rgba(0,0,0,0.4)]"
             >
               {currentProduct.main_image_url && (
                 <FlashImage
@@ -295,100 +295,48 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
           </div>
 
           {/* Cinematic Gradient Overlays */}
-          <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-black/20 pointer-events-none z-10" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/30 pointer-events-none z-10" />
 
-          {/* CONTENT LAYER - Staggered Floating Elements */}
-          <div className="relative z-20 h-full w-full container mx-auto px-6 lg:px-12 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
-            <div className="max-w-6xl w-full">
-              <motion.div
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-                className="mb-8"
-              >
-                <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full glass border border-white/10 shadow-2xl">
-                  <span className="flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-rose-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-                  </span>
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">
-                    Seasonal Drop
-                  </span>
-                </div>
-              </motion.div>
-
-              <div className="space-y-2 mb-10 overflow-hidden">
+          {/* CONTENT LAYER - Centered & Impactful */}
+          <div className="relative z-20 h-full w-full container mx-auto px-6 flex flex-col justify-center items-center text-center">
+            <div className="max-w-4xl w-full">
+              <div className="space-y-4 mb-12 overflow-hidden">
                 <motion.h1
                   initial={{ y: "100%", opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{
                     delay: 0.5,
                     duration: 1,
-                    ease: [0.22, 1, 0.36, 1],
+                    ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="text-[2.5rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[6.5rem] xl:text-[8rem] font-black text-white leading-[0.8] tracking-tighter uppercase group-hover:text-shimmer transition-all"
+                  className="text-[1.8rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[8rem] font-black text-white leading-[0.9] tracking-tighter uppercase"
                 >
                   {currentProduct.name}
                 </motion.h1>
                 <motion.div
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 1.2, duration: 0.8 }}
-                  className="flex items-center justify-center lg:justify-start gap-4 mt-4"
+                  className="flex items-center justify-center mt-2 lg:mt-4"
                 >
-                  <div className="h-px w-16 bg-rose-500" />
-                  <span className="text-xs sm:text-sm text-stone-300 font-black uppercase tracking-[0.4em]">
+                  <span className="text-[8px] sm:text-xs text-white/70 font-bold uppercase tracking-[0.3em] lg:tracking-[0.4em]">
                     {getTagline(currentProduct)}
                   </span>
                 </motion.div>
               </div>
 
               <motion.div
-                initial={{ y: 40, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.8 }}
-                className="flex flex-col sm:flex-row items-center gap-8 lg:gap-12"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1, duration: 0.8 }}
+                className="flex items-center justify-center"
               >
-                <div className="flex flex-col items-center lg:items-start">
-                  <span className="text-stone-400 text-[10px] font-black uppercase tracking-widest mb-1">
-                    Price
-                  </span>
-                  <div className="flex items-baseline gap-4">
-                    <span className="text-3xl sm:text-5xl font-black text-white tracking-tighter">
-                      {formatCurrency(currentProduct.price)}
-                    </span>
-                    {currentProduct.original_price &&
-                      currentProduct.original_price > currentProduct.price && (
-                        <span className="text-lg sm:text-xl font-bold text-stone-500 line-through">
-                          {formatCurrency(currentProduct.original_price)}
-                        </span>
-                      )}
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <Button
-                    size="lg"
-                    className="h-16 sm:h-20 px-12 sm:px-16 rounded-full text-[12px] font-black bg-white text-stone-900 hover:bg-rose-500 hover:text-white transition-all duration-500 tracking-[0.2em] uppercase shadow-[0_0_50px_rgba(255,255,255,0.1)] group"
-                    onClick={handleBuyNow}
-                  >
-                    Quick Add
-                    <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-2 transition-transform" />
-                  </Button>
-
-                  <Link
-                    href={`/product/${currentProduct.slug}`}
-                    className="hidden sm:block"
-                  >
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="h-16 h-20 px-8 rounded-full border-white/20 text-white hover:bg-white/10 hover:border-white transition-all text-[12px] font-black uppercase tracking-[0.2em]"
-                    >
-                      Details
-                    </Button>
-                  </Link>
-                </div>
+                <Link href={`/product/${currentProduct.slug}`}>
+                  <button className="px-8 lg:px-12 h-10 lg:h-14 bg-white text-black font-black uppercase tracking-[0.2em] lg:tracking-[0.3em] text-[8px] lg:text-[10px] hover:bg-black hover:text-white transition-all duration-500 shadow-2xl flex items-center gap-3 lg:gap-4 group">
+                    Explore
+                    <ArrowRight className="h-3 w-3 lg:h-4 lg:w-4 group-hover:translate-x-2 transition-transform" />
+                  </button>
+                </Link>
               </motion.div>
             </div>
           </div>
