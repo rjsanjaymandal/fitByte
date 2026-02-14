@@ -47,7 +47,7 @@ export function WaitlistDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md rounded-3xl border-slate-100 bg-white p-8">
         <DialogHeader className="space-y-4">
-          <div className="mx-auto w-16 h-16 bg-green-50 rounded-full flex items-center justify-center text-green-600 mb-2">
+          <div className="mx-auto w-16 h-16 bg-rose-50 rounded-full flex items-center justify-center text-rose-500 mb-2">
             <Bell className="w-8 h-8" />
           </div>
           <DialogTitle className="text-2xl font-extrabold text-slate-900 text-center tracking-tight">
@@ -70,7 +70,7 @@ export function WaitlistDialog({
               id="email"
               type="email"
               placeholder="hello@example.com"
-              className="rounded-2xl border-slate-100 bg-slate-50 focus:border-green-600 focus:ring-green-600/10 transition-all h-14 font-medium"
+              className="rounded-2xl border-rose-100 bg-stone-50 focus:border-rose-400 focus:ring-rose-400/10 transition-all h-14 font-medium"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -79,7 +79,7 @@ export function WaitlistDialog({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-14 bg-green-600 text-white rounded-2xl text-base font-bold hover:bg-green-700 transition-all shadow-lg shadow-green-100 active:scale-[0.98]"
+              className="w-full h-14 bg-stone-900 text-white rounded-2xl text-base font-bold hover:bg-stone-800 transition-all shadow-lg shadow-rose-100 active:scale-[0.98]"
             >
               {isSubmitting ? "Joining..." : "Notify Me"}
             </Button>

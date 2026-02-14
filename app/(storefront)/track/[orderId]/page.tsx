@@ -158,7 +158,7 @@ export default async function OrderTrackingPage({
               ))}
             </div>
             {order.discount_amount && order.discount_amount > 0 ? (
-              <div className="border-t mt-4 pt-3 flex justify-between text-sm text-green-600 font-medium">
+              <div className="border-t mt-4 pt-3 flex justify-between text-sm text-rose-500 font-medium">
                 <span>Discount</span>
                 <span>-{formatCurrency(order.discount_amount)}</span>
               </div>

@@ -34,7 +34,7 @@ export function ProductSizeSelector({
         <span className="text-xs font-bold text-slate-900">SELECT SIZE</span>
         <button
           onClick={onOpenSizeGuide}
-          className="text-[10px] font-semibold text-green-600 hover:text-green-700 transition-colors uppercase tracking-wider"
+          className="text-[10px] font-semibold text-rose-500 hover:text-rose-600 transition-colors uppercase tracking-wider"
         >
           Size Guide
         </button>
@@ -52,7 +52,7 @@ export function ProductSizeSelector({
               className={cn(
                 "h-12 min-w-[3.5rem] px-4 rounded-xl text-sm font-bold transition-all duration-200 border-2 relative active:scale-95",
                 isSelected
-                  ? "border-green-600 bg-green-50 text-green-700 shadow-sm"
+                  ? "border-stone-900 bg-rose-50 text-stone-900 shadow-sm"
                   : "border-slate-100 bg-white text-slate-600 hover:border-slate-200 hover:bg-slate-50",
                 !available &&
                   "opacity-30 cursor-not-allowed bg-slate-50 border-transparent grayscale",
@@ -82,7 +82,7 @@ export function ProductColorSelector({
     <div className="space-y-4">
       <div className="mb-3">
         <span className="text-xs font-bold text-slate-900 uppercase tracking-wider">
-          COLOR: <span className="text-green-600">{selected || "SELECT"}</span>
+          COLOR: <span className="text-rose-500">{selected || "SELECT"}</span>
         </span>
       </div>
 
@@ -99,7 +99,7 @@ export function ProductColorSelector({
                 className={cn(
                   "h-12 w-12 rounded-full border-2 transition-all duration-300 flex items-center justify-center relative active:scale-90",
                   isSelected
-                    ? "border-green-600 p-0.5 scale-110 shadow-md"
+                    ? "border-stone-900 p-0.5 scale-110 shadow-md"
                     : "border-slate-100 p-0 hover:border-slate-200",
                   !available && "opacity-30 cursor-not-allowed grayscale",
                 )}

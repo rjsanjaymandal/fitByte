@@ -1,11 +1,10 @@
 "use client";
 
-// Re-saving to fix HMR icon instantiation error
 import { useEffect, useState, useRef } from "react";
 import { useRecentStore } from "@/lib/store/use-recent-store";
 import { ProductCard } from "@/components/storefront/product-card";
 import { Button } from "@/components/ui/button";
-import { Trash2, History, Compass } from "lucide-react";
+import { Trash2, History } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
@@ -34,17 +33,14 @@ export function RecentlyViewed({ currentProduct }: { currentProduct?: any }) {
 
   useEffect(() => {
     if (!mounted || items.length === 0) return;
-
     const validate = async () => {
       const CACHE_DURATION = 15 * 60 * 1000;
       const now = Date.now();
       const { lastValidated, setLastValidated } = useRecentStore.getState();
-
       if (lastValidated && now - lastValidated < CACHE_DURATION) {
         setValidatedItems(items);
         return;
       }
-
       try {
         const { getValidProducts } =
           await import("@/lib/services/product-service");
@@ -54,48 +50,42 @@ export function RecentlyViewed({ currentProduct }: { currentProduct?: any }) {
         const orderedValidItems = items
           .filter((i) => validMap.has(i.id))
           .map((i) => ({ ...i, ...validMap.get(i.id) }));
-
         setValidatedItems(orderedValidItems);
         setLastValidated(now);
-
-        if (orderedValidItems.length !== items.length) {
+        if (orderedValidItems.length !== items.length)
           setItems(orderedValidItems);
-        }
       } catch (err) {
         console.error("Failed to validate recently viewed:", err);
         setValidatedItems(items);
       }
     };
-
     validate();
   }, [mounted, items.length, setItems]);
 
   if (!mounted || items.length === 0) return null;
-
   const displayItems = validatedItems.filter(
     (i) => i.id !== currentProduct?.id,
   );
-
   if (displayItems.length === 0) return null;
 
   return (
-    <section className="py-20 md:py-24 border-t border-slate-100 relative overflow-hidden bg-slate-50/20">
+    <section className="py-20 md:py-24 border-t border-rose-100/50 relative overflow-hidden bg-stone-50/50">
       <div className="container px-4 md:px-8 mx-auto">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-12">
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600">
-                <Compass className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-500">
+                <History className="w-5 h-5" />
               </div>
               <motion.h2
                 initial={{ opacity: 0, x: -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900"
+                className="text-2xl md:text-3xl font-black tracking-tight text-stone-900"
               >
                 Continue Exploring
               </motion.h2>
             </div>
-            <p className="text-sm text-slate-500 font-medium pl-13">
+            <p className="text-sm text-stone-500 font-medium pl-13">
               Pick up right where you left off.
             </p>
           </div>
@@ -104,10 +94,9 @@ export function RecentlyViewed({ currentProduct }: { currentProduct?: any }) {
             variant="outline"
             size="sm"
             onClick={clear}
-            className="text-slate-500 hover:text-red-600 border-slate-200 rounded-xl h-10 px-4 font-bold text-xs uppercase tracking-wider transition-all"
+            className="text-stone-400 hover:text-red-600 border-rose-200 rounded-full h-10 px-4 font-bold text-xs uppercase tracking-wider transition-all"
           >
-            <Trash2 className="w-3.5 h-3.5 mr-2" />
-            Clear Journey
+            <Trash2 className="w-3.5 h-3.5 mr-2" /> Clear
           </Button>
         </div>
 
@@ -143,8 +132,8 @@ export function RecentlyViewed({ currentProduct }: { currentProduct?: any }) {
             <ScrollBar orientation="horizontal" className="hidden" />
           </ScrollArea>
 
-          <div className="absolute top-0 left-0 bottom-0 w-12 md:w-24 bg-gradient-to-r from-slate-50/20 to-transparent pointer-events-none z-10" />
-          <div className="absolute top-0 right-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-slate-50/20 to-transparent pointer-events-none z-10" />
+          <div className="absolute top-0 left-0 bottom-0 w-12 md:w-24 bg-linear-to-r from-stone-50/50 to-transparent pointer-events-none z-10" />
+          <div className="absolute top-0 right-0 bottom-0 w-12 md:w-24 bg-linear-to-l from-stone-50/50 to-transparent pointer-events-none z-10" />
         </div>
       </div>
     </section>

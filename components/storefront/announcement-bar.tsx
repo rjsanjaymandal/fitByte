@@ -1,66 +1,32 @@
-import { getGlobalSettings } from "@/app/actions/global-settings";
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+"use client";
 
-interface AnnouncementSettings {
-  enabled: boolean;
-  text: string;
-  href?: string;
-}
+import { motion } from "framer-motion";
+import { Zap } from "lucide-react";
 
-export async function AnnouncementBar() {
-  const settings = (await getGlobalSettings(
-    "announcement_bar",
-  )) as AnnouncementSettings | null;
-
-  if (!settings || !settings.enabled) return null;
-
+export function AnnouncementBar() {
   return (
-    <div className="bg-green-600 text-white text-xs font-semibold tracking-wide py-2.5 px-4 text-center relative z-50 overflow-hidden">
-      <div className="flex w-full overflow-hidden select-none">
-        <div
-          className="flex animate-marquee shrink-0 items-center justify-around min-w-full gap-10 pr-10"
-          style={{ "--duration": "60s" } as React.CSSProperties}
+    <div className="bg-stone-900 text-stone-50 text-[11px] font-bold tracking-wider overflow-hidden relative">
+      <div className="flex items-center justify-center gap-3 h-9">
+        <motion.div
+          className="flex items-center gap-6 whitespace-nowrap"
+          animate={{ x: [0, -200, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         >
-          {Array.from({ length: 10 }).map((_, i) => (
-            <span
-              key={`a-${i}`}
-              className="flex items-center gap-2 whitespace-nowrap"
-            >
-              {settings.text}
-              {settings.href && (
-                <Link
-                  href={settings.href}
-                  className="inline-flex items-center gap-1 underline underline-offset-2 decoration-1 font-bold hover:opacity-80 transition-opacity"
-                >
-                  Shop Now <ArrowRight className="h-3 w-3" />
-                </Link>
-              )}
-            </span>
-          ))}
-        </div>
-        <div
-          className="flex animate-marquee shrink-0 items-center justify-around min-w-full gap-10 pr-10"
-          aria-hidden="true"
-          style={{ "--duration": "60s" } as React.CSSProperties}
-        >
-          {Array.from({ length: 10 }).map((_, i) => (
-            <span
-              key={`b-${i}`}
-              className="flex items-center gap-2 whitespace-nowrap"
-            >
-              {settings.text}
-              {settings.href && (
-                <Link
-                  href={settings.href}
-                  className="inline-flex items-center gap-1 underline underline-offset-2 decoration-1 font-bold hover:opacity-80 transition-opacity"
-                >
-                  Shop Now <ArrowRight className="h-3 w-3" />
-                </Link>
-              )}
-            </span>
-          ))}
-        </div>
+          <span className="flex items-center gap-1.5">
+            <Zap className="h-3.5 w-3.5 text-yellow-400 fill-yellow-400" />
+            FREE SHIPPING ON ₹999+
+          </span>
+          <span className="text-white/20">•</span>
+          <span className="flex items-center gap-1.5">
+            <Zap className="h-3.5 w-3.5 text-rose-400 fill-rose-400" />
+            USE CODE FITBYTE10 FOR 10% OFF
+          </span>
+          <span className="text-white/20">•</span>
+          <span className="flex items-center gap-1.5">
+            <Zap className="h-3.5 w-3.5 text-yellow-400 fill-yellow-400" />
+            LAB TESTED · FSSAI CERTIFIED
+          </span>
+        </motion.div>
       </div>
     </div>
   );

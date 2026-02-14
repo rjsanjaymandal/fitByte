@@ -5,267 +5,140 @@ import {
   Facebook,
   Instagram,
   Twitter,
-  Mail,
-  ChevronDown,
-  ArrowRight,
+  Youtube,
+  ArrowUpRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
+
+const footerLinks = {
+  shop: [
+    { label: "New Drops", href: "/shop" },
+    { label: "Protein Bars", href: "/shop/bars" },
+    { label: "Supplements", href: "/shop/supplements" },
+    { label: "Accessories", href: "/shop/accessories" },
+  ],
+  support: [
+    { label: "Shipping Policy", href: "/shipping" },
+    { label: "Refund Policy", href: "/refunds" },
+    { label: "Track Order", href: "/track" },
+    { label: "Privacy Policy", href: "/privacy" },
+  ],
+  company: [
+    { label: "About Our Story", href: "/about" },
+    { label: "Lab Reports", href: "/lab-reports" },
+    { label: "Contact Us", href: "/contact" },
+    { label: "Affiliates", href: "/affiliates" },
+  ],
+};
 
 export function Footer() {
   return (
-    <footer className="bg-slate-900 pt-20 pb-10 relative overflow-hidden">
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        {/* TOP SECTION: BRAND & NEWSLETTER */}
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-12 mb-16">
-          <div className="space-y-5 max-w-md">
+    <footer className="bg-stone-900 text-stone-50 overflow-hidden pt-20">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 pb-16">
+          {/* Brand Col */}
+          <div className="lg:col-span-4 space-y-8">
             <Link href="/" className="inline-block group">
-              <h3 className="text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-none">
-                fitByte<span className="text-green-500">.</span>
-              </h3>
-              <p className="text-xs font-medium text-green-400 mt-1">
-                Premium Nutrition Labs
-              </p>
+              <span className="text-3xl font-black tracking-tighter uppercase">
+                fit<span className="text-rose-400">Byte</span>
+              </span>
             </Link>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Join the movement. Premium nutrition for the modern human.
-              Lab-tested, taste-refined, and backed by science.
+
+            <p className="text-stone-400 text-sm leading-relaxed max-w-sm">
+              We&apos;re on a mission to bring high-quality, transparent, and
+              delicious nutrition to every athlete in India. No BS, just real
+              macros.
             </p>
-            <div className="flex gap-3 pt-2">
-              {[
-                {
-                  Icon: Instagram,
-                  href: "https://www.instagram.com/fitbyte/",
-                },
-                { Icon: Twitter, href: "#" },
-                {
-                  Icon: Facebook,
-                  href: "#",
-                },
-              ].map(({ Icon, href }, i) => (
+
+            <div className="flex items-center gap-5">
+              {[Instagram, Twitter, Youtube, Facebook].map((Icon, i) => (
                 <a
                   key={i}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-600 text-slate-400 hover:text-white transition-all duration-300 cursor-pointer"
+                  href="#"
+                  className="text-stone-300 hover:text-rose-400 transition-colors p-2 bg-white/5 rounded-full hover:bg-white/10"
                 >
-                  <Icon className="h-4 w-4 stroke-2" />
+                  <Icon className="h-5 w-5 stroke-[1.5]" />
                 </a>
               ))}
             </div>
           </div>
 
-          <div className="w-full max-w-md bg-white/5 backdrop-blur-sm p-8 rounded-2xl border border-white/10">
-            <div className="flex items-center gap-2 mb-2">
-              <Mail className="h-4 w-4 text-green-400" />
-              <span className="text-xs font-semibold text-green-400 uppercase tracking-wider">
-                Newsletter
-              </span>
+          {/* Links Grid */}
+          <div className="lg:col-span-4 grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div>
+              <h4 className="text-[10px] font-bold text-white uppercase tracking-[0.2em] mb-6">
+                Shop
+              </h4>
+              <ul className="space-y-4">
+                {footerLinks.shop.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-stone-400 hover:text-rose-400 text-[13px] flex items-center group transition-colors"
+                    >
+                      {link.label}
+                      <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ml-1" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <h4 className="font-bold text-xl text-white mb-2">
-              Stay in the Loop
+            <div>
+              <h4 className="text-[10px] font-bold text-white uppercase tracking-[0.2em] mb-6">
+                Support
+              </h4>
+              <ul className="space-y-4">
+                {footerLinks.support.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-stone-400 hover:text-rose-400 text-[13px] flex items-center group transition-colors"
+                    >
+                      {link.label}
+                      <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-all transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ml-1" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Newsletter Col */}
+          <div className="lg:col-span-4 space-y-6">
+            <h4 className="text-[10px] font-bold text-white uppercase tracking-[0.2em]">
+              Join the Fam
             </h4>
-            <p className="text-sm text-slate-400 mb-5">
-              Get 10% off your first order + exclusive drops.
+            <p className="text-sm text-stone-400">
+              Get 10% off your first order when you join our inner circle.
             </p>
-            <form
-              className="flex flex-col sm:flex-row gap-3"
-              onSubmit={(e) => e.preventDefault()}
-            >
+            <div className="flex gap-2">
               <Input
-                placeholder="Enter your email"
-                className="bg-white/10 border-white/10 h-11 focus-visible:ring-green-500/30 rounded-full px-5 text-sm text-white placeholder:text-slate-500 flex-1"
+                placeholder="Email Address"
+                className="bg-white/10 border-white/10 text-white placeholder:text-stone-500 rounded-xl h-12 focus:ring-rose-500/20"
               />
-              <Button className="h-11 px-6 rounded-full bg-green-600 hover:bg-green-500 text-white font-semibold text-sm transition-all shrink-0">
-                Subscribe
+              <Button className="bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl h-12 px-6 shadow-lg shadow-rose-900/20">
+                Join
               </Button>
-            </form>
+            </div>
           </div>
         </div>
 
-        {/* MIDDLE SECTION: LINKS */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12 border-t border-white/10 pt-12 mb-12">
-          <FooterSection title="Shop">
-            <ul className="space-y-3 text-sm text-slate-400">
-              <li>
-                <Link
-                  href="/shop"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  All Products
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/shop/protein"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Supplements
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/shop/snacks"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Health Snacks
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/shop/accessories"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Accessories
-                </Link>
-              </li>
-            </ul>
-          </FooterSection>
-
-          <FooterSection title="Company">
-            <ul className="space-y-3 text-sm text-slate-400">
-              <li>
-                <Link
-                  href="/about"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Our Story
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/careers"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/sustainability"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Sustainability
-                </Link>
-              </li>
-            </ul>
-          </FooterSection>
-
-          <FooterSection title="Support">
-            <ul className="space-y-3 text-sm text-slate-400">
-              <li>
-                <Link
-                  href="/contact"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/shipping"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Shipping
-                </Link>
-              </li>
-            </ul>
-          </FooterSection>
-
-          <FooterSection title="Legal">
-            <ul className="space-y-3 text-sm text-slate-400">
-              <li>
-                <Link
-                  href="/privacy"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  className="hover:text-green-400 transition-colors"
-                >
-                  Terms & Conditions
-                </Link>
-              </li>
-            </ul>
-          </FooterSection>
-        </div>
-
-        {/* BOTTOM SECTION */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-          <p>&copy; 2026 fitByte Labs. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <span>India</span>
-            <span className="text-slate-700">·</span>
-            <span>EN</span>
+        {/* Bottom Bar */}
+        <div className="py-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest">
+            © 2026 fitByte Labs India. All rights reserved.
+          </p>
+          <div className="flex gap-8">
+            <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">
+              L40000MH2024PLC123456
+            </p>
+            <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest">
+              FSSAI: 12345678901234
+            </p>
           </div>
         </div>
       </div>
     </footer>
-  );
-}
-
-function FooterSection({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="border-b border-white/5 md:border-none pb-4 md:pb-0">
-      {/* Mobile Header */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full md:hidden py-2"
-      >
-        <h4 className="font-semibold text-base text-white">{title}</h4>
-        <ChevronDown
-          className={cn(
-            "h-4 w-4 text-slate-500 transition-transform duration-300",
-            isOpen && "rotate-180",
-          )}
-        />
-      </button>
-
-      {/* Desktop Header */}
-      <h4 className="font-semibold text-sm text-white mb-5 hidden md:block">
-        {title}
-      </h4>
-
-      {/* Mobile Content */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="overflow-hidden md:hidden"
-          >
-            <div className="pt-2 pb-4">{children}</div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Desktop Content */}
-      <div className="hidden md:block">{children}</div>
-    </div>
   );
 }

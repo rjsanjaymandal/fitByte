@@ -141,6 +141,19 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
     return () => clearTimeout(timer);
   }, [currentIndex, isPaused, isQuickAddOpen, handleNext]);
 
+  if (!products || products.length === 0) {
+    return (
+      <section className="relative w-full h-[85vh] lg:h-[90vh] bg-[#faf7f2] overflow-hidden animate-pulse">
+        <div className="absolute inset-x-0 bottom-0 top-0 bg-stone-100 lg:w-[55%] lg:right-0 lg:left-auto" />
+      </section>
+    );
+  }
+
+  const currentProduct = products[currentIndex];
+  if (!currentProduct) return null;
+
+  const addItem = useCartStore((state) => state.addItem);
+
   // Swipe Handling
   const SWIPE_THRESHOLD = 50;
   const handleDragEnd = (event: any, info: PanInfo) => {
@@ -156,19 +169,6 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
       router.push(`/product/${currentProduct.slug}`);
     }
   };
-
-  if (!products || products.length === 0) {
-    return (
-      <section className="relative w-full h-[85vh] lg:h-[90vh] bg-background overflow-hidden animate-pulse">
-        <div className="absolute inset-x-0 bottom-0 top-0 bg-zinc-100 lg:w-[55%] lg:right-0 lg:left-auto" />
-      </section>
-    );
-  }
-
-  const currentProduct = products[currentIndex];
-  if (!currentProduct) return null;
-
-  const addItem = useCartStore((state) => state.addItem);
 
   const handleBuyNow = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -210,140 +210,193 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
     router.push("/checkout");
   };
 
-  const cleanDescription = (html: string) => {
-    if (!html) return "";
-    return html
-      .replace(/<[^>]*>?/gm, "")
-      .replace(/&amp;/g, "&")
-      .trim();
+  const getProductColor = (product: HeroProduct) => {
+    if (product.color_options && product.color_options.length > 0) {
+      const color = product.color_options[0].toLowerCase();
+      const colorMap: Record<string, string> = {
+        rose: "#fb7185",
+        pink: "#fb7185",
+        yellow: "#facc15",
+        lime: "#84cc16",
+        chocolate: "#451a03",
+        brown: "#451a03",
+        cream: "#faf7f2",
+        stone: "#78716c",
+        black: "#1c1917",
+        blue: "#3b82f6",
+      };
+
+      for (const [key, val] of Object.entries(colorMap)) {
+        if (color.includes(key)) return val;
+      }
+    }
+    return "#1c1917"; // Default stone-950/black
   };
+
+  const backgroundColor = getProductColor(currentProduct);
 
   return (
     <section
       ref={containerRef}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[85vh] bg-slate-50 overflow-hidden"
+      className="relative w-full h-[85vh] lg:h-[95vh] overflow-hidden transition-colors duration-1000 ease-in-out"
+      style={{ backgroundColor }}
     >
-      <AnimatePresence initial={false} custom={direction}>
+      {/* Dynamic Background Pulse/Grain */}
+      <div className="absolute inset-0 opacity-20 grain pointer-events-none" />
+      <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div
           key={currentIndex}
           custom={direction}
-          initial={{ x: direction > 0 ? "100%" : "-100%", opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: direction > 0 ? "-100%" : "100%", opacity: 0 }}
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.3 },
-          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.4}
-          onDragStart={() => {
-            isDraggingRef.current = true;
-          }}
-          onDragEnd={(e, info) => {
-            handleDragEnd(e, info);
-            setTimeout(() => {
-              isDraggingRef.current = false;
-            }, 50);
-          }}
-          onClick={handleSlideClick}
-          className="absolute inset-0 w-full h-full cursor-pointer active:cursor-grabbing"
+          dragElastic={0.2}
+          onDragEnd={handleDragEnd}
+          className="absolute inset-0 w-full h-full flex items-center"
         >
-          {/* IMAGE LAYER */}
-          <div className="absolute inset-0 w-full h-full">
-            {currentProduct.main_image_url && (
-              <FlashImage
-                src={currentProduct.main_image_url}
-                alt={currentProduct.name}
-                fill
-                className="object-contain lg:object-contain"
-                priority={true}
-                resizeMode="contain"
-                sizes="100vw"
-              />
-            )}
-
-            {/* Gradient Overlay for Text Readability - subtle for premium feel */}
-            <div className="absolute inset-0 bg-slate-900/15 z-10" />
-            <div className="absolute inset-0 bg-linear-to-t from-slate-900/40 via-transparent to-transparent z-10" />
+          {/* PRODUCT IMAGE LAYER - Contained & Floating */}
+          <div className="absolute inset-0 flex items-center justify-center lg:justify-end lg:pr-[10%] pointer-events-none">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
+              animate={{
+                scale: 1,
+                opacity: 1,
+                rotate: 0,
+                y: [0, -20, 0],
+              }}
+              transition={{
+                opacity: { duration: 0.8 },
+                scale: { duration: 0.8 },
+                rotate: { duration: 0.8 },
+                y: {
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                },
+              }}
+              className="relative w-[300px] h-[300px] sm:w-[450px] sm:h-[450px] lg:w-[600px] lg:h-[600px] drop-shadow-[0_35px_35px_rgba(0,0,0,0.3)]"
+            >
+              {currentProduct.main_image_url && (
+                <FlashImage
+                  src={currentProduct.main_image_url}
+                  alt={currentProduct.name}
+                  fill
+                  className="object-contain"
+                  priority={true}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              )}
+            </motion.div>
           </div>
 
-          {/* CONTENT LAYER */}
-          <div className="relative z-20 h-full w-full container mx-auto px-6 lg:px-12 flex flex-col justify-end lg:justify-center items-center lg:items-start text-center lg:text-left pb-24 lg:pb-0">
-            <div className="max-w-5xl text-white flex flex-col items-center lg:items-start">
+          {/* Cinematic Gradient Overlays */}
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-black/20 pointer-events-none z-10" />
+
+          {/* CONTENT LAYER - Staggered Floating Elements */}
+          <div className="relative z-20 h-full w-full container mx-auto px-6 lg:px-12 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
+            <div className="max-w-6xl w-full">
               <motion.div
-                initial={{ y: 20, opacity: 0 }}
+                initial={{ y: 30, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="mb-6"
+                transition={{ delay: 0.4, duration: 0.8 }}
+                className="mb-8"
               >
-                <span className="inline-block bg-green-600 text-white px-5 py-2 rounded-full text-xs font-semibold tracking-wide shadow-lg">
-                  New Launch
-                </span>
+                <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full glass border border-white/10 shadow-2xl">
+                  <span className="flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-rose-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                  </span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">
+                    Seasonal Drop
+                  </span>
+                </div>
               </motion.div>
 
-              <div className="min-h-[80px] sm:min-h-[120px] lg:min-h-[220px] flex flex-col justify-center mb-4 sm:mb-8">
+              <div className="space-y-2 mb-10 overflow-hidden">
                 <motion.h1
-                  initial={{ y: 30, opacity: 0 }}
+                  initial={{ y: "100%", opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] xl:text-[140px] font-extrabold text-white leading-[0.85] tracking-tight"
+                  transition={{
+                    delay: 0.5,
+                    duration: 1,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="text-[2.5rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[6.5rem] xl:text-[8rem] font-black text-white leading-[0.8] tracking-tighter uppercase group-hover:text-shimmer transition-all"
                 >
                   {currentProduct.name}
                 </motion.h1>
+                <motion.div
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: 1.2, duration: 0.8 }}
+                  className="flex items-center justify-center lg:justify-start gap-4 mt-4"
+                >
+                  <div className="h-px w-16 bg-rose-500" />
+                  <span className="text-xs sm:text-sm text-stone-300 font-black uppercase tracking-[0.4em]">
+                    {getTagline(currentProduct)}
+                  </span>
+                </motion.div>
               </div>
 
               <motion.div
-                initial={{ y: 20, opacity: 0 }}
+                initial={{ y: 40, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="flex items-center justify-center lg:justify-start gap-4 mb-8 sm:mb-12"
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="flex flex-col sm:flex-row items-center gap-8 lg:gap-12"
               >
-                <div className="h-[2px] w-6 sm:w-12 bg-white" />
-                <span className="text-xs sm:text-sm text-white/80 font-medium tracking-wide whitespace-nowrap">
-                  {getTagline(currentProduct)}
-                </span>
-                <div className="h-[2px] w-6 sm:w-12 bg-white block lg:hidden" />
-              </motion.div>
-
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="flex flex-col sm:flex-row items-center lg:items-end justify-center lg:justify-start gap-6 sm:gap-10"
-              >
-                <div className="flex flex-col items-center lg:items-start order-2 sm:order-1">
-                  <div className="flex items-baseline gap-3">
-                    <span className="text-4xl sm:text-5xl lg:text-7xl font-extrabold">
+                <div className="flex flex-col items-center lg:items-start">
+                  <span className="text-stone-400 text-[10px] font-black uppercase tracking-widest mb-1">
+                    Price
+                  </span>
+                  <div className="flex items-baseline gap-4">
+                    <span className="text-3xl sm:text-5xl font-black text-white tracking-tighter">
                       {formatCurrency(currentProduct.price)}
                     </span>
                     {currentProduct.original_price &&
                       currentProduct.original_price > currentProduct.price && (
-                        <span className="text-white/40 line-through text-xl lg:text-2xl font-bold">
+                        <span className="text-lg sm:text-xl font-bold text-stone-500 line-through">
                           {formatCurrency(currentProduct.original_price)}
                         </span>
                       )}
                   </div>
                 </div>
 
-                <Button
-                  size="lg"
-                  className="h-14 sm:h-16 lg:h-18 px-10 sm:px-14 lg:px-16 rounded-full text-sm font-semibold bg-white text-slate-900 hover:bg-green-600 hover:text-white active:scale-95 transition-all shadow-xl mt-4 sm:mt-0 group border-none order-1 sm:order-2"
-                  onClick={handleBuyNow}
-                >
-                  Buy Now
-                  <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <div className="flex items-center gap-4">
+                  <Button
+                    size="lg"
+                    className="h-16 sm:h-20 px-12 sm:px-16 rounded-full text-[12px] font-black bg-white text-stone-900 hover:bg-rose-500 hover:text-white transition-all duration-500 tracking-[0.2em] uppercase shadow-[0_0_50px_rgba(255,255,255,0.1)] group"
+                    onClick={handleBuyNow}
+                  >
+                    Quick Add
+                    <ArrowRight className="ml-3 h-5 w-5 group-hover:translate-x-2 transition-transform" />
+                  </Button>
+
+                  <Link
+                    href={`/product/${currentProduct.slug}`}
+                    className="hidden sm:block"
+                  >
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="h-16 h-20 px-8 rounded-full border-white/20 text-white hover:bg-white/10 hover:border-white transition-all text-[12px] font-black uppercase tracking-[0.2em]"
+                    >
+                      Details
+                    </Button>
+                  </Link>
+                </div>
               </motion.div>
             </div>
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* NAVIGATION CONTROLS */}
-      <div className="absolute inset-x-0 bottom-8 z-30 flex flex-col items-center gap-4">
+      {/* NAVIGATION CONTROLS - Floating Glass Indicators */}
+      <div className="absolute inset-x-0 bottom-12 z-40 flex flex-col items-center gap-6">
         <DashIndicators
           count={products.length}
           current={currentIndex}
@@ -352,27 +405,27 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
             setCurrentIndex(i);
           }}
           duration={DURATION}
-          isActive={!isPaused}
+          isActive={!isPaused && !isQuickAddOpen}
         />
       </div>
 
-      {/* DESKTOP ARROWS */}
-      <div className="hidden lg:flex absolute inset-y-0 inset-x-4 items-center justify-between z-30 pointer-events-none">
+      {/* DESKTOP ARROWS - Minimalist Cinematic Style */}
+      <div className="hidden lg:flex absolute inset-y-0 inset-x-8 items-center justify-between z-40 pointer-events-none">
         <Button
           size="icon"
           variant="ghost"
           onClick={handlePrev}
-          className="h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white pointer-events-auto border border-white/10"
+          className="h-16 w-16 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl text-white pointer-events-auto border border-white/10 shadow-3xl transition-all hover:scale-110 active:scale-95 group"
         >
-          <ChevronLeft className="h-5 w-5" />
+          <ChevronLeft className="h-6 w-6 group-hover:-translate-x-1 transition-transform" />
         </Button>
         <Button
           size="icon"
           variant="ghost"
           onClick={handleNext}
-          className="h-12 w-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md text-white pointer-events-auto border border-white/10"
+          className="h-16 w-16 rounded-full bg-white/5 hover:bg-white/10 backdrop-blur-xl text-white pointer-events-auto border border-white/10 shadow-3xl transition-all hover:scale-110 active:scale-95 group"
         >
-          <ChevronRight className="h-5 w-5" />
+          <ChevronRight className="h-6 w-6 group-hover:translate-x-1 transition-transform" />
         </Button>
       </div>
 

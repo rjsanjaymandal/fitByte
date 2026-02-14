@@ -1,0 +1,69 @@
+﻿
+> flash-ecommerce@0.1.0 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+- Experiments (use with caution):
+  ┬╖ serverActions
+
+node.exe : ΓÜá The "middleware" 
+file convention is deprecated. 
+Please use "proxy" instead. 
+Learn more: https://nextjs.org/d
+ocs/messages/middleware-to-proxy
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" "C:\Users
+\rjsan\AppData\Roaming\ ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~
+    + CategoryInfo          : N 
+   otSpecified: (ΓÜá The "midd  
+  le...leware-to-proxy:String   
+ ) [], RemoteException
+    + FullyQualifiedErrorId : N 
+   ativeCommandError
+ 
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 60s
+  Running TypeScript ...
+Failed to compile.
+
+./app/(storefront)/layout.tsx:1:
+10
+Type error: Module '"@/component
+s/storefront/navbar"' has no 
+exported member 
+'StorefrontNavbar'.
+
+[0m[31m[1m>[22m[39m[90m 1 
+|[39m [36mimport[39m { 
+[33mStorefrontNavbar[39m 
+[36mas[39m [33mNavbar[39m } 
+[36mfrom[39m [32m"@/component
+s/storefront/navbar"[39m[33m;
+[39m
+ [90m   |[39m          
+[31m[1m^[22m[39m
+ [90m 2 |[39m 
+[36mimport[39m { 
+[33mFooter[39m } 
+[36mfrom[39m [32m"@/component
+s/storefront/footer"[39m[33m;
+[39m
+ [90m 3 |[39m 
+[36mimport[39m { 
+[33mCommandMenu[39m } 
+[36mfrom[39m [32m"@/component
+s/search/command-menu"[39m[33m
+;[39m
+ [90m 4 |[39m 
+[36mimport[39m { 
+[33mPageTransition[39m } 
+[36mfrom[39m [32m"@/component
+s/storefront/page-transition"[3
+9m[33m;[39m[0m
+Next.js build worker exited 
+with code: 1 and signal: null

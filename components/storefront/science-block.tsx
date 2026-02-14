@@ -26,7 +26,7 @@ export function ScienceBlock() {
               <span className="text-[#e31e24] font-black tracking-[0.3em] uppercase text-xs">
                 The FitByte Standard
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-[#1a2b47] tracking-tighter uppercase leading-[0.85]">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#1a2b47] tracking-tighter uppercase leading-[0.85]">
                 Not All Protein <br />
                 <span className="text-zinc-300">Is Created Equal.</span>
               </h2>
@@ -47,7 +47,7 @@ export function ScienceBlock() {
               ].map((item, i) => (
                 <li key={i} className="flex items-center gap-4">
                   <div className="flex-none p-1 bg-[#1a2b47] text-white">
-                    <CheckCircle2 className="h-4 w-4 stroke-[3]" />
+                    <CheckCircle2 className="h-4 w-4 stroke-3" />
                   </div>
                   <span className="text-[#1a2b47] font-black uppercase tracking-widest text-sm">
                     {item}
@@ -60,7 +60,7 @@ export function ScienceBlock() {
               <Link href="/about">
                 <Button className="h-16 px-10 rounded-none bg-[#1a2b47] text-white hover:bg-[#e31e24] transition-all font-black uppercase tracking-[0.2em] text-xs shadow-[6px_6px_0px_0px_rgba(227,30,36,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none">
                   Discover Our Science
-                  <ArrowRight className="ml-2 h-4 w-4 stroke-[3]" />
+                  <ArrowRight className="ml-2 h-4 w-4 stroke-3" />
                 </Button>
               </Link>
             </div>
@@ -79,7 +79,7 @@ export function ScienceBlock() {
                   backgroundSize: "20px 20px",
                 }}
               />
-              <span className="text-zinc-100 font-black text-[12rem] lg:text-[18rem] absolute -top-10 -right-10 pointer-events-none uppercase">
+              <span className="text-zinc-100 font-black text-[8rem] lg:text-[10rem] absolute -top-10 -right-10 pointer-events-none uppercase">
                 LAB
               </span>
 

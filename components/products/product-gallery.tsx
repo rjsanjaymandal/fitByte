@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { cn } from "@/lib/utils";
 import FlashImage from "@/components/ui/flash-image";
 import { AdaptiveImageContainer } from "@/components/ui/adaptive-image-container";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronUp, ChevronDown } from "lucide-react";
 
 interface ProductGalleryProps {
   images: string[];
@@ -18,25 +18,14 @@ export function ProductGallery({
   mainImage,
 }: ProductGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const thumbnailRef = useRef<HTMLDivElement>(null);
 
   const allImages = Array.from(new Set([mainImage, ...images])).filter(Boolean);
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const scrollLeft = e.currentTarget.scrollLeft;
-    const width = e.currentTarget.clientWidth;
-    const newIndex = Math.round(scrollLeft / (width / 2));
-    if (newIndex !== activeIndex) {
-      setActiveIndex(newIndex);
-    }
-  };
-
-  const scrollContainer = (direction: "left" | "right") => {
-    const container = document.getElementById("gallery-container");
-    if (container) {
-      const width = container.clientWidth;
-      const scrollAmount = width / 2;
-      container.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
+  const scrollThumbnails = (dir: "up" | "down") => {
+    if (thumbnailRef.current) {
+      thumbnailRef.current.scrollBy({
+        top: dir === "up" ? -200 : 200,
         behavior: "smooth",
       });
     }
@@ -44,106 +33,88 @@ export function ProductGallery({
 
   return (
     <div className="relative w-full">
-      {/* Desktop: Dual-Pane Hero (Two-Up) with Soft Controls */}
-      <div className="hidden lg:flex w-full h-[80vh] relative group">
-        <div
-          id="gallery-container"
-          className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide bg-slate-50/50"
-          onScroll={handleScroll}
-        >
-          {allImages.map((img, i) => (
-            <AdaptiveImageContainer
-              key={i}
-              imageUrl={img}
-              className="snap-start shrink-0 w-1/2 h-full flex items-center justify-center p-12 border-r border-slate-100 last:border-0"
+      {/* ═══ DESKTOP ═══ */}
+      <div className="hidden lg:flex gap-3 h-[82vh] p-3">
+        {/* Vertical Thumbnail Strip */}
+        <div className="flex flex-col items-center gap-2 w-20 shrink-0">
+          {allImages.length > 4 && (
+            <button
+              onClick={() => scrollThumbnails("up")}
+              className="w-full flex justify-center py-1 text-stone-300 hover:text-stone-600 transition-colors"
             >
-              <div className="relative w-full h-full max-h-[70vh]">
-                <FlashImage
-                  src={img}
-                  alt={`${name} view ${i + 1}`}
-                  fill
-                  className="object-contain"
-                  priority={i < 2}
-                  sizes="50vw"
-                />
-              </div>
-            </AdaptiveImageContainer>
-          ))}
-        </div>
-
-        {/* Floating Controls (Modern & Rounded) */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4">
-          {/* Thumbnail Strip */}
-          <div className="flex items-center gap-3 bg-white/80 backdrop-blur-xl p-2 rounded-2xl border border-white shadow-xl shadow-slate-200/50">
+              <ChevronUp className="w-4 h-4" />
+            </button>
+          )}
+          <div
+            ref={thumbnailRef}
+            className="flex flex-col gap-2 overflow-y-auto scrollbar-hide flex-1"
+          >
             {allImages.map((img, i) => (
               <button
                 key={i}
-                onClick={() => {
-                  const container =
-                    document.getElementById("gallery-container");
-                  if (container) {
-                    const width = container.clientWidth;
-                    container.scrollTo({
-                      left: i * (width / 2),
-                      behavior: "smooth",
-                    });
-                  }
-                }}
+                onClick={() => setActiveIndex(i)}
                 className={cn(
-                  "relative w-10 h-12 overflow-hidden transition-all duration-300 border-2 rounded-xl",
-                  i === activeIndex || i === activeIndex + 1
-                    ? "border-green-600 ring-2 ring-green-100"
-                    : "border-transparent opacity-60 hover:opacity-100",
+                  "relative w-full aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-200 shrink-0",
+                  i === activeIndex
+                    ? "border-rose-400 ring-2 ring-rose-100 shadow-md"
+                    : "border-stone-100 hover:border-rose-200 opacity-50 hover:opacity-100",
                 )}
               >
                 <FlashImage
                   src={img}
-                  alt={`Thumb ${i}`}
+                  alt={`${name} thumb ${i + 1}`}
                   fill
                   className="object-cover"
-                  sizes="48px"
+                  sizes="80px"
                 />
               </button>
             ))}
           </div>
-
-          {/* Navigation */}
-          <div className="flex items-center gap-1 bg-white/80 backdrop-blur-xl p-1.5 rounded-2xl border border-white shadow-xl shadow-slate-200/50 h-[68px]">
+          {allImages.length > 4 && (
             <button
-              onClick={() => scrollContainer("left")}
-              className="w-10 h-full flex items-center justify-center hover:bg-slate-100 rounded-xl transition-all"
+              onClick={() => scrollThumbnails("down")}
+              className="w-full flex justify-center py-1 text-stone-300 hover:text-stone-600 transition-colors"
             >
-              <ChevronLeft className="w-5 h-5 text-slate-600" />
+              <ChevronDown className="w-4 h-4" />
             </button>
-            <div className="w-[1px] h-8 bg-slate-100 mx-1" />
-            <button
-              onClick={() => scrollContainer("right")}
-              className="w-10 h-full flex items-center justify-center hover:bg-slate-100 rounded-xl transition-all"
-            >
-              <ChevronRight className="w-5 h-5 text-slate-600" />
-            </button>
-          </div>
+          )}
         </div>
+
+        {/* Main Image */}
+        <AdaptiveImageContainer
+          imageUrl={allImages[activeIndex]}
+          className="flex-1 rounded-3xl overflow-hidden bg-rose-50/30 border border-rose-100/50 flex items-center justify-center"
+        >
+          <div className="relative w-full h-full p-10">
+            <FlashImage
+              src={allImages[activeIndex]}
+              alt={`${name} view ${activeIndex + 1}`}
+              fill
+              className="object-contain transition-opacity duration-300"
+              priority
+              sizes="(min-width: 1024px) 60vw, 100vw"
+            />
+          </div>
+        </AdaptiveImageContainer>
       </div>
 
-      {/* Mobile: Swipeable Carousel */}
-      <div className="lg:hidden w-full h-[55vh] relative group bg-white">
+      {/* ═══ MOBILE ═══ */}
+      <div className="lg:hidden w-full aspect-square relative bg-rose-50/30">
         <div
-          className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide items-center"
+          className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide"
           onScroll={(e) => {
-            const scrollLeft = e.currentTarget.scrollLeft;
-            const width = e.currentTarget.clientWidth;
-            const newIndex = Math.round(scrollLeft / width);
-            setActiveIndex(newIndex);
+            const sl = e.currentTarget.scrollLeft;
+            const w = e.currentTarget.clientWidth;
+            setActiveIndex(Math.round(sl / w));
           }}
         >
           {allImages.map((img, i) => (
             <AdaptiveImageContainer
               key={i}
               imageUrl={img}
-              className="snap-center shrink-0 w-full h-full flex items-center justify-center p-8"
+              className="snap-center shrink-0 w-full h-full flex items-center justify-center p-6"
             >
-              <div className="relative w-full h-full max-h-[50vh]">
+              <div className="relative w-full h-full">
                 <FlashImage
                   src={img}
                   alt={`${name} view ${i + 1}`}
@@ -156,23 +127,17 @@ export function ProductGallery({
             </AdaptiveImageContainer>
           ))}
         </div>
-
-        {/* Modern Indicator Dot Strip */}
-        <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-2 z-10">
+        {/* Pill Indicator */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 bg-white/80 backdrop-blur-lg px-3 py-1.5 rounded-full shadow-sm border border-rose-100/50">
           {allImages.map((_, i) => (
             <div
               key={i}
               className={cn(
                 "h-1.5 rounded-full transition-all duration-300",
-                i === activeIndex ? "w-6 bg-green-600" : "w-1.5 bg-slate-200",
+                i === activeIndex ? "w-5 bg-rose-400" : "w-1.5 bg-stone-300",
               )}
             />
           ))}
-        </div>
-
-        {/* Count Badge */}
-        <div className="absolute top-6 right-6 bg-white/80 backdrop-blur-md text-slate-900 text-[10px] px-3 py-1.5 rounded-full font-bold shadow-sm border border-slate-100">
-          {activeIndex + 1} / {allImages.length}
         </div>
       </div>
     </div>

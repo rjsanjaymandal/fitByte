@@ -373,6 +373,28 @@ export async function createProduct(productData: unknown) {
         const insertData = prepareProductData(validated.data)
         const variants = validated.data.variants || []
         const supabase = createAdminClient() // Use Service Role for reliability
+
+        // 3.a Ensure Slug Uniqueness
+        let finalSlug = insertData.slug
+        let isUnique = false
+        let counter = 0
+
+        while (!isUnique) {
+          const currentSlug = counter === 0 ? finalSlug : `${finalSlug}-${counter}`
+          const { data: existing } = await supabase
+            .from('products')
+            .select('id')
+            .eq('slug', currentSlug)
+            .maybeSingle()
+
+          if (!existing) {
+            finalSlug = currentSlug
+            isUnique = true
+          } else {
+            counter++
+          }
+        }
+        insertData.slug = finalSlug
         
         // 4. Insert Product
         const { data: prodJson, error: prodErr } = await supabase

@@ -20,22 +20,22 @@ export function ProductCarousel({
   if (!products || products.length === 0) return null;
 
   return (
-    <section className="py-20 relative overflow-hidden bg-white">
+    <section className="py-20 relative overflow-hidden bg-stone-50">
       <div className="container px-4 md:px-8 mx-auto">
         <div className="flex flex-col gap-2 mb-12">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600">
+            <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-500">
               <Heart className="w-5 h-5 fill-current" />
             </div>
             <motion.h2
               initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
-              className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900"
+              className="text-2xl md:text-3xl font-black tracking-tight text-stone-900"
             >
               {title}
             </motion.h2>
           </div>
-          <p className="text-sm text-slate-500 font-medium pl-13">
+          <p className="text-sm text-stone-500 font-medium pl-13">
             Carefully selected for your nutrition goals.
           </p>
         </div>
@@ -63,9 +63,8 @@ export function ProductCarousel({
             <ScrollBar orientation="horizontal" className="hidden" />
           </ScrollArea>
 
-          {/* Modern Fade Edges */}
-          <div className="absolute top-0 left-0 bottom-0 w-12 md:w-24 bg-gradient-to-r from-white to-transparent pointer-events-none z-10" />
-          <div className="absolute top-0 right-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-white to-transparent pointer-events-none z-10" />
+          <div className="absolute top-0 left-0 bottom-0 w-12 md:w-24 bg-linear-to-r from-stone-50 to-transparent pointer-events-none z-10" />
+          <div className="absolute top-0 right-0 bottom-0 w-12 md:w-24 bg-linear-to-l from-stone-50 to-transparent pointer-events-none z-10" />
         </div>
       </div>
     </section>

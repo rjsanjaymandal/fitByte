@@ -908,7 +908,7 @@ export default function CheckoutPage() {
 
               <div className="space-y-3 pt-2">
                 {appliedCoupon && (
-                  <div className="flex justify-between text-sm text-green-500 font-bold px-1 bg-green-500/10 p-2 rounded-lg border border-green-500/20">
+                  <div className="flex justify-between text-sm text-rose-500 font-bold px-1 bg-rose-500/10 p-2 rounded-lg border border-rose-500/20">
                     <span className="flex items-center gap-1.5">
                       <Ticket className="h-3 w-3" /> {appliedCoupon.code}
                     </span>
@@ -924,7 +924,7 @@ export default function CheckoutPage() {
                   <span>Shipping</span>
                   <span
                     className={
-                      shippingFee === 0 ? "text-green-500" : "text-foreground"
+                      shippingFee === 0 ? "text-rose-500" : "text-foreground"
                     }
                   >
                     {shippingFee === 0 ? "Free" : formatCurrency(shippingFee)}

@@ -1,4 +1,4 @@
-import { StorefrontNavbar as Navbar } from "@/components/storefront/navbar";
+import { Navbar } from "@/components/storefront/navbar";
 import { Footer } from "@/components/storefront/footer";
 import { CommandMenu } from "@/components/search/command-menu";
 import { PageTransition } from "@/components/storefront/page-transition";

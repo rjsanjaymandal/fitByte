@@ -1,201 +1,158 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  ShoppingBag,
-  Menu,
-  Heart,
-  ChevronDown,
-  Search,
-  LogOut,
-} from "lucide-react";
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import FlashImage from "@/components/ui/flash-image";
-import { useWishlistStore } from "@/store/use-wishlist-store";
-import { useCartStore, selectCartCount } from "@/store/use-cart-store";
-import { useAuth } from "@/context/auth-context";
 import { Button } from "@/components/ui/button";
+import { ShoppingBag, Search, User, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
-import { createClient } from "@/lib/supabase/client";
-import { useSearchStore } from "@/store/use-search-store";
+import { HamburgerMenu } from "./hamburger-menu";
 import { CategoryDropdown } from "./category-dropdown";
-const HamburgerMenu = dynamic(
-  () => import("./hamburger-menu").then((mod) => mod.HamburgerMenu),
-  { ssr: false },
-);
-import { SearchOverlay } from "@/components/storefront/search-overlay";
-import { NotificationBell } from "./notification-bell";
-import { motion, AnimatePresence } from "framer-motion";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+import { useCartStore } from "@/store/use-cart-store";
+import { useSearchStore } from "@/store/use-search-store";
+import { useAuth } from "@/context/auth-context";
 
-interface NavCategory {
-  id: string;
-  name: string;
-  slug: string;
-  children?: NavCategory[];
+interface NavbarProps {
+  categories?: { id: string; name: string; slug: string }[];
 }
 
-interface NavLink {
-  href: string;
-  label: string;
-  children?: NavCategory[];
-  category: NavCategory;
-}
+export function Navbar({ categories = [] }: NavbarProps) {
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const { isAdmin } = useAuth();
 
-export function StorefrontNavbar() {
-  const cartCount = useCartStore(selectCartCount);
-  const setIsCartOpen = useCartStore((state) => state.setIsCartOpen);
-  const wishlistCount = useWishlistStore((state) => state.items.length);
-  const { user, profile, isAdmin, signOut } = useAuth();
-
-  const [mounted, setMounted] = useState(false);
-  // Local Search State for Overlay
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const cartItems = useCartStore((s) => s.items);
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const setIsCartOpen = useCartStore((s) => s.setIsCartOpen);
+  const toggleSearch = useSearchStore((s) => s.toggle);
 
   useEffect(() => {
-    setMounted(true);
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const pathname = usePathname();
-  const supabase = createClient();
-
-  // Fetch Categories
-  const { data: categories = [] } = useQuery({
-    queryKey: ["nav-categories-v2"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("*, children:categories(id, name, slug)")
-        .eq("is_active", true)
-        .is("parent_id", null)
-        .order("name");
-      return data || [];
-    },
-  });
-
-  // Dynamic Nav Links
-  const navLinks: NavLink[] = categories.map((cat: NavCategory) => ({
-    href: `/shop?category=${cat.id}`,
-    label: cat.name,
-    children: cat.children,
-    category: cat,
-  }));
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/shop", label: "Shop" },
+    { href: "/blog", label: "Blog" },
+    { href: "/contact", label: "Contact" },
+  ];
 
   return (
-    <>
-      <header className="relative w-full bg-white border-b border-slate-100 pt-[env(safe-area-inset-top)] z-50">
-        <div className="relative mx-auto flex h-16 lg:h-20 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
-          {/* Fades out when search is open */}
-          <div
-            className={cn(
-              "w-full grid grid-cols-3 items-center transition-opacity duration-200",
-              isSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100",
-            )}
-          >
-            {/* Left: Navigation and Hamburger */}
-            <div className="flex items-center justify-start gap-4">
-              <div className="lg:hidden">
-                <HamburgerMenu categories={categories} />
-              </div>
+    <header
+      className={cn(
+        "w-full z-50 transition-all duration-500 ease-out",
+        scrolled
+          ? "bg-[#faf7f2]/90 backdrop-blur-xl border-b border-stone-200/50 shadow-sm"
+          : "bg-transparent",
+      )}
+    >
+      <div className="container mx-auto px-4 md:px-6 h-full">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* LEFT: Hamburger + Logo */}
+          <div className="flex items-center gap-3">
+            <HamburgerMenu categories={categories} />
 
-              <nav className="hidden lg:flex items-center gap-4 xl:gap-8">
-                <Link
-                  href="/shop"
-                  className="text-sm font-medium text-slate-700 hover:text-green-600 transition-colors"
-                >
-                  Shop fitByte
-                </Link>
-                <Link
-                  href="/about"
-                  className="text-sm font-medium text-slate-700 hover:text-green-600 transition-colors"
-                >
-                  Our Story
-                </Link>
-                <Link
-                  href="/bulk-gifting"
-                  className="text-sm font-medium text-slate-700 hover:text-green-600 transition-colors"
-                >
-                  Bulk Gifting
-                </Link>
-              </nav>
-            </div>
+            <Link href="/" className="flex items-center gap-2 group">
+              <span className="text-xl md:text-2xl font-black tracking-tighter text-stone-900 uppercase">
+                fit<span className="text-rose-500">Byte</span>
+              </span>
+            </Link>
+          </div>
 
-            {/* Middle: Centered Logo */}
-            <div className="flex justify-center">
-              <Link href="/" className="flex items-center gap-2 group">
-                <span className="text-[20px] sm:text-[28px] lg:text-[34px] xl:text-[40px] font-extrabold tracking-tight text-slate-900 font-sans leading-none">
-                  fitByte<span className="text-green-600 ml-0.5">.</span>
-                </span>
-              </Link>
-            </div>
-
-            {/* Right: Actions */}
-            <div className="flex items-center justify-end gap-4">
-              <button
-                onClick={() => setIsCartOpen(true)}
-                className="relative text-slate-700 hover:text-green-600 transition-colors"
-              >
-                <ShoppingBag className="h-5 w-5" />
-                {mounted && cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-green-600 text-[10px] font-bold text-white shadow-sm">
-                    {cartCount}
-                  </span>
+          {/* CENTER: Nav Links */}
+          <nav className="hidden lg:flex items-center gap-8 h-full">
+            {navLinks.map((link) => (
+              <div
+                key={link.href}
+                className={cn(
+                  "h-full flex items-center relative group",
+                  link.label === "Shop" && "cursor-default",
                 )}
-              </button>
-
-              <Link
-                href="/account"
-                className="text-slate-700 hover:text-green-600 transition-colors"
               >
-                <div className="h-5 w-5 flex items-center justify-center">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </div>
-              </Link>
-
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className="text-slate-700 hover:text-green-600 transition-colors"
-              >
-                <Search className="h-5 w-5" />
-              </button>
-
-              {/* Admin Access Button (Desktop) */}
-              {isAdmin && (
                 <Link
-                  href="/admin"
-                  className="hidden md:flex items-center gap-2 px-4 py-2 border border-[#1a2b47]/20 rounded-none text-[10px] font-black uppercase tracking-widest text-[#1a2b47] hover:bg-[#1a2b47] hover:text-white transition-all ml-2"
+                  href={link.href}
+                  className={cn(
+                    "text-[13px] font-semibold uppercase tracking-wider transition-colors hover:text-rose-500 py-4",
+                    pathname === link.href
+                      ? "text-stone-900"
+                      : "text-stone-500",
+                  )}
                 >
-                  Admin
+                  {link.label}
                 </Link>
+
+                {/* Mega Menu for Shop */}
+                {link.label === "Shop" && (
+                  <CategoryDropdown categories={categories} />
+                )}
+
+                {/* Underline for active/hover */}
+                <div
+                  className={cn(
+                    "absolute bottom-0 left-0 right-0 h-0.5 bg-rose-500 transition-all duration-300 scale-x-0 group-hover:scale-x-100",
+                    pathname === link.href && "scale-x-100",
+                  )}
+                />
+              </div>
+            ))}
+          </nav>
+
+          {/* RIGHT: Actions */}
+          <div className="flex items-center gap-1">
+            {/* Search */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleSearch}
+              className="rounded-full h-10 w-10 text-stone-600 hover:text-rose-500 hover:bg-stone-100/50"
+            >
+              <Search className="h-[18px] w-[18px] stroke-[1.5px]" />
+            </Button>
+
+            {/* Account */}
+            <Link href="/account" className="hidden md:flex">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full h-10 w-10 text-stone-600 hover:text-rose-500 hover:bg-stone-100/50"
+              >
+                <User className="h-[18px] w-[18px] stroke-[1.5px]" />
+              </Button>
+            </Link>
+
+            {/* Admin */}
+            {isAdmin && (
+              <Link href="/admin" className="hidden md:flex">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full h-9 px-3 text-xs font-semibold text-rose-600 border border-rose-200 hover:bg-rose-50 transition-colors"
+                >
+                  <Shield className="h-3.5 w-3.5 mr-1" />
+                  Admin
+                </Button>
+              </Link>
+            )}
+
+            {/* Cart */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsCartOpen(true)}
+              className="relative rounded-full h-10 w-10 text-stone-600 hover:text-rose-500 hover:bg-stone-100/50"
+            >
+              <ShoppingBag className="h-[18px] w-[18px] stroke-[1.5px]" />
+              {totalItems > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 h-5 w-5 flex items-center justify-center rounded-full bg-rose-500 text-white text-[10px] font-bold ring-2 ring-[#faf7f2]">
+                  {totalItems}
+                </span>
               )}
-            </div>
+            </Button>
           </div>
         </div>
-      </header>
-
-      <AnimatePresence>
-        {isSearchOpen && (
-          <SearchOverlay
-            isOpen={isSearchOpen}
-            onClose={() => setIsSearchOpen(false)}
-          />
-        )}
-      </AnimatePresence>
-    </>
+      </div>
+    </header>
   );
 }

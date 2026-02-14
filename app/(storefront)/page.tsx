@@ -40,6 +40,9 @@ const FoundersSection = dynamic(() =>
 const AvailableAt = dynamic(() =>
   import("@/components/storefront/available-at").then((mod) => mod.AvailableAt),
 );
+const FaqSection = dynamic(() =>
+  import("@/components/storefront/faq-section").then((mod) => mod.FaqSection),
+);
 
 function GridSkeleton() {
   return (
@@ -121,7 +124,7 @@ export default async function Home() {
   const collection2Products = featuredProducts.slice(4, 8);
 
   return (
-    <div className="min-h-screen bg-white text-foreground selection:bg-primary selection:text-primary-foreground">
+    <div className="min-h-screen bg-[#faf7f2] text-stone-900 selection:bg-rose-400 selection:text-white">
       {/* SEO H1 */}
       <h1 className="sr-only">
         fitByte | Premium Protein Bars, Supplements & Health Snacks Online India
@@ -172,10 +175,13 @@ export default async function Home() {
       {/* 8. FOUNDERS / OUR STORY */}
       <FoundersSection />
 
-      {/* 9. AVAILABLE AT (Retail Partners) */}
+      {/* 9. FAQ SECTION */}
+      <FaqSection />
+
+      {/* 10. AVAILABLE AT (Retail Partners) */}
       <AvailableAt />
 
-      {/* 10. NEWSLETTER ("Join the Fam") */}
+      {/* 11. NEWSLETTER ("Join the Fam") */}
       <NewsletterSection />
     </div>
   );

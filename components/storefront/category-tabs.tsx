@@ -17,13 +17,13 @@ interface CategoryTabsProps {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-  protein: "#16a34a",
-  supplements: "#0d9488",
-  snacks: "#f59e0b",
-  accessories: "#8b5cf6",
-  bars: "#ec4899",
-  shakes: "#3b82f6",
-  default: "#16a34a",
+  protein: "#fb7185", // Rose
+  supplements: "#fb923c", // Orange
+  snacks: "#facc15", // Yellow
+  accessories: "#44403c", // Stone
+  bars: "#fb7185",
+  shakes: "#facc15",
+  default: "#fb7185",
 };
 
 function getCategoryColor(name: string): string {
@@ -38,20 +38,22 @@ export function CategoryTabs({ categories, productsMap }: CategoryTabsProps) {
   if (!categories.length) return null;
 
   return (
-    <section className="py-16 md:py-24 bg-white overflow-hidden">
-      <div className="container mx-auto px-4 md:px-6">
+    <section className="py-20 md:py-28 bg-[#faf7f2] overflow-hidden relative">
+      <div className="absolute inset-0 dot-pattern opacity-10 pointer-events-none" />
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12 md:mb-16"
+          className="text-center mb-14"
         >
-          <p className="text-xs font-semibold uppercase tracking-wider text-green-600 mb-2">
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-rose-500 mb-3">
             Explore
           </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
-            The fitByte Range
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight uppercase">
+            The Range
           </h2>
         </motion.div>
 
@@ -71,10 +73,10 @@ export function CategoryTabs({ categories, productsMap }: CategoryTabsProps) {
                 className="min-w-[180px] w-[42vw] md:w-[200px] lg:w-[220px] shrink-0 snap-center"
               >
                 <Link href={`/shop/${cat.slug}`} className="block group">
-                  <div className="aspect-3/4 relative overflow-hidden bg-slate-50 rounded-2xl border border-slate-100 hover:shadow-lg transition-all duration-300">
-                    {/* Subtle color wash */}
+                  <div className="aspect-3/4 relative overflow-hidden bg-white rounded-2xl border border-stone-100 hover:border-rose-200 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+                    {/* Subtle color glow */}
                     <div
-                      className="absolute inset-0 opacity-5"
+                      className="absolute inset-0 opacity-[0.03]"
                       style={{ backgroundColor: color }}
                     />
 
@@ -82,30 +84,30 @@ export function CategoryTabs({ categories, productsMap }: CategoryTabsProps) {
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
                       <div
                         className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center mb-4"
-                        style={{ backgroundColor: `${color}15` }}
+                        style={{ backgroundColor: `${color}10` }}
                       >
                         <span
-                          className="text-2xl md:text-3xl font-extrabold"
+                          className="text-2xl md:text-3xl font-black"
                           style={{ color }}
                         >
                           {cat.name.charAt(0)}
                         </span>
                       </div>
 
-                      <h3 className="text-sm md:text-base font-bold text-slate-800 mb-1">
+                      <h3 className="text-sm md:text-base font-bold text-stone-800 mb-1 uppercase tracking-wide">
                         {cat.name}
                       </h3>
 
                       {productCount > 0 && (
-                        <p className="text-[11px] font-medium text-slate-400">
+                        <p className="text-[11px] font-medium text-stone-400">
                           {productCount} Products
                         </p>
                       )}
                     </div>
 
                     {/* Arrow */}
-                    <div className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-green-600 transition-colors">
-                      <span className="text-slate-400 group-hover:text-white text-sm transition-colors">
+                    <div className="absolute bottom-4 right-4 w-8 h-8 rounded-full bg-stone-50 flex items-center justify-center group-hover:bg-stone-900 transition-colors">
+                      <span className="text-stone-300 group-hover:text-white text-sm transition-colors">
                         →
                       </span>
                     </div>

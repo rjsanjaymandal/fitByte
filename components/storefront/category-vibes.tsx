@@ -39,13 +39,13 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
       {/* BACKGROUND MARQUEE */}
       <div className="absolute top-20 left-0 right-0 opacity-[0.05] pointer-events-none select-none z-0">
         <Marquee className="[--duration:40s] [--gap:1.5rem]" reverse>
-          <span className="text-[5rem] sm:text-[10rem] font-black tracking-tight mx-8 uppercase">
+          <span className="text-[3rem] sm:text-[6rem] font-black tracking-tight mx-8 uppercase">
             the energy
           </span>
-          <span className="text-[5rem] sm:text-[10rem] font-black tracking-tight mx-8 opacity-50 uppercase">
+          <span className="text-[3rem] sm:text-[6rem] font-black tracking-tight mx-8 opacity-50 uppercase">
             pure nutrition
           </span>
-          <span className="text-[5rem] sm:text-[10rem] font-black tracking-tight mx-8 uppercase">
+          <span className="text-[3rem] sm:text-[6rem] font-black tracking-tight mx-8 uppercase">
             daily fuel
           </span>
         </Marquee>
@@ -64,7 +64,7 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-7xl font-black tracking-tighter text-[#1a2b47] leading-none uppercase"
+            className="text-3xl md:text-5xl font-black tracking-tighter text-[#1a2b47] leading-none uppercase"
           >
             PICK YOUR <span className="text-[#e31e24]">VIBE</span>
           </motion.h2>
@@ -121,7 +121,7 @@ export function CategoryVibes({ categories }: CategoryVibesProps) {
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-110 group-hover:rotate-1"
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-500" />
                   </div>
                 ) : (
                   <div className="absolute inset-0 bg-zinc-900 flex items-center justify-center">

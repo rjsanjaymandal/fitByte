@@ -67,7 +67,7 @@ export function Hero() {
             className="space-y-8 lg:space-y-12"
           >
             <div className="space-y-4 sm:space-y-6">
-              <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight leading-[0.95] text-white uppercase italic">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-[0.95] text-white uppercase italic">
                 Love makes
                 <br />
                 <span className="text-white/60">you strong.</span>
@@ -115,7 +115,7 @@ export function Hero() {
       {/* Background Decor - Refined for mobile visibility */}
       <div className="absolute top-0 right-0 w-full lg:w-1/3 h-full bg-linear-to-l from-black/20 to-transparent pointer-events-none z-10" />
       <div className="absolute -top-10 -right-10 lg:p-10 opacity-5 sm:opacity-10 pointer-events-none select-none">
-        <span className="text-[120px] sm:text-[180px] lg:text-[250px] font-black text-white leading-none">
+        <span className="text-[100px] sm:text-[140px] lg:text-[200px] font-black text-white leading-none">
           FITBYTES.
         </span>
       </div>

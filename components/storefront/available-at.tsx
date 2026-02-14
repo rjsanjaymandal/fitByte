@@ -1,81 +1,73 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CreditCard, Smartphone, Landmark, QrCode, Wallet } from "lucide-react";
 
-const RETAILERS = [
-  { name: "Amazon", initial: "A" },
-  { name: "Flipkart", initial: "F" },
-  { name: "BigBasket", initial: "B" },
-  { name: "Swiggy Instamart", initial: "S" },
-  { name: "Zepto", initial: "Z" },
-  { name: "Blinkit", initial: "B" },
-];
-
-const PAYMENT_METHODS = [
-  { name: "UPI", icon: QrCode },
-  { name: "Cards", icon: CreditCard },
-  { name: "Net Banking", icon: Landmark },
-  { name: "Wallets", icon: Wallet },
-  { name: "Google Pay", icon: Smartphone },
+const retailers = [
+  { name: "Amazon", logo: "A" },
+  { name: "Flipkart", logo: "F" },
+  { name: "Reliance", logo: "R" },
+  { name: "Apollo", logo: "A" },
+  { name: "HealthKart", logo: "H" },
+  { name: "Swiggy", logo: "S" },
 ];
 
 export function AvailableAt() {
   return (
-    <section className="py-16 md:py-20 bg-white overflow-hidden">
+    <section className="py-20 md:py-28 bg-[#faf7f2] overflow-hidden relative">
+      {/* Top divider */}
+      <div className="absolute top-0 inset-x-0 h-px section-divider" />
+
       <div className="container mx-auto px-4 md:px-6">
-        {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <p className="text-xs font-semibold uppercase tracking-wider text-green-600 mb-2">
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-rose-500 mb-3">
             Shop Everywhere
           </p>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Also Available At
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight leading-tight uppercase">
+            Available Online & In-Store
           </h2>
         </motion.div>
 
-        {/* Retailer Logos Grid */}
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6 mb-14">
-          {RETAILERS.map((retailer, i) => (
+        {/* Retailer Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+          {retailers.map((retailer, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.06 }}
-              className="w-28 h-28 md:w-32 md:h-32 bg-slate-50 border border-slate-100 rounded-2xl flex flex-col items-center justify-center gap-2 hover:shadow-md hover:border-green-200 transition-all duration-300 cursor-default"
+              transition={{ delay: i * 0.05 }}
+              className="group cursor-default"
             >
-              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                <span className="text-lg font-bold text-slate-700">
-                  {retailer.initial}
+              <div className="h-24 flex flex-col items-center justify-center p-4 bg-white border border-stone-100 rounded-2xl group-hover:border-rose-200 transition-all duration-300 shadow-sm hover:shadow-md">
+                <span className="text-2xl font-black text-rose-500 mb-1">
+                  {retailer.logo}
+                </span>
+                <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
+                  {retailer.name}
                 </span>
               </div>
-              <p className="text-[11px] font-semibold text-slate-500">
-                {retailer.name}
-              </p>
             </motion.div>
           ))}
         </div>
 
-        {/* Payment Methods Strip */}
-        <div className="max-w-2xl mx-auto bg-slate-50 rounded-2xl p-6 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-4">
-            Secure Payment Options
+        {/* Payment Bar */}
+        <div className="mt-20 py-8 border-y border-stone-100 flex flex-col md:flex-row items-center justify-between gap-8 bg-white/50 rounded-2xl px-8">
+          <p className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">
+            100% Secure Payments
           </p>
-          <div className="flex justify-center flex-wrap gap-6">
-            {PAYMENT_METHODS.map((method, i) => (
-              <div
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 opacity-60">
+            {["VISA", "MASTERCARD", "UPI", "AMEX", "GPAY"].map((method, i) => (
+              <span
                 key={i}
-                className="flex flex-col items-center gap-1.5 text-slate-500"
+                className="text-xs font-black text-stone-900 tracking-[0.2em] hover:text-rose-500 transition-colors"
               >
-                <method.icon className="h-5 w-5 text-slate-400 stroke-[1.5]" />
-                <span className="text-[10px] font-medium">{method.name}</span>
-              </div>
+                {method}
+              </span>
             ))}
           </div>
         </div>

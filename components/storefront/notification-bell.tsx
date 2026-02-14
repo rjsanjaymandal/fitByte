@@ -194,7 +194,7 @@ export function NotificationBell() {
                     className={cn(
                       "shrink-0 mt-0.5 h-8 w-8 rounded-full flex items-center justify-center",
                       n.type === "success"
-                        ? "bg-green-500/10 text-green-500"
+                        ? "bg-rose-500/10 text-rose-500"
                         : n.type === "warning"
                           ? "bg-yellow-500/10 text-yellow-500"
                           : n.type === "error"

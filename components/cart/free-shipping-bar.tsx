@@ -23,7 +23,7 @@ export function FreeShippingBar({
       <div className="flex items-center justify-between text-xs font-bold uppercase tracking-widest px-1">
         <span className="flex items-center gap-1.5">
           {isFree ? (
-            <span className="text-emerald-500 flex items-center gap-1">
+            <span className="text-rose-500 flex items-center gap-1">
               <PartyPopper className="h-3 w-3" />
               Free Shipping Unlocked!
             </span>
@@ -39,7 +39,7 @@ export function FreeShippingBar({
 
       <div className="relative h-2 w-full bg-secondary/50 rounded-full overflow-hidden">
         <motion.div
-          className="absolute top-0 left-0 h-full bg-linear-to-r from-primary to-indigo-500"
+          className="absolute top-0 left-0 h-full bg-linear-to-r from-rose-400 to-rose-500"
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
           transition={{ duration: 0.5, ease: "easeOut" }}
@@ -60,7 +60,7 @@ export function FreeShippingBar({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 px-3 py-2 rounded-lg text-xs font-bold text-center flex items-center justify-center gap-2"
+            className="bg-rose-500/10 border border-rose-500/20 text-rose-600 px-3 py-2 rounded-lg text-xs font-bold text-center flex items-center justify-center gap-2"
           >
             <Check className="h-3 w-3" />
             You&apos;ve qualified for free standard shipping!

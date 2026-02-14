@@ -7,7 +7,6 @@ import { ProductDetailClient } from "./product-detail";
 import { ReviewSection } from "@/components/reviews/review-section";
 import { RecentlyViewed } from "@/components/products/recently-viewed";
 import { NewsletterSection } from "@/components/marketing/newsletter-section";
-import { ProductCarousel } from "@/components/products/product-carousel";
 import { ProductJsonLd } from "@/components/seo/product-json-ld";
 import { getProducts } from "@/lib/services/product-service";
 import { notFound } from "next/navigation";
@@ -126,7 +125,7 @@ export default async function ProductPage({
         colorMap={colorMap}
       />
 
-      <div className="container mx-auto px-4 lg:px-8 space-y-20 pb-20">
+      <div className="container mx-auto px-4 lg:px-8 space-y-0 pb-0">
         {/* Reviews */}
         <ReviewSection
           productId={product.id}
@@ -138,8 +137,6 @@ export default async function ProductPage({
             })) as any[]
           }
         />
-
-        <ProductCarousel products={relatedProducts} />
 
         {/* Recently Viewed */}
         <RecentlyViewed currentProduct={product} />

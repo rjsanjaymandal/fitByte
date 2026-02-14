@@ -435,31 +435,31 @@ export function ProductCard({
   return (
     <>
       <motion.div
-        whileHover={{ y: -4 }}
-        className="group relative flex flex-col h-full bg-white border border-slate-100 rounded-2xl hover:shadow-lg transition-all duration-300 overflow-hidden"
+        whileHover={{ y: -6 }}
+        className="group relative flex flex-col h-full bg-white border border-stone-100 rounded-2xl overflow-hidden transition-all duration-300 hover:border-rose-200 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)]"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Image Container */}
         <Link
           href={`/product/${product.slug || product.id}`}
-          className="block relative aspect-[1/1] overflow-hidden bg-slate-50 rounded-t-2xl"
+          className="block relative aspect-[1/1] overflow-hidden bg-[#faf7f2] rounded-t-2xl"
         >
           {/* Static Badges - Top Left */}
           <div className="absolute top-3 left-3 z-10 flex flex-col gap-2 pointer-events-none">
             {isOutOfStock ? (
-              <Badge className="bg-slate-900 text-white text-[10px] font-semibold px-3 py-1 rounded-full border-none">
+              <Badge className="bg-stone-900 text-white text-[10px] font-bold px-3 py-1 rounded-full border-none uppercase tracking-wider">
                 Sold Out
               </Badge>
             ) : (
               <>
                 {isNew && (
-                  <Badge className="bg-green-600 text-white text-[10px] font-semibold px-3 py-1 rounded-full border-none shadow-sm">
+                  <Badge className="bg-yellow-400 text-stone-900 text-[10px] font-bold px-3 py-1 rounded-full border-none">
                     New
                   </Badge>
                 )}
                 {calculateDiscount(product.price, product.original_price) && (
-                  <Badge className="bg-red-500 text-white text-[10px] font-semibold px-3 py-1 rounded-full border-none shadow-sm">
+                  <Badge className="bg-yellow-400 text-stone-900 text-[10px] font-bold px-3 py-1 rounded-full border-none">
                     Sale
                   </Badge>
                 )}
@@ -470,7 +470,7 @@ export function ProductCard({
           {/* Wishlist Button - Top Right */}
           <button
             onClick={handleWishlistClick}
-            className="absolute top-3 right-3 z-20 h-9 w-9 flex items-center justify-center bg-white/90 backdrop-blur-sm hover:bg-white rounded-full transition-all text-slate-500 hover:text-red-500 shadow-sm"
+            className="absolute top-3 right-3 z-20 h-9 w-9 flex items-center justify-center bg-white/80 backdrop-blur-sm hover:bg-white rounded-full transition-all text-stone-400 hover:text-rose-500 hover:scale-110 shadow-sm"
           >
             <Heart
               className={cn(
@@ -514,8 +514,8 @@ export function ProductCard({
                     className={cn(
                       "h-1.5 w-1.5 rounded-full transition-all duration-300 shadow-sm",
                       idx === imgIndex
-                        ? "bg-green-600 scale-125"
-                        : "bg-slate-300",
+                        ? "bg-stone-900 scale-125"
+                        : "bg-stone-200",
                     )}
                   />
                 ))}
@@ -530,16 +530,16 @@ export function ProductCard({
           <div className="flex flex-col gap-1">
             <Link
               href={`/product/${product.slug || product.id}`}
-              className="group-hover:text-green-600 transition-colors"
+              className="group-hover:text-rose-500 transition-colors"
             >
-              <h3 className="font-semibold text-[15px] leading-snug text-slate-800 line-clamp-2 min-h-[2.2em]">
+              <h3 className="font-semibold text-[15px] leading-snug text-stone-800 line-clamp-2 min-h-[2.2em]">
                 {product.name}
               </h3>
             </Link>
 
             {/* Rating */}
             <div className="flex items-center gap-1.5">
-              <div className="flex text-amber-400">
+              <div className="flex text-yellow-400">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
@@ -547,12 +547,12 @@ export function ProductCard({
                       "h-3.5 w-3.5",
                       i < Math.floor(rating)
                         ? "fill-current"
-                        : "text-slate-200 fill-slate-200",
+                        : "text-stone-200 fill-stone-200",
                     )}
                   />
                 ))}
               </div>
-              <span className="text-[11px] font-medium text-slate-400">
+              <span className="text-[11px] font-medium text-stone-400">
                 {reviewCount} Reviews
               </span>
             </div>
@@ -560,26 +560,26 @@ export function ProductCard({
 
           {/* Attributes / Macro Badge (Simulated) */}
           <div className="flex flex-wrap gap-1.5">
-            <div className="bg-green-50 text-green-700 px-2.5 py-0.5 text-[10px] font-semibold rounded-full">
+            <div className="bg-rose-50 text-rose-600 px-2.5 py-0.5 text-[10px] font-bold rounded-full border border-rose-100">
               20g Protein
             </div>
-            <div className="bg-green-50 text-green-700 px-2.5 py-0.5 text-[10px] font-semibold rounded-full">
+            <div className="bg-yellow-50 text-yellow-700 px-2.5 py-0.5 text-[10px] font-bold rounded-full border border-yellow-100">
               No Sugar
             </div>
           </div>
 
           <div className="mt-auto pt-2 flex items-center justify-between gap-4">
             <div className="flex flex-col">
-              <span className="text-[10px] text-slate-400 font-medium">
+              <span className="text-[10px] text-stone-400 font-medium">
                 From
               </span>
               <div className="flex items-baseline gap-2">
-                <span className="text-xl font-bold text-slate-900">
+                <span className="text-xl font-bold text-stone-900">
                   {formatCurrency(product.price)}
                 </span>
                 {product.original_price &&
                   product.original_price > product.price && (
-                    <span className="text-xs text-slate-400 line-through font-medium">
+                    <span className="text-xs text-stone-400 line-through font-medium">
                       {formatCurrency(product.original_price)}
                     </span>
                   )}
@@ -590,7 +590,7 @@ export function ProductCard({
             {!isOutOfStock ? (
               <Button
                 size="icon"
-                className="h-11 w-11 rounded-full bg-green-600 hover:bg-green-700 text-white shadow-md transition-all active:scale-95"
+                className="h-11 w-11 rounded-full bg-stone-900 hover:bg-rose-500 text-white shadow-md transition-all active:scale-90 hover:scale-110"
                 onClick={handleAddToCart}
                 disabled={isAddingToCart}
               >
@@ -608,7 +608,7 @@ export function ProductCard({
             ) : (
               <Button
                 size="sm"
-                className="h-10 px-4 rounded-full bg-slate-100 text-slate-500 font-semibold text-xs hover:bg-slate-200"
+                className="h-10 px-4 rounded-full bg-stone-100 text-stone-500 font-semibold text-xs hover:bg-stone-200 transition-colors border border-stone-200"
                 onClick={handlePreOrder}
                 disabled={isLoadingWaitlist}
               >

@@ -450,7 +450,7 @@ export function CartDrawer() {
                 <span
                   className={
                     shippingFee === 0
-                      ? "text-emerald-500 font-bold"
+                      ? "text-rose-500 font-bold"
                       : "text-foreground"
                   }
                 >
@@ -468,7 +468,7 @@ export function CartDrawer() {
                 "w-full h-14 text-base font-black uppercase tracking-widest rounded-none transition-all shadow-lg group",
                 hasOutOfStockItems
                   ? "bg-[#e31e24] text-white hover:bg-[#c9181d]"
-                  : "bg-[#1a2b47] text-white hover:bg-[#111c2e] hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]",
+                  : "bg-stone-900 text-white hover:bg-stone-800 hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]",
               )}
               asChild={!hasOutOfStockItems}
               onClick={(e) => {

@@ -17,8 +17,11 @@ export function FeaturedGrid({
   badge?: string;
 }) {
   return (
-    <section className="py-16 md:py-24 bg-white overflow-hidden">
-      <div className="container mx-auto px-4 md:px-6">
+    <section className="py-20 md:py-28 bg-[#faf7f2] overflow-hidden relative">
+      {/* Subtle dots */}
+      <div className="absolute inset-0 dot-pattern opacity-40 pointer-events-none" />
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12">
           <motion.div
@@ -26,22 +29,22 @@ export function FeaturedGrid({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs font-semibold uppercase tracking-wider text-green-600 mb-2">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-rose-500 mb-3">
               {badge}
             </p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-stone-900 tracking-tight leading-tight uppercase">
               {title}
             </h2>
-            <p className="mt-3 text-sm text-slate-500 font-medium max-w-md">
+            <p className="mt-3 text-sm text-stone-500 font-medium max-w-md">
               {subtitle}
             </p>
           </motion.div>
 
           <Link
             href="/shop"
-            className="group flex items-center gap-2 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
+            className="group flex items-center gap-2 text-sm font-bold text-rose-500 hover:text-rose-600 transition-colors uppercase tracking-wider"
           >
-            View All Products
+            View All
             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
