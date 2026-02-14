@@ -51,14 +51,26 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
   const { user, profile, isAdmin, signOut } = useAuth();
 
   const menuVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, x: -20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      x: 0,
+      transition: {
+        delay: i * 0.08,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    }),
+  };
+
+  const socialVariants: Variants = {
+    hidden: { opacity: 0, y: 10 },
     visible: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: i * 0.06,
-        duration: 0.6,
-        ease: [0.21, 0.47, 0.32, 0.98],
+        delay: 0.5 + i * 0.1,
+        duration: 0.5,
       },
     }),
   };
@@ -83,8 +95,13 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
       </SheetTrigger>
       <SheetContent
         side="left"
-        className="w-full sm:w-[420px] p-0 border-r border-stone-100 bg-[#faf7f2] grain"
+        className="w-full sm:w-[450px] p-0 border-r-0 bg-white/95 backdrop-blur-2xl"
       >
+        {/* Subtle Grain Overlay */}
+        <div className="absolute inset-0 opacity-[0.03] grain pointer-events-none z-0" />
+
+        {/* Decorative Background Accent */}
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-linear-to-b from-[#faf7f2] to-transparent pointer-events-none z-0" />
         <SheetHeader className="sr-only">
           <SheetTitle>Navigation Menu</SheetTitle>
           <SheetDescription>Browse fitByte products and more.</SheetDescription>
@@ -96,10 +113,13 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
             <Link
               href="/"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 group"
             >
-              <span className="text-2xl font-black tracking-tighter text-stone-900 uppercase">
-                fit<span className="text-rose-500">Byte</span>
+              <span className="text-3xl font-black tracking-tighter text-stone-950 uppercase italic">
+                fit
+                <span className="text-rose-500 group-hover:text-black transition-colors">
+                  Byte
+                </span>
               </span>
             </Link>
             <ModeToggle />
@@ -119,12 +139,17 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
                   <Link
                     href={`/shop?category=${cat.id}`}
                     onClick={() => setOpen(false)}
-                    className="flex items-center justify-between py-5 group hover:pl-2 transition-all duration-300 border-b border-stone-900/5"
+                    className="flex items-center justify-between py-6 group border-b border-stone-100/50"
                   >
-                    <span className="text-3xl font-black text-stone-800 group-hover:text-rose-500 transition-colors uppercase tracking-tighter">
-                      {cat.name}
-                    </span>
-                    <ChevronRight className="h-6 w-6 text-stone-200 group-hover:text-rose-500 transition-all transform group-hover:translate-x-1" />
+                    <div className="flex flex-col">
+                      <span className="text-[10px] font-bold text-rose-500 uppercase tracking-[0.4em] mb-1 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0">
+                        Explore
+                      </span>
+                      <span className="text-4xl font-black text-stone-950 group-hover:text-rose-500 transition-all uppercase tracking-tighter italic">
+                        {cat.name}
+                      </span>
+                    </div>
+                    <ArrowRight className="h-6 w-6 text-stone-200 group-hover:text-rose-500 transition-all transform -translate-x-4 group-hover:translate-x-0 opacity-0 group-hover:opacity-100" />
                   </Link>
                 </motion.div>
               ))}
@@ -142,15 +167,16 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
                   <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="flex items-center justify-between py-3.5 group hover:pl-1 transition-all duration-300"
+                    className="flex items-center justify-between py-4 group"
                   >
-                    <div className="flex items-center gap-3">
-                      <link.icon className="h-4 w-4 text-stone-300 group-hover:text-rose-400 transition-colors" />
-                      <span className="text-[13px] font-black text-stone-400 group-hover:text-stone-900 transition-colors uppercase tracking-[0.2em]">
+                    <div className="flex items-center gap-4">
+                      <div className="h-8 w-8 rounded-full bg-stone-50 flex items-center justify-center group-hover:bg-rose-500 transition-all">
+                        <link.icon className="h-3.5 w-3.5 text-stone-400 group-hover:text-white transition-colors" />
+                      </div>
+                      <span className="text-[12px] font-black text-stone-500 group-hover:text-stone-950 transition-colors uppercase tracking-[0.3em]">
                         {link.label}
                       </span>
                     </div>
-                    <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 text-rose-400 transition-all transform group-hover:translate-x-1" />
                   </Link>
                 </motion.div>
               ))}
@@ -237,19 +263,23 @@ export function HamburgerMenu({ categories }: HamburgerMenuProps) {
 
             {/* Socials */}
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-6">
                 {[Instagram, Twitter, Youtube, Facebook].map((Icon, i) => (
-                  <a
+                  <motion.a
                     key={i}
                     href="#"
-                    className="text-stone-300 hover:text-rose-500 transition-colors"
+                    custom={i}
+                    initial="hidden"
+                    animate={open ? "visible" : "hidden"}
+                    variants={socialVariants}
+                    className="text-stone-400 hover:text-rose-500 transition-colors bg-stone-50 p-2.5 rounded-full hover:bg-white hover:shadow-lg hover:shadow-rose-100"
                   >
-                    <Icon className="h-5 w-5 stroke-[1.5px]" />
-                  </a>
+                    <Icon className="h-4 w-4 stroke-[2px]" />
+                  </motion.a>
                 ))}
               </div>
-              <p className="text-[9px] font-bold text-stone-300 uppercase tracking-[0.3em]">
-                v0.1.0-beta
+              <p className="text-[10px] font-black text-stone-300 uppercase tracking-[0.4em] italic">
+                EST. 2024
               </p>
             </div>
           </div>

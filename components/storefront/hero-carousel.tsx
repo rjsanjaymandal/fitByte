@@ -279,7 +279,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
                   ease: "easeInOut",
                 },
               }}
-              className="relative w-[200px] h-[200px] sm:w-[400px] sm:h-[400px] lg:w-[650px] lg:h-[650px] drop-shadow-[0_25px_25px_rgba(0,0,0,0.3)] lg:drop-shadow-[0_45px_45px_rgba(0,0,0,0.4)]"
+              className="relative w-full h-[250px] sm:h-[450px] lg:w-[650px] lg:h-[650px] drop-shadow-[0_15px_15px_rgba(0,0,0,0.3)] lg:drop-shadow-[0_45px_45px_rgba(0,0,0,0.4)] px-4"
             >
               {currentProduct.main_image_url && (
                 <FlashImage
@@ -297,9 +297,9 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
           {/* Cinematic Gradient Overlays */}
           <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/30 pointer-events-none z-10" />
 
-          {/* CONTENT LAYER - Centered & Impactful */}
-          <div className="relative z-20 h-full w-full container mx-auto px-6 flex flex-col justify-center items-center text-center">
-            <div className="max-w-4xl w-full">
+          {/* CONTENT LAYER - Centered & Impactful (Full-Bleed on Mobile) */}
+          <div className="relative z-20 h-full w-full lg:container lg:mx-auto lg:px-6 flex flex-col justify-center items-center text-center px-0">
+            <div className="w-full max-w-4xl px-4 lg:px-0">
               <div className="space-y-4 mb-12 overflow-hidden">
                 <motion.h1
                   initial={{ y: "100%", opacity: 0 }}
