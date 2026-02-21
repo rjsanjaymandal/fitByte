@@ -149,7 +149,9 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
     );
   }
 
-  const currentProduct = products[currentIndex];
+  // Ensure currentIndex is ALWAYS within bounds - crucial for Next.js 16/Turbopack scope stability
+  const safeIndex = Math.max(0, Math.min(currentIndex, products.length - 1));
+  const currentProduct = products[safeIndex];
   if (!currentProduct) return null;
 
   const addItem = useCartStore((state) => state.addItem);
@@ -233,7 +235,9 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
     return "#1c1917"; // Default stone-950/black
   };
 
-  const backgroundColor = getProductColor(currentProduct);
+  const backgroundColor = currentProduct
+    ? getProductColor(currentProduct)
+    : "#1c1917";
 
   return (
     <section
@@ -247,7 +251,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
       <div className="absolute inset-0 opacity-20 grain pointer-events-none" />
       <AnimatePresence initial={false} custom={direction} mode="wait">
         <motion.div
-          key={currentIndex}
+          key={currentProduct?.id || safeIndex}
           custom={direction}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

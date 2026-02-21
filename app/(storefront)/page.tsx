@@ -40,9 +40,8 @@ const FoundersSection = dynamic(() =>
 const AvailableAt = dynamic(() =>
   import("@/components/storefront/available-at").then((mod) => mod.AvailableAt),
 );
-const FaqSection = dynamic(() =>
-  import("@/components/storefront/faq-section").then((mod) => mod.FaqSection),
-);
+import { FaqSection } from "@/components/storefront/faq-section";
+import { ProductFeatures } from "@/components/storefront/product-features";
 
 function GridSkeleton() {
   return (
@@ -156,6 +155,9 @@ export default async function Home() {
           products={collection1Products}
         />
       )}
+
+      {/* 5.a PRODUCT FEATURES (Healthy Energy) */}
+      <ProductFeatures />
 
       {/* 6. TESTIMONIALS ("Don't Take Our Word") */}
       <TestimonialCarousel />
