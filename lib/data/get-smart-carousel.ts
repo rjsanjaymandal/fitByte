@@ -17,6 +17,7 @@ export async function getSmartCarouselData() {
             created_at, 
             color_options,
             size_options,
+            gallery_image_urls,
             product_stock(quantity)
         `)
         .eq('is_active', true)
@@ -31,6 +32,7 @@ export async function getSmartCarouselData() {
             .select(`
                 id, name, description, price, original_price,
                 main_image_url, slug, created_at, color_options, size_options,
+                gallery_image_urls,
                 product_stock(quantity)
             `)
             .eq('is_active', true)
@@ -47,11 +49,21 @@ export async function getSmartCarouselData() {
             .slice(0, 5)
     }
 
-    // Client-side filtering for stock > 0
+    // Client-side filtering for stock > 0 and banner mapping
     const smartData = data
         .filter(p => {
             const totalStock = p.product_stock?.reduce((sum: number, s: any) => sum + s.quantity, 0) || 0
             return totalStock > 0
+        })
+        .map(p => {
+            // Map gallery images to banners if available
+            // Convention: gallery[0] = Desktop, gallery[1] = Mobile (if 2+ images)
+            const gallery = p.gallery_image_urls || []
+            return {
+                ...p,
+                desktop_image_url: gallery.length >= 1 ? gallery[0] : p.main_image_url,
+                mobile_image_url: gallery.length >= 2 ? gallery[1] : (gallery.length >= 1 ? gallery[0] : p.main_image_url)
+            }
         })
         .slice(0, 5) // Reduced to 5 for better performance and focus
 

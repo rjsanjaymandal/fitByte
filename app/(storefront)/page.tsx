@@ -41,7 +41,7 @@ const AvailableAt = dynamic(() =>
   import("@/components/storefront/available-at").then((mod) => mod.AvailableAt),
 );
 import { FaqSection } from "@/components/storefront/faq-section";
-import { ProductFeatures } from "@/components/storefront/product-features";
+import { NuttySeedsShowcase } from "@/components/storefront/nutty-seeds-showcase";
 
 function GridSkeleton() {
   return (
@@ -156,8 +156,8 @@ export default async function Home() {
         />
       )}
 
-      {/* 5.a PRODUCT FEATURES (Healthy Energy) */}
-      <ProductFeatures />
+      {/* 5.a PRODUCT FEATURES (Nutty Seeds Showcase) */}
+      <NuttySeedsShowcase />
 
       {/* 6. TESTIMONIALS ("Don't Take Our Word") */}
       <TestimonialCarousel />

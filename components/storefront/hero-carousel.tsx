@@ -19,6 +19,8 @@ export interface HeroProduct {
   price: number;
   original_price?: number | null;
   main_image_url: string | null;
+  mobile_image_url?: string | null; // Added for responsive banners
+  desktop_image_url?: string | null; // Added for responsive banners
   slug: string;
   product_stock?: any[];
   color_options?: string[] | null;
@@ -212,32 +214,7 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
     router.push("/checkout");
   };
 
-  const getProductColor = (product: HeroProduct) => {
-    if (product.color_options && product.color_options.length > 0) {
-      const color = product.color_options[0].toLowerCase();
-      const colorMap: Record<string, string> = {
-        rose: "#fb7185",
-        pink: "#fb7185",
-        yellow: "#facc15",
-        lime: "#84cc16",
-        chocolate: "#451a03",
-        brown: "#451a03",
-        cream: "#faf7f2",
-        stone: "#78716c",
-        black: "#1c1917",
-        blue: "#3b82f6",
-      };
-
-      for (const [key, val] of Object.entries(colorMap)) {
-        if (color.includes(key)) return val;
-      }
-    }
-    return "#1c1917"; // Default stone-950/black
-  };
-
-  const backgroundColor = currentProduct
-    ? getProductColor(currentProduct)
-    : "#1c1917";
+  const backgroundColor = "#faf7f2"; // Simplified to brand warm cream
 
   return (
     <section
@@ -263,57 +240,56 @@ export function HeroCarousel({ products }: HeroCarouselProps) {
           onDragEnd={handleDragEnd}
           className="absolute inset-0 w-full h-full flex items-center"
         >
-          {/* PRODUCT IMAGE LAYER - Centered Cinematic Presence */}
+          {/* PRODUCT IMAGE LAYER - Simple Hero Presence */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0, rotate: -5 }}
-              animate={{
-                scale: 1,
-                opacity: 1,
-                rotate: 0,
-                y: [0, -20, 0],
-              }}
-              transition={{
-                opacity: { duration: 0.8 },
-                scale: { duration: 0.8 },
-                rotate: { duration: 0.8 },
-                y: {
-                  duration: 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                },
-              }}
-              className="relative w-full h-[250px] sm:h-[450px] lg:w-[650px] lg:h-[650px] drop-shadow-[0_15px_15px_rgba(0,0,0,0.3)] lg:drop-shadow-[0_45px_45px_rgba(0,0,0,0.4)] px-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8 }}
+              className="relative w-full h-full"
             >
-              {currentProduct.main_image_url && (
+              {/* Responsive Banners */}
+              <div className="block lg:hidden w-full h-full relative">
                 <FlashImage
-                  src={currentProduct.main_image_url}
+                  src={
+                    currentProduct.mobile_image_url ||
+                    currentProduct.main_image_url ||
+                    ""
+                  }
                   alt={currentProduct.name}
                   fill
-                  className="object-contain"
+                  className="object-cover"
                   priority={true}
-                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
-              )}
+              </div>
+              <div className="hidden lg:block w-full h-full relative">
+                <FlashImage
+                  src={
+                    currentProduct.desktop_image_url ||
+                    currentProduct.main_image_url ||
+                    ""
+                  }
+                  alt={currentProduct.name}
+                  fill
+                  className="object-cover"
+                  priority={true}
+                />
+              </div>
             </motion.div>
           </div>
 
-          {/* Cinematic Gradient Overlays */}
-          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/30 pointer-events-none z-10" />
+          {/* Minimalist Overlay to ensure text readability */}
+          <div className="absolute inset-0 bg-black/10 pointer-events-none z-10" />
 
           {/* CONTENT LAYER - Centered & Impactful (Full-Bleed on Mobile) */}
           <div className="relative z-20 h-full w-full lg:container lg:mx-auto lg:px-6 flex flex-col justify-center items-center text-center px-0">
             <div className="w-full max-w-4xl px-4 lg:px-0">
               <div className="space-y-4 mb-12 overflow-hidden">
                 <motion.h1
-                  initial={{ y: "100%", opacity: 0 }}
+                  initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{
-                    delay: 0.5,
-                    duration: 1,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="text-[1.8rem] sm:text-[3rem] md:text-[5rem] lg:text-[7rem] xl:text-[8rem] font-black text-white leading-[0.9] tracking-tighter uppercase"
+                  transition={{ delay: 0.4, duration: 0.8 }}
+                  className="text-[2rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[6rem] font-black text-[#451a03] leading-[1] tracking-tighter uppercase drop-shadow-sm"
                 >
                   {currentProduct.name}
                 </motion.h1>
